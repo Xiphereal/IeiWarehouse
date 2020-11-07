@@ -17,7 +17,7 @@ public class MySQLConnection {
 
     public static void performQuery(String sqlQuery) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://" + serverHostName + ":3306/" + databaseSchemaName,
