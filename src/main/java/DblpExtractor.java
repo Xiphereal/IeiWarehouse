@@ -1,3 +1,5 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -18,11 +20,12 @@ public class DblpExtractor {
         JSONParser jsonParser = new JSONParser();
 
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/dblp-solo-article-1.json")) {
-
             //Read JSON file
-            Object obj = jsonParser.parse(fileReader);
+            JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+            JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
+            JSONArray articles = (JSONArray) jsonObjectContainer.get("article");
 
-            System.out.println(obj);
+            articles.forEach(article -> parseJsonObject((JSONObject) article));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -31,5 +34,10 @@ public class DblpExtractor {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void parseJsonObject(JSONObject jsonObject) {
+        Long year = (Long) jsonObject.get("year");
+        System.out.println(year);
     }
 }
