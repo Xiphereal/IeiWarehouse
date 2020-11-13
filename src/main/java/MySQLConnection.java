@@ -45,4 +45,26 @@ public class MySQLConnection {
             }
         }
     }
+
+    public static void performUpdate(String sqlQuery) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://" + serverHostName + ":3306/" + databaseSchemaName + connectionOptions,
+                    username,
+                    password
+            );
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlQuery);
+
+            System.out.println("Update: " + sqlQuery + " was successful!");
+
+            connection.close();
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            e.printStackTrace();
+        }
+    }
 }
