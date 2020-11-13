@@ -3,7 +3,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -14,17 +13,26 @@ public class DblpExtractor {
 
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/dblp-solo-article-1.json")) {
-            //Read JSON file
-            JSONParser jsonParser = new JSONParser();
-            JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-            JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
-            JSONArray articles = (JSONArray) jsonObjectContainer.get("article");
+
+            JSONArray articles = getArticlesFromJson(fileReader);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // TODO: Get the articles from an interface passed by argument, so that we can later
+    //  change the data source (from a file to the API REST request) by creating a new
+    //  class that implements that interface.
+    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
+        JSONArray articles = (JSONArray) jsonObjectContainer.get("article");
+
+        return articles;
     }
 
     private static void parseJsonObject(JSONObject jsonObject) {
