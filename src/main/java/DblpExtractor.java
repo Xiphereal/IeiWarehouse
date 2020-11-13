@@ -1,3 +1,4 @@
+import com.mysql.cj.xdevapi.JsonString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,17 +41,26 @@ public class DblpExtractor {
             String title = (String) jsonObject.get("title");
             Long year = (Long) jsonObject.get("year");
             // TODO: Check whether "ee" exists to avoid a NullReference on retrieving "content".
-            // String url = (String) ((JSONObject) jsonObject.get("ee")).get("content");
+            //JSONObject ee = (JSONObject) jsonObject.get("ee");
+            //String url = (String) ee.get("content");
 
-            // TODO: Check whether the "pages" is a Long, containing the total number of pages, or a String,
-            //  having the initial-final pages.
-            String pages = (String) jsonObject.get("pages");
-
+            Object pages = jsonObject.get("pages");
             if (pages != null) {
-                String initialPages = extractInitialPages(pages);
-                System.out.println(initialPages);
+                String initialPages = "null";
+                String finalPages = "null";
 
-                String finalPages = extractFinalPages(pages);
+                //Variable "pages" might be a String if it is more than one, but a Long if it is only one page.
+                if(pages instanceof String) {
+                    String stringPages = pages.toString();
+
+                    initialPages = extractInitialPages(stringPages);
+                    finalPages = extractFinalPages(stringPages);
+                }
+                if (pages instanceof Long) {
+                    initialPages = pages.toString();
+                    finalPages = pages.toString();
+                }
+
             }
 
         } catch (ClassCastException e) {
