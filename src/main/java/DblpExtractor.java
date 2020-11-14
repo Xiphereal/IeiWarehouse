@@ -18,7 +18,6 @@ public class DblpExtractor {
             JSONArray articles = getArticlesFromJson(fileReader);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article));
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,10 +39,16 @@ public class DblpExtractor {
         try {
             String title = (String) jsonObject.get("title");
             Long year = (Long) jsonObject.get("year");
-            // TODO: Check whether "ee" exists to avoid a NullReference on retrieving "content".
-            //JSONObject ee = (JSONObject) jsonObject.get("ee");
-            //String url = (String) ee.get("content");
+            // Check whether "ee" exists to avoid a NullReference on retrieving "content".
+            try {
+                JSONObject ee = (JSONObject) jsonObject.get("ee");
+                //String url = (String) ee.get("content");
+                if(ee == null) throw new NullPointerException();
+            }catch(Exception e){
+                System.out.println(e);
+            }
 
+            //extraer paginas
             Object pages = jsonObject.get("pages");
             if (pages != null) {
                 String initialPages = "null";
