@@ -72,6 +72,9 @@ public class DblpExtractor {
     }
 
     private static String extractPages(JSONObject jsonObject) {
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine if its an exact page number ("264", of type Long) or a range
+        // ("164-168", of type String).
         Object pages = jsonObject.get("pages");
 
         if (pages == null) {
