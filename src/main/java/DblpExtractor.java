@@ -99,7 +99,8 @@ public class DblpExtractor {
         int initialPage = 0;
         int finalPage = 0;
 
-        // Variable "pages" might be a String if it is more than one, but a Long if it is only one page.
+        // Attribute "pages" might be a String if it is more than one ("164-168"), but a Long if it
+        // is only one page ("264").
         if (pages instanceof String) {
             String stringPages = pages.toString();
 
@@ -114,6 +115,7 @@ public class DblpExtractor {
     }
 
     private static int extractInitialPage(String pages) {
+        // TODO: Consider the case of the attribute "pages" not containing a number, for example "e3".
         return Integer.parseInt(pages.substring(0, pages.indexOf("-")));
     }
 
