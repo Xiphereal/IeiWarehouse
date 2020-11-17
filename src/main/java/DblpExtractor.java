@@ -41,6 +41,8 @@ public class DblpExtractor {
         try {
             Article article = extractArticleAttributes(jsonObject);
 
+            System.out.println(article);
+
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
@@ -90,7 +92,7 @@ public class DblpExtractor {
         Object pages = jsonObject.get("pages");
 
         if (pages == null) {
-            System.out.println("'pages' attibute is missing in " + jsonObject);
+            System.out.println("'pages' attribute is missing in " + jsonObject);
             return new Tuple<>();
         }
 

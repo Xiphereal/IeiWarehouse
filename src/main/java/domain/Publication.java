@@ -46,4 +46,14 @@ public class Publication {
     public void setAuthors(List<Person> authors) {
         this.authors = authors;
     }
+
+    @Override
+    public String toString() {
+        return "Publication{" +
+                "title='" + title + '\'' +
+                ", year=" + year +
+                ", url='" + url + '\'' +
+                ", authors=" + authors +
+                '}';
+    }
 }
