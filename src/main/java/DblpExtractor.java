@@ -106,8 +106,8 @@ public class DblpExtractor {
             initialPage = extractInitialPage(stringPages);
             finalPage = extractFinalPage(stringPages);
         } else if (pages instanceof Long) {
-            initialPage = (int) pages;
-            finalPage = (int) pages;
+            initialPage = ((Long) pages).intValue();
+            finalPage = ((Long) pages).intValue();
         }
 
         return new Tuple<>(initialPage, finalPage);
