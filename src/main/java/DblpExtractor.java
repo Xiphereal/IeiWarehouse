@@ -37,41 +37,62 @@ public class DblpExtractor {
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
-            String title = (String) jsonObject.get("title");
-            Long year = (Long) jsonObject.get("year");
-            // Check whether "ee" exists to avoid a NullReference on retrieving "content".
-            try {
-                JSONObject ee = (JSONObject) jsonObject.get("ee");
-                //String url = (String) ee.get("content");
-                if(ee == null) throw new NullPointerException();
-            }catch(Exception e){
-                System.out.println(e);
-            }
+            String title = extractTitle(jsonObject);
+            Long year = extractYear(jsonObject);
 
-            //extraer paginas
-            Object pages = jsonObject.get("pages");
-            if (pages != null) {
-                String initialPages = "null";
-                String finalPages = "null";
+            extractURL(jsonObject);
 
-                //Variable "pages" might be a String if it is more than one, but a Long if it is only one page.
-                if(pages instanceof String) {
-                    String stringPages = pages.toString();
-
-                    initialPages = extractInitialPages(stringPages);
-                    finalPages = extractFinalPages(stringPages);
-                }
-                if (pages instanceof Long) {
-                    initialPages = pages.toString();
-                    finalPages = pages.toString();
-                }
-
-            }
+            extractPages(jsonObject);
 
         } catch (ClassCastException e) {
             System.err.println("An error has ocurred while retrieving the JSONObject " + jsonObject.toString());
             e.printStackTrace();
         }
+    }
+
+    private static String extractTitle(JSONObject jsonObject) {
+        return (String) jsonObject.get("title");
+    }
+
+    private static Long extractYear(JSONObject jsonObject) {
+        return (Long) jsonObject.get("year");
+    }
+
+    private static String extractURL(JSONObject jsonObject) {
+        JSONObject ee = (JSONObject) jsonObject.get("ee");
+
+        // Check whether "ee" exists to avoid a NullReference on retrieving "content".
+        if (ee.isEmpty()) {
+            System.out.println("'ee' attribute is missing in " + jsonObject);
+            return "";
+        }
+
+        return (String) ee.get("content");
+    }
+
+    private static String extractPages(JSONObject jsonObject) {
+        Object pages = jsonObject.get("pages");
+
+        if (pages == null) {
+            System.out.println("'pages' attibute is missing in " + jsonObject);
+            return "";
+        }
+
+        String initialPages = "null";
+        String finalPages = "null";
+
+        // Variable "pages" might be a String if it is more than one, but a Long if it is only one page.
+        if (pages instanceof String) {
+            String stringPages = pages.toString();
+
+            initialPages = extractInitialPages(stringPages);
+            finalPages = extractFinalPages(stringPages);
+        } else if (pages instanceof Long) {
+            initialPages = pages.toString();
+            finalPages = pages.toString();
+        }
+
+        return "TODO: Return a tuple of init-final pages";
     }
 
     private static String extractInitialPages(String pages) {
