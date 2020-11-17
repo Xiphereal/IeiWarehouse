@@ -40,13 +40,11 @@ public class DblpExtractor {
         try {
             String title = extractTitle(jsonObject);
             Long year = extractYear(jsonObject);
-
-            extractURL(jsonObject);
-
-            extractPages(jsonObject);
+            String url = extractURL(jsonObject);
+            String pages = extractPages(jsonObject);
 
         } catch (ClassCastException e) {
-            System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject.toString());
+            System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
         }
     }
