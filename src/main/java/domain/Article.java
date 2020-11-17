@@ -3,11 +3,17 @@ package domain;
 import java.util.List;
 
 public class Article extends Publication {
-    private int initialPage;
-    private int finalPage;
+    private Integer initialPage;
+    private Integer finalPage;
     private Copy copyPublishedBy;
 
-    public Article(String title, Long year, String url, List<Person> authors, int initialPage, int finalPage, Copy copyPublishedBy) {
+    public Article(String title,
+                   Long year,
+                   String url,
+                   List<Person> authors,
+                   Integer initialPage,
+                   Integer finalPage,
+                   Copy copyPublishedBy) {
         super(title, year, url, authors);
         this.initialPage = initialPage;
         this.finalPage = finalPage;
@@ -36,5 +42,14 @@ public class Article extends Publication {
 
     public void setCopyPublishedBy(Copy copyPublishedBy) {
         this.copyPublishedBy = copyPublishedBy;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "initialPage=" + initialPage +
+                ", finalPage=" + finalPage +
+                ", copyPublishedBy=" + copyPublishedBy +
+                "} " + super.toString();
     }
 }
