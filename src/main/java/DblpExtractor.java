@@ -1,4 +1,3 @@
-import com.mysql.cj.xdevapi.JsonString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,7 +17,9 @@ public class DblpExtractor {
             JSONArray articles = getArticlesFromJson(fileReader);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article));
+
         } catch (Exception e) {
+            System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }
     }
@@ -45,7 +46,7 @@ public class DblpExtractor {
             extractPages(jsonObject);
 
         } catch (ClassCastException e) {
-            System.err.println("An error has ocurred while retrieving the JSONObject " + jsonObject.toString());
+            System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject.toString());
             e.printStackTrace();
         }
     }
