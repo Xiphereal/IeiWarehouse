@@ -1,3 +1,5 @@
+import domain.Article;
+import domain.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,22 +33,34 @@ public class DblpExtractor {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
         JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
-        JSONArray articles = (JSONArray) jsonObjectContainer.get("article");
 
-        return articles;
+        return (JSONArray) jsonObjectContainer.get("article");
     }
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
-            String title = extractTitle(jsonObject);
-            Long year = extractYear(jsonObject);
-            String url = extractURL(jsonObject);
-            String pages = extractPages(jsonObject);
+            Article article = extractArticleAttributes(jsonObject);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
         }
+    }
+
+    private static Article extractArticleAttributes(JSONObject jsonObject) {
+        String title = extractTitle(jsonObject);
+        Long year = extractYear(jsonObject);
+        String url = extractURL(jsonObject);
+        Tuple<Integer, Integer> pages = extractPages(jsonObject);
+
+        // TODO: How to resolve the dependencies with other entities, like Article.authors & Article.copyPublishedBy.
+        return new Article(title,
+                year,
+                url,
+                null,
+                pages.getFirstElement(),
+                pages.getSecondElement(),
+                null);
     }
 
     private static String extractTitle(JSONObject jsonObject) {
@@ -69,7 +83,7 @@ public class DblpExtractor {
         return (String) ee.get("content");
     }
 
-    private static String extractPages(JSONObject jsonObject) {
+    private static Tuple<Integer, Integer> extractPages(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine if its an exact page number ("264", of type Long) or a range
         // ("164-168", of type String).
@@ -77,32 +91,32 @@ public class DblpExtractor {
 
         if (pages == null) {
             System.out.println("'pages' attibute is missing in " + jsonObject);
-            return "";
+            return new Tuple<>();
         }
 
-        String initialPages = "null";
-        String finalPages = "null";
+        int initialPage = 0;
+        int finalPage = 0;
 
         // Variable "pages" might be a String if it is more than one, but a Long if it is only one page.
         if (pages instanceof String) {
             String stringPages = pages.toString();
 
-            initialPages = extractInitialPages(stringPages);
-            finalPages = extractFinalPages(stringPages);
+            initialPage = extractInitialPage(stringPages);
+            finalPage = extractFinalPage(stringPages);
         } else if (pages instanceof Long) {
-            initialPages = pages.toString();
-            finalPages = pages.toString();
+            initialPage = (int) pages;
+            finalPage = (int) pages;
         }
 
-        return "TODO: Return a tuple of init-final pages";
+        return new Tuple<>(initialPage, finalPage);
     }
 
-    private static String extractInitialPages(String pages) {
-        return pages.substring(0, pages.indexOf("-"));
+    private static int extractInitialPage(String pages) {
+        return Integer.parseInt(pages.substring(0, pages.indexOf("-")));
     }
 
-    private static String extractFinalPages(String pages) {
+    private static int extractFinalPage(String pages) {
         // The '+ 1' is because String.substring(int startIndex) includes the char at startIndex.
-        return pages.substring(pages.indexOf("-") + 1);
+        return Integer.parseInt(pages.substring(pages.indexOf("-") + 1));
     }
 }
