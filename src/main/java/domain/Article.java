@@ -20,7 +20,7 @@ public class Article extends Publication {
         this.copyPublishedBy = copyPublishedBy;
     }
 
-    public int getInitialPage() {
+    public Integer getInitialPage() {
         return initialPage;
     }
 
@@ -28,7 +28,7 @@ public class Article extends Publication {
         this.initialPage = initialPage;
     }
 
-    public int getFinalPage() {
+    public Integer getFinalPage() {
         return finalPage;
     }
 
