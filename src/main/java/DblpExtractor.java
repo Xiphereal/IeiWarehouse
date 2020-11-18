@@ -51,8 +51,10 @@ public class DblpExtractor {
 
     private static Article extractArticleAttributes(JSONObject jsonObject) {
         String title = extractTitle(jsonObject);
-        Long year = extractYear(jsonObject);
-        String url = extractURL(jsonObject);
+        //Long year = extractYear(jsonObject);
+        Long year = 30L;
+        //String url = extractURL(jsonObject);
+        String url = "haha yes";
         Tuple<Integer, Integer> pages = extractPages(jsonObject);
 
         // TODO: How to resolve the dependencies with other entities, like Article.authors & Article.copyPublishedBy.
@@ -104,6 +106,9 @@ public class DblpExtractor {
         if (pages instanceof String) {
             String stringPages = pages.toString();
 
+            // In case that the 'pages' attributes contains a character, that character is dropped.
+            stringPages = replaceNonNumberCharacters(stringPages);
+
             initialPage = extractInitialPage(stringPages);
             finalPage = extractFinalPage(stringPages);
         } else if (pages instanceof Long) {
@@ -114,8 +119,12 @@ public class DblpExtractor {
         return new Tuple<>(initialPage, finalPage);
     }
 
+    private static String replaceNonNumberCharacters(String pages) {
+        // REGEX: Every letter.
+        return pages.replaceAll("[A-z]", "");
+    }
+
     private static int extractInitialPage(String pages) {
-        // TODO: Consider the case of the attribute "pages" not containing a number, for example "e3".
         return Integer.parseInt(pages.substring(0, pages.indexOf("-")));
     }
 
