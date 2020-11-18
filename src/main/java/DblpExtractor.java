@@ -108,15 +108,14 @@ public class DblpExtractor {
         if (pages instanceof String) {
             String stringPages = pages.toString();
 
-            if (isInRomanNotation(stringPages)) {
+            if (isInSimpleRangeFormat(stringPages)) {
+                initialPage = extractInitialPage(stringPages);
+                finalPage = extractFinalPage(stringPages);
+            } else if (isInRomanNotation(stringPages)) {
                 initialPage = RomanToDecimalConverter.romanToDecimal(stringPages);
                 finalPage = initialPage;
             } else {
-                // In case that the 'pages' attributes contains a character, that character is dropped.
-                stringPages = replaceNonNumberCharacters(stringPages);
-
-                initialPage = extractInitialPage(stringPages);
-                finalPage = extractFinalPage(stringPages);
+                return new Tuple<>();
             }
         } else if (pages instanceof Long) {
             initialPage = ((Long) pages).intValue();
@@ -126,14 +125,9 @@ public class DblpExtractor {
         return new Tuple<>(initialPage, finalPage);
     }
 
-    private static boolean isInRomanNotation(String stringPages) {
-        // REGEX: Contains any number.
-        return !stringPages.matches(".*[0-9].*");
-    }
-
-    private static String replaceNonNumberCharacters(String pages) {
-        // REGEX: Every letter.
-        return pages.replaceAll("[A-z]", "");
+    private static boolean isInSimpleRangeFormat(String stringPages) {
+        // REGEX: Two numbers separated by '-'
+        return stringPages.matches("\\d+-\\d+");
     }
 
     private static int extractInitialPage(String pages) {
@@ -143,5 +137,10 @@ public class DblpExtractor {
     private static int extractFinalPage(String pages) {
         // The '+ 1' is because String.substring(int startIndex) includes the char at startIndex.
         return Integer.parseInt(pages.substring(pages.indexOf("-") + 1));
+    }
+
+    private static boolean isInRomanNotation(String stringPages) {
+        // REGEX: Contains any number.
+        return !stringPages.matches(".*[0-9].*");
     }
 }
