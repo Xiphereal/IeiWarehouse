@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import utils.RomanToDecimalConverter;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -89,8 +90,7 @@ public class DblpExtractor {
 
     private static Tuple<Integer, Integer> extractPages(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
-        // 'instanceof' to determine if its an exact page number ("264", of type Long) or a range
-        // ("164-168", of type String).
+        // 'instanceof' to determine its type.
         Object pages = jsonObject.get("pages");
 
         if (pages == null) {
@@ -101,22 +101,34 @@ public class DblpExtractor {
         int initialPage = 0;
         int finalPage = 0;
 
-        // Attribute "pages" might be a String if it is more than one ("164-168"), but a Long if it
-        // is only one page ("264").
+        // Attribute "pages" might be of type String if it is a range ("164-168") or
+        // if its a range containing letters ("e3-e13") or
+        // if its on roman notation ("iii").
+        // Otherwise, it can be of Long type if its is only one page ("264").
         if (pages instanceof String) {
             String stringPages = pages.toString();
 
-            // In case that the 'pages' attributes contains a character, that character is dropped.
-            stringPages = replaceNonNumberCharacters(stringPages);
+            if (isInRomanNotation(stringPages)) {
+                initialPage = RomanToDecimalConverter.romanToDecimal(stringPages);
+                finalPage = initialPage;
+            } else {
+                // In case that the 'pages' attributes contains a character, that character is dropped.
+                stringPages = replaceNonNumberCharacters(stringPages);
 
-            initialPage = extractInitialPage(stringPages);
-            finalPage = extractFinalPage(stringPages);
+                initialPage = extractInitialPage(stringPages);
+                finalPage = extractFinalPage(stringPages);
+            }
         } else if (pages instanceof Long) {
             initialPage = ((Long) pages).intValue();
-            finalPage = ((Long) pages).intValue();
+            finalPage = initialPage;
         }
 
         return new Tuple<>(initialPage, finalPage);
+    }
+
+    private static boolean isInRomanNotation(String stringPages) {
+        // REGEX: Contains any number.
+        return !stringPages.matches(".*[0-9].*");
     }
 
     private static String replaceNonNumberCharacters(String pages) {
