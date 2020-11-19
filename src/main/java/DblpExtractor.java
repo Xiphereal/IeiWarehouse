@@ -236,6 +236,7 @@ public class DblpExtractor {
         return new Person(name, surname, null);
     }
 
+    // TODO: Extract the Copy attributes from the JSONObject
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
         Integer volume = null;
         Integer number = null;
