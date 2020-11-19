@@ -225,16 +225,9 @@ public class DblpExtractor {
      * As reference for the edge cases see: https://github.com/Xiphereal/ProyectoIEI/pull/1#issuecomment-730471867
      */
     private static Person extractPersonAttributes(String author) {
-        String name = extractPersonName(author);
-        String surnames = "TODO: Add the retrieved Person surnames.";
-
-        return new Person(name, surnames, null);
-    }
-
-    private static String extractPersonName(String author) {
         // Split the string using spaces as separators.
         String[] splitAuthor = author.split(" ");
-        
-        return splitAuthor[0];
+
+        return new Person(splitAuthor[0], splitAuthor[1], null);
     }
 }
