@@ -93,7 +93,8 @@ public class DblpExtractor {
         Object pages = jsonObject.get("pages");
 
         if (pages == null) {
-            System.out.println("'pages' attribute is missing in " + jsonObject);
+            System.out.println(System.lineSeparator() +
+                    "'pages' attribute is missing in " + jsonObject + System.lineSeparator());
             return new Tuple<>();
         }
 
