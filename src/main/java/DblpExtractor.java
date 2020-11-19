@@ -52,8 +52,7 @@ public class DblpExtractor {
 
     private static Article extractArticleAttributes(JSONObject jsonObject) {
         String title = extractTitle(jsonObject);
-        //Long year = extractYear(jsonObject);
-        Long year = 30L;
+        Long year = extractYear(jsonObject);
         //String url = extractURL(jsonObject);
         String url = "haha yes";
         Tuple<Integer, Integer> pages = extractPages(jsonObject);
