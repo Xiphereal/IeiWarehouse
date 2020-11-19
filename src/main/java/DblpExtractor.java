@@ -231,6 +231,9 @@ public class DblpExtractor {
         // Split the string using spaces as separators.
         String[] splitAuthor = author.split(" ");
 
-        return new Person(splitAuthor[0], splitAuthor[1], null);
+        String name = splitAuthor[0];
+        String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
+
+        return new Person(name, surname, null);
     }
 }
