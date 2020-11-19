@@ -53,8 +53,7 @@ public class DblpExtractor {
     private static Article extractArticleAttributes(JSONObject jsonObject) {
         String title = extractTitle(jsonObject);
         Long year = extractYear(jsonObject);
-        //String url = extractURL(jsonObject);
-        String url = "haha yes";
+        String url = extractURL(jsonObject);
         Tuple<Integer, Integer> pages = extractPages(jsonObject);
 
         // TODO: How to resolve the dependencies with other entities, like Article.authors & Article.copyPublishedBy.
