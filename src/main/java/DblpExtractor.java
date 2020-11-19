@@ -232,6 +232,9 @@ public class DblpExtractor {
     }
 
     private static String extractPersonName(String author) {
-        return "TODO: Add the retrieved Person name.";
+        // Split the string using spaces as separators.
+        String[] splitAuthor = author.split(" ");
+        
+        return splitAuthor[0];
     }
 }
