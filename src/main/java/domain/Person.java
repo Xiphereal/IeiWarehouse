@@ -4,12 +4,12 @@ import java.util.List;
 
 public class Person {
     private String name;
-    private String lastNames;
+    private String surnames;
     private List<String> authoredPublications;
 
-    public Person(String name, String lastNames, List<String> authoredPublications) {
+    public Person(String name, String surnames, List<String> authoredPublications) {
         this.name = name;
-        this.lastNames = lastNames;
+        this.surnames = surnames;
         this.authoredPublications = authoredPublications;
     }
 
@@ -21,12 +21,12 @@ public class Person {
         this.name = name;
     }
 
-    public String getLastNames() {
-        return lastNames;
+    public String getSurnames() {
+        return surnames;
     }
 
-    public void setLastNames(String lastNames) {
-        this.lastNames = lastNames;
+    public void setSurnames(String surnames) {
+        this.surnames = surnames;
     }
 
     public List<String> getAuthoredPublications() {
