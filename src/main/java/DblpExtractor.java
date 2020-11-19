@@ -1,4 +1,5 @@
 import domain.Article;
+import domain.Person;
 import domain.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,8 +44,10 @@ public class DblpExtractor {
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
+            Person person = extractPersonAttributes(jsonObject);
 
-            System.out.println(article);
+            //System.out.println(article);
+            System.out.println(person);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -175,5 +178,11 @@ public class DblpExtractor {
     private static boolean isInRomanNotation(String stringPages) {
         // REGEX: Contains any number.
         return !stringPages.matches(".*[0-9].*");
+    }
+
+    private static Person extractPersonAttributes(JSONObject jsonObject) {
+        String name = "TODO: Add the retrieved Person name.";
+        String surnames = "TODO: Add the retrieved Person surnames.";
+        return new Person(name, surnames, null);
     }
 }
