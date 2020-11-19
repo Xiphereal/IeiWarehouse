@@ -3,13 +3,13 @@ package domain;
 import java.util.List;
 
 public class Copy {
-    private int volume;
-    private int number;
-    private int month;
+    private Integer volume;
+    private Integer number;
+    private Integer month;
     private Magazine magazinePublishBy;
     private List<Article> articles;
 
-    public Copy(int volume, int number, int month, Magazine magazinePublishBy, List<Article> articles) {
+    public Copy(Integer volume, Integer number, Integer month, Magazine magazinePublishBy, List<Article> articles) {
         this.volume = volume;
         this.number = number;
         this.month = month;
@@ -17,27 +17,27 @@ public class Copy {
         this.articles = articles;
     }
 
-    public int getVolume() {
+    public Integer getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
+    public void setVolume(Integer volume) {
         this.volume = volume;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
