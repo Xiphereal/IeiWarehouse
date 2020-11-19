@@ -187,6 +187,9 @@ public class DblpExtractor {
         return !stringPages.matches(".*[0-9].*");
     }
 
+    /**
+     * As reference for the edge cases see: https://github.com/Xiphereal/ProyectoIEI/pull/1#issuecomment-730471867
+     */
     private static List<Person> extractAuthors(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
@@ -222,7 +225,7 @@ public class DblpExtractor {
     }
 
     /**
-     * As reference for the edge cases see: https://github.com/Xiphereal/ProyectoIEI/pull/1#issuecomment-730471867
+     * @param author The name is the first encountered word, the surname the second.
      */
     private static Person extractPersonAttributes(String author) {
         // Split the string using spaces as separators.
