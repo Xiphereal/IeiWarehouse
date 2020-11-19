@@ -5,9 +5,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utils.RomanToDecimalConverter;
+import utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * See reference: https://howtodoinjava.com/java/library/json-simple-read-write-json-examples/
@@ -75,15 +77,47 @@ public class DblpExtractor {
     }
 
     private static String extractURL(JSONObject jsonObject) {
-        JSONObject ee = (JSONObject) jsonObject.get("ee");
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine its type.
+        Object ee = jsonObject.get("ee");
 
-        // Check whether "ee" exists to avoid a NullReference on retrieving "content".
-        if (ee.isEmpty()) {
-            System.out.println("'ee' attribute is missing in " + jsonObject);
-            return "";
+        if (ee == null) {
+            System.out.println(System.lineSeparator() +
+                    "'ee' attribute is missing in " + jsonObject + System.lineSeparator());
+            return null;
         }
 
-        return (String) ee.get("content");
+        if (ee instanceof String)
+            return (String) ee;
+
+        if (ee instanceof JSONArray) {
+            JSONArray castedEeAttribute = (JSONArray) ee;
+
+            if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedEeAttribute)) {
+                List<String> eeElements = SimpleJsonUtils
+                        .convertJsonArrayToStringCollection(castedEeAttribute);
+
+                for (String element : eeElements)
+                    if (element.contains("www.wikidata.org"))
+                        return element;
+            } else {
+                for (Object element : castedEeAttribute)
+                    if (element instanceof String)
+                        return (String) element;
+            }
+        }
+
+        if (ee instanceof JSONObject) {
+            JSONObject castedEeAttribute = (JSONObject) ee;
+            return (String) castedEeAttribute.get("content");
+        }
+
+        // TODO: In the current DBLP JSON file there's one case that, being 'ee' of type JSONArray, doesn't enter
+        //  the 'if' case.
+        System.out.println(System.lineSeparator() + "The data structure for attribute 'ee' is not considered. " +
+                Article.class + " 'url' field will be set to null" + System.lineSeparator());
+
+        return null;
     }
 
     private static Tuple<Integer, Integer> extractPages(JSONObject jsonObject) {
