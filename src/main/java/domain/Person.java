@@ -36,4 +36,13 @@ public class Person {
     public void setAuthoredPublications(List<String> authoredPublications) {
         this.authoredPublications = authoredPublications;
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", surnames='" + surnames + '\'' +
+                ", authoredPublications=" + authoredPublications +
+                '}';
+    }
 }

@@ -26,4 +26,12 @@ public class Magazine {
     public void setPublishedCopies(List<Copy> publishedCopies) {
         this.publishedCopies = publishedCopies;
     }
+
+    @Override
+    public String toString() {
+        return "Magazine{" +
+                "name='" + name + '\'' +
+                ", publishedCopies=" + publishedCopies +
+                '}';
+    }
 }

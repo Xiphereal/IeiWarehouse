@@ -65,4 +65,15 @@ public class CongressCommunication extends Publication {
     public void setFinalPage(int finalPage) {
         this.finalPage = finalPage;
     }
+
+    @Override
+    public String toString() {
+        return "CongressCommunication{" +
+                "congress='" + congress + '\'' +
+                ", edition='" + edition + '\'' +
+                ", place='" + place + '\'' +
+                ", initialPage=" + initialPage +
+                ", finalPage=" + finalPage +
+                "} " + super.toString();
+    }
 }

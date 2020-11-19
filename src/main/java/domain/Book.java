@@ -17,4 +17,11 @@ public class Book extends Publication {
     public void setEditorial(String editorial) {
         this.editorial = editorial;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "editorial='" + editorial + '\'' +
+                "} " + super.toString();
+    }
 }

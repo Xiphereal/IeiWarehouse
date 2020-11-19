@@ -56,4 +56,15 @@ public class Copy {
     public void setArticles(List<Article> articles) {
         this.articles = articles;
     }
+
+    @Override
+    public String toString() {
+        return "Copy{" +
+                "volume=" + volume +
+                ", number=" + number +
+                ", month=" + month +
+                ", magazinePublishBy=" + magazinePublishBy +
+                ", articles=" + articles +
+                '}';
+    }
 }
