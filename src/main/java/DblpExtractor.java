@@ -1,3 +1,4 @@
+import com.mysql.cj.xdevapi.JsonArray;
 import domain.Article;
 import domain.Person;
 import domain.utils.Tuple;
@@ -10,6 +11,7 @@ import utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,9 +46,11 @@ public class DblpExtractor {
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-            Person person = extractPersonAttributes(jsonObject);
+            List<Person> person = extractAuthors(jsonObject);
 
             //System.out.println(article);
+
+            // Prints the raw Java Object list. The use of this is basically check that is not null.
             System.out.println(person);
 
         } catch (ClassCastException e) {
@@ -180,9 +184,49 @@ public class DblpExtractor {
         return !stringPages.matches(".*[0-9].*");
     }
 
-    private static Person extractPersonAttributes(JSONObject jsonObject) {
-        String name = "TODO: Add the retrieved Person name.";
+    private static List<Person> extractAuthors(JSONObject jsonObject) {
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine its type.
+        Object authors = jsonObject.get("author");
+
+        if (authors == null) {
+            System.out.println(System.lineSeparator() +
+                    "'author' attribute is missing in " + jsonObject + System.lineSeparator());
+            return null;
+        }
+
+        if (authors instanceof JSONArray) {
+            JSONArray castedAuthorAttribute = (JSONArray) authors;
+
+            if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedAuthorAttribute)) {
+                List<String> authorElements = SimpleJsonUtils
+                        .convertJsonArrayToStringCollection(castedAuthorAttribute);
+
+                List<Person> parsedAuthors = new ArrayList<>();
+
+                for (String element : authorElements)
+                    parsedAuthors.add(extractPersonAttributes(element));
+
+                return parsedAuthors;
+            }
+        }
+
+        System.out.println(System.lineSeparator() + "The data structure for attribute 'author' is not considered. " +
+                "The author collection will be set to null" + System.lineSeparator());
+
+        return null;
+    }
+
+    /**
+     * As reference for the edge cases see: https://github.com/Xiphereal/ProyectoIEI/pull/1#issuecomment-730471867
+     */
+    private static Person extractPersonAttributes(String author) {
+        String name = extractPersonName(author);
         String surnames = "TODO: Add the retrieved Person surnames.";
         return new Person(name, surnames, null);
+    }
+
+    private static String extractPersonName(String author) {
+        return "TODO: Add the retrieved Person name.";
     }
 }
