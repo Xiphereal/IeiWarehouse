@@ -1,5 +1,6 @@
 import com.mysql.cj.xdevapi.JsonArray;
 import domain.Article;
+import domain.Copy;
 import domain.Person;
 import domain.utils.Tuple;
 import org.json.simple.JSONArray;
@@ -47,11 +48,9 @@ public class DblpExtractor {
         try {
             Article article = extractArticleAttributes(jsonObject);
             List<Person> person = extractAuthors(jsonObject);
+            Copy copy = extractCopyAttributes(jsonObject);
 
-            //System.out.println(article);
-
-            // Prints the raw Java Object list. The use of this is basically check that is not null.
-            System.out.println(person);
+            System.out.println(copy);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -235,5 +234,13 @@ public class DblpExtractor {
         String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
 
         return new Person(name, surname, null);
+    }
+
+    private static Copy extractCopyAttributes(JSONObject jsonObject) {
+        Integer volume = null;
+        Integer number = null;
+        Integer month = null;
+
+        return new Copy(volume, number, month, null, null);
     }
 }
