@@ -91,6 +91,7 @@ public class DblpExtractor {
         if (ee == null) {
             System.out.println(System.lineSeparator() +
                     "'ee' attribute is missing in " + jsonObject + System.lineSeparator());
+
             return null;
         }
 
@@ -116,6 +117,7 @@ public class DblpExtractor {
 
         if (ee instanceof JSONObject) {
             JSONObject castedEeAttribute = (JSONObject) ee;
+
             return (String) castedEeAttribute.get("content");
         }
 
@@ -135,6 +137,7 @@ public class DblpExtractor {
         if (pages == null) {
             System.out.println(System.lineSeparator() +
                     "'pages' attribute is missing in " + jsonObject + System.lineSeparator());
+
             return new Tuple<>();
         }
 
@@ -192,6 +195,7 @@ public class DblpExtractor {
         if (authors == null) {
             System.out.println(System.lineSeparator() +
                     "'author' attribute is missing in " + jsonObject + System.lineSeparator());
+
             return null;
         }
 
@@ -223,6 +227,7 @@ public class DblpExtractor {
     private static Person extractPersonAttributes(String author) {
         String name = extractPersonName(author);
         String surnames = "TODO: Add the retrieved Person surnames.";
+
         return new Person(name, surnames, null);
     }
 
