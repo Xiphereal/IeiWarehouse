@@ -268,6 +268,14 @@ public class DblpExtractor {
      * @return Null if doesn't fit a considered edge case, the Copy number if it does.
      */
     private static Integer extractNumber(JSONObject jsonObject) {
-        return (Integer) jsonObject.get("number");
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine its type.
+        Object number = jsonObject.get("number");
+
+        if (number instanceof Long) {
+            return ((Long) number).intValue();
+        }
+
+        return null;
     }
 }
