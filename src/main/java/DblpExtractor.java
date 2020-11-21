@@ -248,7 +248,7 @@ public class DblpExtractor {
     /**
      * Only considers attribute 'volume' being a plain Integer number.
      *
-     * @return Null if doesn't fit a considered edge case, the volume number if it does.
+     * @return Null if doesn't fit a considered edge case, the Copy volume number if it does.
      */
     private static Integer extractVolume(JSONObject jsonObject) {
         return (Integer) jsonObject.get("volume");
