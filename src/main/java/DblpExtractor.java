@@ -1,4 +1,3 @@
-import com.mysql.cj.xdevapi.JsonArray;
 import domain.Article;
 import domain.Copy;
 import domain.Person;
@@ -240,7 +239,7 @@ public class DblpExtractor {
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
         Integer volume = extractVolume(jsonObject);
         Integer number = extractNumber(jsonObject);
-        Integer month = null;
+        Integer month = extractMonth(jsonObject);
 
         return new Copy(volume, number, month, null, null);
     }
@@ -274,6 +273,25 @@ public class DblpExtractor {
 
         if (number instanceof Long) {
             return ((Long) number).intValue();
+        }
+
+        return null;
+    }
+
+    /**
+     * Only considers attribute 'mdate' being a String separated by '-' with the month in the middle "x-mm-x".
+     *
+     * @return Null if doesn't fit a considered edge case, the Copy month if it does.
+     */
+    private static Integer extractMonth(JSONObject jsonObject) {
+        Object mdate = jsonObject.get("mdate");
+
+        if (mdate instanceof String) {
+            String castedMdate = (String) mdate;
+
+            String[] splitMdate = castedMdate.split("-");
+
+            return splitMdate.length > 1 ? Integer.valueOf(splitMdate[1]) : null;
         }
 
         return null;
