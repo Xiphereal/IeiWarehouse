@@ -239,7 +239,7 @@ public class DblpExtractor {
     // TODO: Extract the Copy attributes from the JSONObject
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
         Integer volume = extractVolume(jsonObject);
-        Integer number = null;
+        Integer number = extractNumber(jsonObject);
         Integer month = null;
 
         return new Copy(volume, number, month, null, null);
@@ -252,5 +252,14 @@ public class DblpExtractor {
      */
     private static Integer extractVolume(JSONObject jsonObject) {
         return (Integer) jsonObject.get("volume");
+    }
+
+    /**
+     * Only considers attribute 'number' being a plain Integer number.
+     *
+     * @return Null if doesn't fit a considered edge case, the Copy number if it does.
+     */
+    private static Integer extractNumber(JSONObject jsonObject) {
+        return (Integer) jsonObject.get("number");
     }
 }
