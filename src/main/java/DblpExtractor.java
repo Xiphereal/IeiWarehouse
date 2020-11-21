@@ -251,7 +251,15 @@ public class DblpExtractor {
      * @return Null if doesn't fit a considered edge case, the Copy volume number if it does.
      */
     private static Integer extractVolume(JSONObject jsonObject) {
-        return (Integer) jsonObject.get("volume");
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine its type.
+        Object volume = jsonObject.get("volume");
+
+        if (volume instanceof Long) {
+            return ((Long) volume).intValue();
+        }
+
+        return null;
     }
 
     /**
