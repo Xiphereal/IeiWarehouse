@@ -1,11 +1,9 @@
 package domain;
 
-import java.util.List;
-
 public class Person {
     private String name;
     private String surnames;
-    private List<String> authoredPublications;
+    private String authoredPublication;
 
     public Person(String name, String surnames) {
         this.name = name;
@@ -28,12 +26,12 @@ public class Person {
         this.surnames = surnames;
     }
 
-    public List<String> getAuthoredPublications() {
-        return authoredPublications;
+    public String getAuthoredPublication() {
+        return authoredPublication;
     }
 
-    public void setAuthoredPublications(List<String> authoredPublications) {
-        this.authoredPublications = authoredPublications;
+    public void setAuthoredPublication(String authoredPublication) {
+        this.authoredPublication = authoredPublication;
     }
 
     @Override
@@ -41,7 +39,7 @@ public class Person {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", surnames='" + surnames + '\'' +
-                ", authoredPublications=" + authoredPublications +
+                ", authoredPublication=" + authoredPublication +
                 '}';
     }
 }

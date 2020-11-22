@@ -47,11 +47,11 @@ public class DblpExtractor {
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-            List<Person> person = extractAuthors(jsonObject);
+            List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
 
-            System.out.println(magazine);
+            resolveEntitiesRelationships(article, authors, copy, magazine);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -307,5 +307,14 @@ public class DblpExtractor {
 
         String castedName = name.toString();
         return new Magazine(castedName);
+    }
+
+    private static void resolveEntitiesRelationships(Article article, List<Person> authors, Copy copy, Magazine magazine) {
+        copy.setMagazinePublishBy(magazine);
+        article.setCopyPublishedBy(copy);
+        article.setAuthors(authors);
+
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(article.getTitle()));
     }
 }
