@@ -25,6 +25,20 @@ public class EntitiesPersistence {
         }
     }
 
+    private static Integer retrievePublicationDatabaseId(Publication publication) {
+        String retrievePublicationIdSqlQuery =
+                "SELECT id FROM publicacion " +
+                        "WHERE titulo = " + "\"" + publication.getTitle() + "\"" + " AND " +
+                        "anyo =" + publication.getYear() + ";";
+
+        Integer retrievedPublicationId = MySQLConnection.performQuery(retrievePublicationIdSqlQuery);
+        return retrievedPublicationId;
+    }
+
+    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
+        return retrievedId != null;
+    }
+
     /**
      * @return The Copy id retrieved from the database.
      * In case it already exist, it returns the existing Copy id.
@@ -69,16 +83,6 @@ public class EntitiesPersistence {
         }
 
         return retrievedCopyId;
-    }
-
-    private static Integer retrievePublicationDatabaseId(Publication publication) {
-        String retrievePublicationIdSqlQuery =
-                "SELECT id FROM publicacion " +
-                        "WHERE titulo = " + "\"" + publication.getTitle() + "\"" + " AND " +
-                        "anyo =" + publication.getYear() + ";";
-
-        Integer retrievedPublicationId = MySQLConnection.performQuery(retrievePublicationIdSqlQuery);
-        return retrievedPublicationId;
     }
 
     private static Integer retrieveCopyDatabaseId(Copy copy) {
@@ -147,9 +151,5 @@ public class EntitiesPersistence {
                         article.getFinalPage() + ");";
 
         MySQLConnection.performUpdate(addArticleSqlUpdate);
-    }
-
-    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
     }
 }
