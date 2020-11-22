@@ -7,10 +7,12 @@ public class EntitiesPersistence {
             if (publication instanceof Article) {
                 String doesArticleExistSqlQuery =
                         "SELECT id FROM publicacion " +
-                                "WHERE titulo =" + publication.getTitle() + "AND" +
-                                "anyo =" + publication.getYear() + ";";
+                                "WHERE titulo = " + "\"" + publication.getTitle() + "\"" + " AND " +
+                               "anyo =" + publication.getYear() + ";";
 
-                MySQLConnection.performQuery(doesArticleExistSqlQuery);
+                Integer retrievedId = MySQLConnection.performQuery(doesArticleExistSqlQuery);
+
+                System.out.println(retrievedId);
             }
 
     }
