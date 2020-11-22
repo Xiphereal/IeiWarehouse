@@ -39,8 +39,10 @@ public class ieeeExtractor {
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
-            Article article = extractArticleAttributes(jsonObject);
             List<Person> person = extractAuthors(jsonObject);
+
+            Article article = extractArticleAttributes(jsonObject);
+
             Copy copy = extractCopyAttributes(jsonObject);
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -112,12 +114,25 @@ public class ieeeExtractor {
 
         return new Copy(volume, number, month, null, null);
     }
-    //TODO:Resolve roman numbers error
+
     private static Tuple<Integer, Integer> extractPages(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        int initialPage = Integer.parseInt(jsonObject.get("start_page").toString());
-        int finalPage =  Integer.parseInt(jsonObject.get("end_page").toString());;
+        Object initial_page = jsonObject.get("start_page");
+        Object final_page = jsonObject.get("end_page");
+        int initialPage = 0;
+        if(initial_page instanceof String){
+            if(isInRomanNotation((String) initial_page))
+                RomanToDecimalConverter.romanToDecimal((String) initial_page);
+            else
+                initialPage = Integer.parseInt((String) initial_page);
+        }
+        int finalPage = 0;
+        if(final_page instanceof String)
+            if(isInRomanNotation((String) final_page))
+                RomanToDecimalConverter.romanToDecimal((String) final_page);
+            else
+                finalPage = Integer.parseInt((String) initial_page);
         return new Tuple<>(initialPage, finalPage);
     }
 
@@ -190,5 +205,10 @@ public class ieeeExtractor {
 
     private static Long extractYear(JSONObject jsonObject) {
         return (Long) jsonObject.get("publication_year");
+    }
+
+    private static boolean isInRomanNotation(String stringPages) {
+        // REGEX: Contains any number.
+        return !stringPages.matches(".*[0-9].*");
     }
 }
