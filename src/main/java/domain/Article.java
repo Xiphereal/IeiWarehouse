@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.List;
-
 public class Article extends Publication {
     private Integer initialPage;
     private Integer finalPage;

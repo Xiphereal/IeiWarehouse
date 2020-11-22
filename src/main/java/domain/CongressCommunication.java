@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.List;
-
 public class CongressCommunication extends Publication {
     private String congress;
     private String edition;
