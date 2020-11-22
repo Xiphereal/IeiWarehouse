@@ -299,8 +299,16 @@ public class DblpExtractor {
     }
 
     private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
-        String name = jsonObject.get("journal").toString();
+        Object name = jsonObject.get("journal");
 
-        return new Magazine(name, null);
+        if (name == null) {
+            System.out.println(System.lineSeparator() +
+                    "'journal' attribute is missing in " + jsonObject + System.lineSeparator());
+
+            return null;
+        }
+
+        String castedName = name.toString();
+        return new Magazine(castedName, null);
     }
 }
