@@ -137,6 +137,12 @@ public class EntitiesPersistence {
     }
 
     private static void persistAuthors(List<Person> authors) {
+        Integer firstAuthorFound = retrieveAuthorsDatabaseIds(authors);
+
+        System.out.println(firstAuthorFound);
+    }
+
+    private static Integer retrieveAuthorsDatabaseIds(List<Person> authors) {
         StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT id FROM persona WHERE ");
 
         for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
@@ -156,9 +162,7 @@ public class EntitiesPersistence {
                 retrieveAuthorsIdsSqlQuery.append(";");
         }
 
-        Integer firstAuthorFound = MySQLConnection.performQuery(retrieveAuthorsIdsSqlQuery.toString());
-
-        System.out.println(firstAuthorFound);
+        return MySQLConnection.performQuery(retrieveAuthorsIdsSqlQuery.toString());
     }
 
     private static void insertNewPublicationIntoDatabase(Publication publication) {
