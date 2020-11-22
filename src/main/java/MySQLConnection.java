@@ -41,7 +41,8 @@ public class MySQLConnection {
     private static Integer getIdFromQueryResult(ResultSet queryResult) throws SQLException {
         // The internal pointer of queryResult is initially pointing to null, we need to call
         // .next() to update de internal pointer to the first element.
-        queryResult.next();
+        if (!queryResult.next())
+            return null;
 
         // The "1" passed into the getObject() method, retrieves the value of the first column.
         Integer retrievedId = (Integer) queryResult.getObject(1);
