@@ -1,3 +1,4 @@
+import com.mysql.cj.util.StringUtils;
 import com.mysql.cj.xdevapi.JsonArray;
 import domain.Article;
 import domain.Copy;
@@ -39,11 +40,13 @@ public class ieeeExtractor {
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
+            Article article;
             List<Person> person = extractAuthors(jsonObject);
-
-            Article article = extractArticleAttributes(jsonObject);
-
-            Copy copy = extractCopyAttributes(jsonObject);
+            String type = (String) jsonObject.get("content_type");
+            if(type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0){
+                article = extractArticleAttributes(jsonObject);
+                Copy copy = extractCopyAttributes(jsonObject);
+            }
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
@@ -111,7 +114,7 @@ public class ieeeExtractor {
         Integer volume = extractVolume(jsonObject);
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
-
+        System.out.println(month);
         return new Copy(volume, number, month, null, null);
     }
 
@@ -149,16 +152,16 @@ public class ieeeExtractor {
         return new Person(name, surname, null);
     }
     //TODO:Volume showing as String (Example: "PP")
+    //TODO:Volume null????
     private static Integer extractVolume(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
         Object volume = jsonObject.get("volume");
-
-        if (volume instanceof Long) {
-            return ((Long) volume).intValue();
+        try{
+            return Integer.parseInt((String) volume);
+        }catch(NumberFormatException e){
+            return null;
         }
-
-        return null;
     }
 
 
@@ -175,7 +178,7 @@ public class ieeeExtractor {
 
         return number;
     }
-
+    //TODO: Arreglar el més para que coja el
     /**
      * Only considers attribute 'mdate' being a String separated by '-' with the month in the middle "x-mm-x".
      *
