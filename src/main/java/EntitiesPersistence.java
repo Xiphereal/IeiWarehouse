@@ -1,6 +1,10 @@
 import domain.Article;
 import domain.Copy;
+import domain.Person;
 import domain.Publication;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EntitiesPersistence {
     public static void persist(Publication publication) {
@@ -18,10 +22,12 @@ public class EntitiesPersistence {
         } else {
             Article article = (Article) publication;
 
-            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
+//            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
 
-            insertNewPublicationIntoDatabase(publication);
-            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
+            persistAuthors(article.getAuthors());
+
+//            insertNewPublicationIntoDatabase(publication);
+//            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
         }
     }
 
@@ -128,6 +134,31 @@ public class EntitiesPersistence {
 
     private static boolean doesArticleHaveMagazine(String magazineName) {
         return magazineName != null;
+    }
+
+    private static void persistAuthors(List<Person> authors) {
+        StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT id FROM persona WHERE ");
+
+        for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
+            Person author = iterator.next();
+
+            retrieveAuthorsIdsSqlQuery.append("(");
+
+            retrieveAuthorsIdsSqlQuery.append("nombre = ").append("\"").append(author.getName()).append("\"");
+            retrieveAuthorsIdsSqlQuery.append(" AND ");
+            retrieveAuthorsIdsSqlQuery.append("apellidos =").append("\"").append(author.getSurnames()).append("\"");
+
+            retrieveAuthorsIdsSqlQuery.append(")");
+
+            if (iterator.hasNext())
+                retrieveAuthorsIdsSqlQuery.append(" OR ");
+            else
+                retrieveAuthorsIdsSqlQuery.append(";");
+        }
+
+        Integer firstAuthorFound = MySQLConnection.performQuery(retrieveAuthorsIdsSqlQuery.toString());
+
+        System.out.println(firstAuthorFound);
     }
 
     private static void insertNewPublicationIntoDatabase(Publication publication) {

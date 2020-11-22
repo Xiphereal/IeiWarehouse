@@ -29,7 +29,9 @@ public class MySQLConnection {
             Integer retrievedId = getIdFromQueryResult(queryResult);
 
             connection.close();
+
             return retrievedId;
+
         } catch (Exception e) {
             System.err.println(e.toString());
             e.printStackTrace();

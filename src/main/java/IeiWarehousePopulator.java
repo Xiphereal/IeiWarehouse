@@ -1,7 +1,7 @@
-import domain.Article;
-import domain.Copy;
-import domain.Magazine;
-import domain.Publication;
+import domain.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class IeiWarehousePopulator {
     public static void main(String[] args) {
@@ -12,8 +12,14 @@ public class IeiWarehousePopulator {
         Copy copy = new Copy(10, 9, 8);
         Article article = new Article("Prueba", 2000L, "url.com", 10,15);
 
+        List<Person> authors = new ArrayList<>();
+        authors.add(new Person("Ricardo", "Soler"));
+        authors.add(new Person("Alejandro", "Lozano"));
+        authors.add(new Person("Pepe", "Carsi"));
+
         copy.setMagazinePublishBy(magazine);
         article.setCopyPublishedBy(copy);
+        article.setAuthors(authors);
 
         EntitiesPersistence.persist(article);
     }
