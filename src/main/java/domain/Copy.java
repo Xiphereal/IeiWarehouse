@@ -7,7 +7,6 @@ public class Copy {
     private Integer number;
     private Integer month;
     private Magazine magazinePublishBy;
-    private List<Article> articles;
 
     public Copy(Integer volume, Integer number, Integer month) {
         this.volume = volume;
@@ -47,14 +46,6 @@ public class Copy {
         this.magazinePublishBy = magazinePublishBy;
     }
 
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
-    }
-
     @Override
     public String toString() {
         return "Copy{" +
@@ -62,7 +53,6 @@ public class Copy {
                 ", number=" + number +
                 ", month=" + month +
                 ", magazinePublishBy=" + magazinePublishBy +
-                ", articles=" + articles +
                 '}';
     }
 }
