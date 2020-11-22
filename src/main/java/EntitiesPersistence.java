@@ -143,12 +143,25 @@ public class EntitiesPersistence {
     }
 
     private static void persistAuthors(List<Person> authors) {
-        Integer firstAuthorFound = retrieveAuthorsDatabaseIds(authors);
+        List<Integer> foundAuthorsInDatabase = retrieveAuthorsDatabaseIds(authors);
 
-        System.out.println(firstAuthorFound);
+        // Retrieve (name, surnames) from the publication authors present in the database.
+
+        // {authors} - {foreach((name, surnames))}.
+
+        // foreach NonInDbAuthor
+            // Insert new author to DB.
+            // Insert the 'publicacion_has_persona' tuple.
+
+        // foreach Author in DB.
+            // Update relationships: Insert the 'publicacion_has_persona' tuple.
+
+        System.out.println(foundAuthorsInDatabase);
     }
 
-    private static Integer retrieveAuthorsDatabaseIds(List<Person> authors) {
+    // TODO: The method should return a List<Tuple<String name, String surnames>> for the authors found
+    //  in the database.
+    private static List<Integer> retrieveAuthorsDatabaseIds(List<Person> authors) {
         StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT id FROM persona WHERE ");
 
         for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
