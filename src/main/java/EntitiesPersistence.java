@@ -5,6 +5,7 @@ import domain.Publication;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class EntitiesPersistence {
     public static void persist(Publication publication) {
@@ -37,8 +38,10 @@ public class EntitiesPersistence {
                         "WHERE titulo = " + "\"" + publication.getTitle() + "\"" + " AND " +
                         "anyo =" + publication.getYear() + ";";
 
-        Integer retrievedPublicationId = MySQLConnection.performQuery(retrievePublicationIdSqlQuery);
-        return retrievedPublicationId;
+        Optional<Integer> retrievedPublicationId =
+                MySQLConnection.performQuery(retrievePublicationIdSqlQuery).stream().findFirst();
+
+        return retrievedPublicationId.orElse(null);
     }
 
     private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
@@ -92,15 +95,16 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveCopyDatabaseId(Copy copy) {
-        Integer retrievedCopyId;
         String retrieveCopyIdSqlQuery =
                 "SELECT id FROM ejemplar " +
                         "WHERE volumen = " + copy.getVolume() + " AND " +
                         "numero = " + copy.getNumber() + " AND " +
                         "mes = " + copy.getMonth() + ";";
 
-        retrievedCopyId = MySQLConnection.performQuery(retrieveCopyIdSqlQuery);
-        return retrievedCopyId;
+        Optional<Integer> retrievedCopyId =
+                MySQLConnection.performQuery(retrieveCopyIdSqlQuery).stream().findFirst();
+
+        return retrievedCopyId.orElse(null);
     }
 
     private static Integer retrieveMagazineDatabaseId(String magazineName) {
@@ -108,8 +112,10 @@ public class EntitiesPersistence {
                 "SELECT id FROM revista " +
                         "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
 
-        Integer retrievedMagazineId = MySQLConnection.performQuery(retrieveMagazineIdSqlQuery);
-        return retrievedMagazineId;
+        Optional<Integer> retrievedMagazineId =
+                MySQLConnection.performQuery(retrieveMagazineIdSqlQuery).stream().findFirst();
+
+        return retrievedMagazineId.orElse(null);
     }
 
     private static boolean doesCopyAlreadyExistInDatabase(Integer retrievedCopyId) {
