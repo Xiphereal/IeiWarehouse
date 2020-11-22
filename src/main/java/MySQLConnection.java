@@ -13,7 +13,7 @@ public class MySQLConnection {
     private static final String password = "Valencia2020";
     private static final String connectionOptions = "?useTimezone=true&serverTimezone=UTC&useSSL=false";
 
-    public static void performQuery(String sqlQuery) {
+    public static Integer performQuery(String sqlQuery) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -26,13 +26,26 @@ public class MySQLConnection {
             Statement statement = connection.createStatement();
             ResultSet queryResult = statement.executeQuery(sqlQuery);
 
-            printQueryResults(queryResult);
+            Integer retrievedId = getIdFromQueryResult(queryResult);
 
             connection.close();
+            return retrievedId;
         } catch (Exception e) {
             System.err.println(e.toString());
             e.printStackTrace();
         }
+
+        return null;
+    }
+
+    private static Integer getIdFromQueryResult(ResultSet queryResult) throws SQLException {
+        // The internal pointer of queryResult is initially pointing to null, we need to call
+        // .next() to update de internal pointer to the first element.
+        queryResult.next();
+
+        // The "1" passed into the getObject() method, retrieves the value of the first column.
+        Integer retrievedId = (Integer) queryResult.getObject(1);
+        return retrievedId;
     }
 
     private static void printQueryResults(ResultSet queryResult) throws SQLException {
