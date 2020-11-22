@@ -69,10 +69,8 @@ public class DblpExtractor {
         return new Article(title,
                 year,
                 url,
-                null,
                 pages.getFirstElement(),
-                pages.getSecondElement(),
-                null);
+                pages.getSecondElement());
     }
 
     private static String extractTitle(JSONObject jsonObject) {
@@ -234,7 +232,7 @@ public class DblpExtractor {
         String name = splitAuthor[0];
         String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
 
-        return new Person(name, surname, null);
+        return new Person(name, surname);
     }
 
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
@@ -242,7 +240,7 @@ public class DblpExtractor {
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
 
-        return new Copy(volume, number, month, null, null);
+        return new Copy(volume, number, month);
     }
 
     /**
@@ -309,6 +307,6 @@ public class DblpExtractor {
         }
 
         String castedName = name.toString();
-        return new Magazine(castedName, null);
+        return new Magazine(castedName);
     }
 }

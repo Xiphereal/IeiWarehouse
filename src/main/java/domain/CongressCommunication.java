@@ -12,13 +12,12 @@ public class CongressCommunication extends Publication {
     public CongressCommunication(String title,
                                  Long year,
                                  String url,
-                                 List<Person> authors,
                                  String congress,
                                  String edition,
                                  String place,
                                  int initialPage,
                                  int finalPage) {
-        super(title, year, url, authors);
+        super(title, year, url);
         this.congress = congress;
         this.edition = edition;
         this.place = place;

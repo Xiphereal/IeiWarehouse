@@ -6,9 +6,8 @@ public class Magazine {
     private String name;
     private List<Copy> publishedCopies;
 
-    public Magazine(String name, List<Copy> publishedCopies) {
+    public Magazine(String name) {
         this.name = name;
-        this.publishedCopies = publishedCopies;
     }
 
     public String getName() {

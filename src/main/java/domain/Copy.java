@@ -9,12 +9,10 @@ public class Copy {
     private Magazine magazinePublishBy;
     private List<Article> articles;
 
-    public Copy(Integer volume, Integer number, Integer month, Magazine magazinePublishBy, List<Article> articles) {
+    public Copy(Integer volume, Integer number, Integer month) {
         this.volume = volume;
         this.number = number;
         this.month = month;
-        this.magazinePublishBy = magazinePublishBy;
-        this.articles = articles;
     }
 
     public Integer getVolume() {

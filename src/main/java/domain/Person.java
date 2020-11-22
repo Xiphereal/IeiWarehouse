@@ -7,10 +7,9 @@ public class Person {
     private String surnames;
     private List<String> authoredPublications;
 
-    public Person(String name, String surnames, List<String> authoredPublications) {
+    public Person(String name, String surnames) {
         this.name = name;
         this.surnames = surnames;
-        this.authoredPublications = authoredPublications;
     }
 
     public String getName() {
