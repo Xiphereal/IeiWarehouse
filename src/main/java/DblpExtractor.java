@@ -1,5 +1,6 @@
 import domain.Article;
 import domain.Copy;
+import domain.Magazine;
 import domain.Person;
 import domain.utils.Tuple;
 import org.json.simple.JSONArray;
@@ -48,8 +49,9 @@ public class DblpExtractor {
             Article article = extractArticleAttributes(jsonObject);
             List<Person> person = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
+            Magazine magazine = extractMagazineAttributes(jsonObject);
 
-            System.out.println(copy);
+            System.out.println(magazine);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -294,5 +296,11 @@ public class DblpExtractor {
         }
 
         return null;
+    }
+
+    private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
+        String name = jsonObject.get("journal").toString();
+
+        return new Magazine(name, null);
     }
 }
