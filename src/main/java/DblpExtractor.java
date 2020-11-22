@@ -65,7 +65,6 @@ public class DblpExtractor {
         String url = extractURL(jsonObject);
         Tuple<Integer, Integer> pages = extractPages(jsonObject);
 
-        // TODO: How to resolve the dependencies with other entities, like Article.authors & Article.copyPublishedBy.
         return new Article(title,
                 year,
                 url,
