@@ -24,12 +24,14 @@ public class EntitiesPersistence {
         } else {
             Article article = (Article) publication;
 
-//            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
+            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
+
+            insertNewPublicationIntoDatabase(publication);
+            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
+
+            retrievedPublicationId = retrievePublicationDatabaseId(publication);
 
             persistAuthors(article.getAuthors(), retrievedPublicationId);
-
-//            insertNewPublicationIntoDatabase(publication);
-//            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
         }
     }
 
