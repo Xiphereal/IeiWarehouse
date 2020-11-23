@@ -146,7 +146,7 @@ public class EntitiesPersistence {
     private static void persistAuthors(List<Person> authors) {
 
         // Retrieve (name, surnames) from the publication authors present in the database.
-        List<Tuple<String, String>> foundAuthorsInDatabase = retrieveAuthorsDatabaseIds(authors);
+        List<Tuple<String, String>> foundAuthorsInDatabase = retrieveAuthorsInDatabase(authors);
 
         // {authors} - {foreach((name, surnames))}.
 
@@ -162,7 +162,7 @@ public class EntitiesPersistence {
 
     // TODO: The method should return a List<Tuple<String name, String surnames>> for the authors found
     //  in the database.
-    private static List<Tuple<String, String>> retrieveAuthorsDatabaseIds(List<Person> authors) {
+    private static List<Tuple<String, String>> retrieveAuthorsInDatabase(List<Person> authors) {
         StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
 
         for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
