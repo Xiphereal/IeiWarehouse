@@ -1,13 +1,8 @@
 package ieiWarehousePopulator;
 
-import ieiWarehousePopulator.utils.DatabasePurge;
-
 public class IeiWarehousePopulator {
     public static void main(String[] args) {
-        //IeiWarehousePopulator.MySQLConnection.performUpdate("INSERT INTO persona (nombre, apellidos) VALUES (\"JAVIER\", \"Vicente\")");
-        //IeiWarehousePopulator.DblpExtractor.extractDataIntoWarehouse();
-
-        DatabasePurge.purgeAllTables();
+        DblpExtractor.extractDataIntoWarehouse();
 
 //        Magazine magazine = new Magazine("Mi Revista");
 //        Copy copy = new Copy(10, 9, 8);
@@ -21,7 +16,6 @@ public class IeiWarehousePopulator {
 //        copy.setMagazinePublishBy(magazine);
 //        article.setCopyPublishedBy(copy);
 //        article.setAuthors(authors);
-//
-//        IeiWarehousePopulator.EntitiesPersistence.persist(article);
+
     }
 }

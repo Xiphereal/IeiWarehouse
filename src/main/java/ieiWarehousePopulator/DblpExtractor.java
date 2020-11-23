@@ -55,6 +55,8 @@ public class DblpExtractor {
 
             resolveEntitiesRelationships(article, authors, copy, magazine);
 
+            EntitiesPersistence.persist(article);
+
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
