@@ -24,7 +24,6 @@ public class IeeeExtractor {
             e.printStackTrace();
         }
     }
-    //TODO: Extract proceedings and extract books
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
@@ -155,7 +154,6 @@ public class IeeeExtractor {
         Integer volume = extractVolume(jsonObject);
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
-        //System.out.println(month);
         return new Copy(volume, number, month, null, null);
     }
 
@@ -228,7 +226,36 @@ public class IeeeExtractor {
         String date = extractDate(jsonObject);
         if(date == null) return null;
         String monthWritten = date.replaceAll("\\d","");
-
+        int firstMonthEnd = monthWritten.indexOf("-");
+        if(firstMonthEnd != -1)
+            monthWritten = monthWritten.substring(0,firstMonthEnd);
+        monthWritten = monthWritten.replaceAll("\\s+", "");
+        switch (monthWritten) {
+            case "Jan.":
+                return 1;
+            case "Feb.":
+                return 2;
+            case "March":
+                return 3;
+            case "April":
+                return 4;
+            case "May":
+                return 5;
+            case "June":
+                return 6;
+            case "July":
+                return 7;
+            case "Aug.":
+                return 8;
+            case "Sept.":
+                return 9;
+            case "Oct.":
+                return 10;
+            case "Nov.":
+                return 11;
+            case "Dec.":
+                return 12;
+        }
         return null;
     }
 
