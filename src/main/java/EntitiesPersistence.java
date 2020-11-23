@@ -2,6 +2,7 @@ import domain.Article;
 import domain.Copy;
 import domain.Person;
 import domain.Publication;
+import domain.utils.Tuple;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,7 @@ public class EntitiesPersistence {
                         "anyo =" + publication.getYear() + ";";
 
         Optional<Integer> retrievedPublicationId =
-                MySQLConnection.performQuery(retrievePublicationIdSqlQuery).stream().findFirst();
+                MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
 
         return retrievedPublicationId.orElse(null);
     }
@@ -102,7 +103,7 @@ public class EntitiesPersistence {
                         "mes = " + copy.getMonth() + ";";
 
         Optional<Integer> retrievedCopyId =
-                MySQLConnection.performQuery(retrieveCopyIdSqlQuery).stream().findFirst();
+                MySQLConnection.performQueryToRetrieveIds(retrieveCopyIdSqlQuery).stream().findFirst();
 
         return retrievedCopyId.orElse(null);
     }
@@ -113,7 +114,7 @@ public class EntitiesPersistence {
                         "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
-                MySQLConnection.performQuery(retrieveMagazineIdSqlQuery).stream().findFirst();
+                MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
 
         return retrievedMagazineId.orElse(null);
     }
@@ -143,26 +144,26 @@ public class EntitiesPersistence {
     }
 
     private static void persistAuthors(List<Person> authors) {
-        List<Integer> foundAuthorsInDatabase = retrieveAuthorsDatabaseIds(authors);
 
         // Retrieve (name, surnames) from the publication authors present in the database.
+        List<Tuple<String, String>> foundAuthorsInDatabase = retrieveAuthorsDatabaseIds(authors);
 
         // {authors} - {foreach((name, surnames))}.
 
         // foreach NonInDbAuthor
-            // Insert new author to DB.
-            // Insert the 'publicacion_has_persona' tuple.
+        // Insert new author to DB.
+        // Insert the 'publicacion_has_persona' tuple.
 
         // foreach Author in DB.
-            // Update relationships: Insert the 'publicacion_has_persona' tuple.
+        // Update relationships: Insert the 'publicacion_has_persona' tuple.
 
         System.out.println(foundAuthorsInDatabase);
     }
 
     // TODO: The method should return a List<Tuple<String name, String surnames>> for the authors found
     //  in the database.
-    private static List<Integer> retrieveAuthorsDatabaseIds(List<Person> authors) {
-        StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT id FROM persona WHERE ");
+    private static List<Tuple<String, String>> retrieveAuthorsDatabaseIds(List<Person> authors) {
+        StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
 
         for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
             Person author = iterator.next();
@@ -181,7 +182,7 @@ public class EntitiesPersistence {
                 retrieveAuthorsIdsSqlQuery.append(";");
         }
 
-        return MySQLConnection.performQuery(retrieveAuthorsIdsSqlQuery.toString());
+        return MySQLConnection.performQueryToRetrieveAuthors(retrieveAuthorsIdsSqlQuery.toString());
     }
 
     private static void insertNewPublicationIntoDatabase(Publication publication) {
