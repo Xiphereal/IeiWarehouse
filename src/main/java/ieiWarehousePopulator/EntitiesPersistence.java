@@ -82,15 +82,7 @@ public class EntitiesPersistence {
                 if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
                     //Update relations
                 } else {
-                    String addCopySqlUpdate =
-                            "INSERT INTO ejemplar (revista_id, volumen, numero, mes) " +
-                                    "VALUES (" + retrievedMagazineId + ", " +
-                                    copy.getVolume() + ", " +
-                                    copy.getNumber() + ", " +
-                                    copy.getMonth() + ");";
-
-                    MySQLConnection.performUpdate(addCopySqlUpdate);
-
+                    insertNewCopyIntoDatabase(retrievedMagazineId, copy);
                     retrievedCopyId = retrieveCopyDatabaseId(copy);
                 }
             }
@@ -125,6 +117,18 @@ public class EntitiesPersistence {
 
     private static boolean doesCopyAlreadyExistInDatabase(Integer retrievedCopyId) {
         return retrievedCopyId != null;
+    }
+
+    private static void insertNewCopyIntoDatabase(Integer retrievedMagazineId, Copy copy) {
+        Integer retrievedCopyId;
+        String addCopySqlUpdate =
+                "INSERT INTO ejemplar (revista_id, volumen, numero, mes) " +
+                        "VALUES (" + retrievedMagazineId + ", " +
+                        copy.getVolume() + ", " +
+                        copy.getNumber() + ", " +
+                        copy.getMonth() + ");";
+
+        MySQLConnection.performUpdate(addCopySqlUpdate);
     }
 
     private static boolean doesArticleHaveCopy(Copy copy) {
