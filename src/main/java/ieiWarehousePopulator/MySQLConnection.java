@@ -1,7 +1,9 @@
-import domain.utils.Tuple;
-import queryStrategy.AuthorsRetrieval;
-import queryStrategy.IdsRetrieval;
-import queryStrategy.QueryStrategy;
+package ieiWarehousePopulator;
+
+import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.queryStrategy.AuthorsRetrieval;
+import ieiWarehousePopulator.queryStrategy.IdsRetrieval;
+import ieiWarehousePopulator.queryStrategy.QueryStrategy;
 
 import java.sql.*;
 import java.util.List;

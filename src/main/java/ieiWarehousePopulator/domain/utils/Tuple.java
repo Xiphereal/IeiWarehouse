@@ -1,4 +1,4 @@
-package domain.utils;
+package ieiWarehousePopulator.domain.utils;
 
 public class Tuple<T, K> {
     private T firstElement;

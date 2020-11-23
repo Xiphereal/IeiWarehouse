@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 public class Magazine {
     private String name;

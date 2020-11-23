@@ -1,14 +1,16 @@
-import domain.Article;
-import domain.Copy;
-import domain.Magazine;
-import domain.Person;
-import domain.utils.Tuple;
+package ieiWarehousePopulator;
+
+import ieiWarehousePopulator.domain.Article;
+import ieiWarehousePopulator.domain.Copy;
+import ieiWarehousePopulator.domain.Magazine;
+import ieiWarehousePopulator.domain.Person;
+import ieiWarehousePopulator.domain.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import utils.RomanToDecimalConverter;
-import utils.SimpleJsonUtils;
+import ieiWarehousePopulator.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;

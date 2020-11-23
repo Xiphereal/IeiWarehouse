@@ -1,6 +1,6 @@
-package queryStrategy;
+package ieiWarehousePopulator.queryStrategy;
 
-import domain.utils.Tuple;
+import ieiWarehousePopulator.domain.utils.Tuple;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

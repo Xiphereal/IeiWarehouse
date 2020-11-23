@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 public class Book extends Publication {
     private String editorial;

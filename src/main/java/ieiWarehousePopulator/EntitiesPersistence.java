@@ -1,8 +1,10 @@
-import domain.Article;
-import domain.Copy;
-import domain.Person;
-import domain.Publication;
-import domain.utils.Tuple;
+package ieiWarehousePopulator;
+
+import ieiWarehousePopulator.domain.Article;
+import ieiWarehousePopulator.domain.Copy;
+import ieiWarehousePopulator.domain.Person;
+import ieiWarehousePopulator.domain.Publication;
+import ieiWarehousePopulator.domain.utils.Tuple;
 
 import java.util.Iterator;
 import java.util.List;

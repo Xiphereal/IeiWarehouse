@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 import java.util.List;
 

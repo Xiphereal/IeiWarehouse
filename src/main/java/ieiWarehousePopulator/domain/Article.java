@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 public class Article extends Publication {
     private Integer initialPage;

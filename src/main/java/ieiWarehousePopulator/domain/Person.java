@@ -1,6 +1,6 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
-import domain.utils.Tuple;
+import ieiWarehousePopulator.domain.utils.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;

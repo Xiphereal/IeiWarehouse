@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 public class CongressCommunication extends Publication {
     private String congress;
