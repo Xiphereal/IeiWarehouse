@@ -1,5 +1,3 @@
-import com.mysql.cj.util.StringUtils;
-import com.mysql.cj.xdevapi.JsonArray;
 import domain.*;
 import domain.utils.Tuple;
 import org.json.simple.JSONArray;
@@ -7,14 +5,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import utils.RomanToDecimalConverter;
-import utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 //TODO: SET THE SET PERSON METHOD TO AUTOMATICALLY ADD THE BOOD/PUBLICATION IN THEIR RECORD OF PUBLISHED ARTICLES/BOOKS
-public class ieeeExtractor {
+public class IeeeExtractor {
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
 
@@ -23,7 +20,7 @@ public class ieeeExtractor {
             articles.forEach(article -> parseJsonObject((JSONObject) article));
 
         } catch (Exception e) {
-            System.err.println("An error has occurred while extracting data in " + ieeeExtractor.class.getName());
+            System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
         }
     }
