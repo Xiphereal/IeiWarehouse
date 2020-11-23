@@ -1,8 +1,6 @@
 import com.mysql.cj.util.StringUtils;
 import com.mysql.cj.xdevapi.JsonArray;
-import domain.Article;
-import domain.Copy;
-import domain.Person;
+import domain.*;
 import domain.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,7 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO: SET THE SET PERSON METHOD TO AUTOMATICALLY ADD THE BOOD/PUBLICATION IN THEIR RECORD OF PUBLISHED ARTICLES/BOOKS
 public class ieeeExtractor {
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
@@ -29,7 +27,7 @@ public class ieeeExtractor {
             e.printStackTrace();
         }
     }
-
+    //TODO: Extract proceedings and extract books
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
@@ -43,14 +41,60 @@ public class ieeeExtractor {
             Article article;
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
+            //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
+            // Also check if that copy already exists, if it does Add the article to the copy
             if(type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0){
                 article = extractArticleAttributes(jsonObject);
                 Copy copy = extractCopyAttributes(jsonObject);
+                Magazine magazine = new Magazine((String) jsonObject.get("publication_title"), null);
+                article.setCopyPublishedBy(copy);
+                article.setAuthors(person);
+            }
+            else if(type.compareTo("Conferences") == 0){
+                CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+                congressCommunication.setAuthors(person);
+                //System.out.println(congressCommunication);
+            }
+            else if(type.compareTo("Books") == 0){
+                Book book = extractBookAttributes(jsonObject);
+                book.setAuthors(person);
             }
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
         }
+    }
+
+    private static Book extractBookAttributes(JSONObject jsonObject) {
+        String title = extractCongressCommunicationTitle(jsonObject);
+        Long year = extractYear(jsonObject);
+        String url = extractURL(jsonObject);
+        String editorial = extractEditorial(jsonObject);
+        return new Book(title,
+                year,
+                url,
+                null,
+                editorial);
+    }
+
+    private static CongressCommunication extractCongressCommunicationAttributes(JSONObject jsonObject) {
+        String title = extractCongressCommunicationTitle(jsonObject);
+        Long year = extractYear(jsonObject);
+        String url = extractURL(jsonObject);
+        String congress = extractCongress(jsonObject);
+        String edition = extractYear(jsonObject).toString();
+        String place = extractCongressCommunicationPlace(jsonObject);
+        Tuple<Integer, Integer> pages = extractPages(jsonObject);
+
+        return new CongressCommunication(title,
+                year,
+                url,
+                null,
+                congress,
+                edition,
+                place,
+                pages.getFirstElement(),
+                pages.getSecondElement());
     }
 
     private static Article extractArticleAttributes(JSONObject jsonObject) {
@@ -114,7 +158,7 @@ public class ieeeExtractor {
         Integer volume = extractVolume(jsonObject);
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
-        System.out.println(month);
+        //System.out.println(month);
         return new Copy(volume, number, month, null, null);
     }
 
@@ -151,8 +195,7 @@ public class ieeeExtractor {
 
         return new Person(name, surname, null);
     }
-    //TODO:Volume showing as String (Example: "PP")
-    //TODO:Volume null????
+
     private static Integer extractVolume(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
@@ -185,15 +228,9 @@ public class ieeeExtractor {
      * @return Null if doesn't fit a considered edge case, the Copy month if it does.
      */
     private static Integer extractMonth(JSONObject jsonObject) {
-        Object mdate = jsonObject.get("mdate");
-
-        if (mdate instanceof String) {
-            String castedMdate = (String) mdate;
-
-            String[] splitMdate = castedMdate.split("-");
-
-            return splitMdate.length > 1 ? Integer.valueOf(splitMdate[1]) : null;
-        }
+        String date = extractDate(jsonObject);
+        if(date == null) return null;
+        String monthWritten = date.replaceAll("\\d","");
 
         return null;
     }
@@ -208,6 +245,26 @@ public class ieeeExtractor {
 
     private static Long extractYear(JSONObject jsonObject) {
         return (Long) jsonObject.get("publication_year");
+    }
+
+    private static String extractDate(JSONObject jsonObject) {
+        return (String) jsonObject.get("publication_date");
+    }
+
+    private static String extractCongress(JSONObject jsonObject) {
+        return (String) jsonObject.get("publication_title");
+    }
+
+    private static String extractCongressCommunicationTitle(JSONObject jsonObject) {
+        return (String) jsonObject.get("title");
+    }
+
+    private static String extractCongressCommunicationPlace(JSONObject jsonObject) {
+        return (String) jsonObject.get("conference_location");
+    }
+
+    private static String extractEditorial(JSONObject jsonObject) {
+        return (String) jsonObject.get("publisher");
     }
 
     private static boolean isInRomanNotation(String stringPages) {
