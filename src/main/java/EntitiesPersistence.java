@@ -26,7 +26,7 @@ public class EntitiesPersistence {
 
 //            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
 
-            persistAuthors(article.getAuthors());
+            persistAuthors(article.getAuthors(), retrievedPublicationId);
 
 //            insertNewPublicationIntoDatabase(publication);
 //            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
@@ -143,21 +143,58 @@ public class EntitiesPersistence {
         return magazineName != null;
     }
 
-    private static void persistAuthors(List<Person> authors) {
+    private static void persistAuthors(List<Person> authors, Integer publicationId) {
+        List<Person> newlyFoundAuthors = authors;
 
-        // Retrieve (name, surnames) from the publication authors present in the database.
-        List<Tuple<String, String>> foundAuthorsInDatabase = retrieveAuthorsInDatabase(authors);
+        List<Person> foundAuthorsInDatabase = Person.convertToPerson(retrieveAuthorsInDatabase(authors));
 
-        // {authors} - {foreach((name, surnames))}.
+        newlyFoundAuthors.removeAll(foundAuthorsInDatabase);
 
-        // foreach NonInDbAuthor
-        // Insert new author to DB.
-        // Insert the 'publicacion_has_persona' tuple.
+        insertNewAuthorsIntoDatabase(publicationId, newlyFoundAuthors);
 
-        // foreach Author in DB.
-        // Update relationships: Insert the 'publicacion_has_persona' tuple.
+        // TODO: Update the relationships of every author that is already in the database.
 
         System.out.println(foundAuthorsInDatabase);
+    }
+
+    private static void insertNewAuthorsIntoDatabase(Integer publicationId, List<Person> newlyFoundAuthors) {
+        for (Person author : newlyFoundAuthors) {
+            insertNewAuthorIntoDatabase(author);
+
+            Integer authorId = retrieveAuthorIdInDatabase(author);
+
+            insertNewPublicationHasPerson(publicationId, authorId);
+        }
+    }
+
+    private static void insertNewAuthorIntoDatabase(Person author) {
+        String addAuthorSqlUpdate =
+                "INSERT INTO persona (nombre, appelidos) " +
+                        "VALUES (" + "\"" + author.getName() + "\", " +
+                        "\"" + author.getSurnames() + "\");";
+
+        MySQLConnection.performUpdate(addAuthorSqlUpdate);
+    }
+
+    private static Integer retrieveAuthorIdInDatabase(Person author) {
+        String retrieveAuthorIdSqlQuery =
+                "SELECT id FROM persona " +
+                        "WHERE nombre = " + "\"" + author.getName() + "\"" + " AND " +
+                        "apellidos = " + "\"" + author.getSurnames() + "\"" + ";";
+
+        Optional<Integer> retrievedAuthorId =
+                MySQLConnection.performQueryToRetrieveIds(retrieveAuthorIdSqlQuery).stream().findFirst();
+
+        return retrievedAuthorId.orElse(null);
+    }
+
+    private static void insertNewPublicationHasPerson(Integer publicationId, Integer authorId) {
+        String addNewPublicationHasPersonSqlUpdate =
+                "INSERT INTO publicacion_has_persona (publicacion_id, persona_id) " +
+                        "VALUES (" + "\"" + publicationId + "\", " +
+                        "\"" + authorId + "\");";
+
+        MySQLConnection.performUpdate(addNewPublicationHasPersonSqlUpdate);
     }
 
     private static List<Tuple<String, String>> retrieveAuthorsInDatabase(List<Person> authors) {
