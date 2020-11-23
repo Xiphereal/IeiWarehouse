@@ -1,5 +1,10 @@
 package domain;
 
+import domain.utils.Tuple;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person {
     private String name;
     private String surnames;
@@ -8,6 +13,15 @@ public class Person {
     public Person(String name, String surnames) {
         this.name = name;
         this.surnames = surnames;
+    }
+
+    public static List<Person> convertToPerson(List<Tuple<String, String>> tupleCollection) {
+        List<Person> personList = new ArrayList<>();
+
+        for (Tuple<String, String> tuple : tupleCollection)
+            personList.add(new Person(tuple.getFirstElement(), tuple.getSecondElement()));
+
+        return personList;
     }
 
     public String getName() {
