@@ -160,8 +160,6 @@ public class EntitiesPersistence {
         System.out.println(foundAuthorsInDatabase);
     }
 
-    // TODO: The method should return a List<Tuple<String name, String surnames>> for the authors found
-    //  in the database.
     private static List<Tuple<String, String>> retrieveAuthorsInDatabase(List<Person> authors) {
         StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
 
