@@ -169,7 +169,7 @@ public class EntitiesPersistence {
 
     private static void insertNewAuthorIntoDatabase(Person author) {
         String addAuthorSqlUpdate =
-                "INSERT INTO persona (nombre, appelidos) " +
+                "INSERT INTO persona (nombre, apellidos) " +
                         "VALUES (" + "\"" + author.getName() + "\", " +
                         "\"" + author.getSurnames() + "\");";
 
