@@ -92,27 +92,15 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveCopyDatabaseId(Copy copy) {
-        StringBuilder formattedCopyQuery = new StringBuilder( "SELECT id FROM ejemplar WHERE ");
+        String formattedVolume = copy.getVolume() != null ? "= " + copy.getVolume() : "IS NULL";
+        String formattedNumber = copy.getNumber() != null ? "= " + copy.getNumber() : "IS NULL";
+        String formattedMonth = copy.getMonth() != null ? "= " + copy.getMonth() : "IS NULL";
 
-        String formattedVolume = (copy.getVolume() == null) ? "IS NULL" : "= " + copy.getVolume().toString();
-        formattedCopyQuery.append("volumen ").append(formattedVolume);
-        formattedCopyQuery.append(" AND ");
-
-        String formattedNumber = (copy.getNumber() == null) ? "IS NULL" : "= " + copy.getNumber().toString();
-        formattedCopyQuery.append("numero ").append(formattedNumber);
-        formattedCopyQuery.append(" AND ");
-
-        String formattedMonth = (copy.getMonth() == null) ? "IS NULL" : "= " + copy.getMonth().toString();
-        formattedCopyQuery.append("mes ").append(formattedMonth);
-        formattedCopyQuery.append(";");
-
-        String retrieveCopyIdSqlQuery = formattedCopyQuery.toString();
-
-//        String retrieveCopyIdSqlQuery =
-//                "SELECT id FROM ejemplar " +
-//                        "WHERE volumen = " + copy.getVolume() + " AND " +
-//                        "numero = " + copy.getNumber() + " AND " +
-//                        "mes = " + copy.getMonth() + ";";
+        String retrieveCopyIdSqlQuery =
+                "SELECT id FROM ejemplar " +
+                        "WHERE volumen " + formattedVolume + " AND " +
+                        "numero " + formattedNumber + " AND " +
+                        "mes " + formattedMonth + ";";
 
         Optional<Integer> retrievedCopyId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveCopyIdSqlQuery).stream().findFirst();
@@ -121,17 +109,10 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveMagazineDatabaseId(String magazineName) {
-        StringBuilder formattedMagazineQuery = new StringBuilder( "SELECT id FROM revista WHERE ");
 
-        String formattedName = (magazineName == null) ? "IS NULL" : "= " + "\"" + magazineName + "\"";
-        formattedMagazineQuery.append("nombre ").append(formattedName);
-        formattedMagazineQuery.append(";");
-
-        String retrieveMagazineIdSqlQuery = formattedMagazineQuery.toString();
-
-//        String retrieveMagazineIdSqlQuery =
-//                "SELECT id FROM revista " +
-//                        "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
+        String retrieveMagazineIdSqlQuery =
+                "SELECT id FROM revista " +
+                        "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
@@ -209,22 +190,13 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveAuthorIdInDatabase(Person author) {
-        StringBuilder formattedAuthorQuery = new StringBuilder( "SELECT id FROM persona WHERE ");
+        String formattedName = author.getName() != null ? "= " + "\"" + author.getName() + "\"" : "IS NULL";
+        String formattedSurnames = author.getSurnames() != null ? "= " + "\"" + author.getSurnames() + "\"" : "IS NULL";
 
-        String formattedName = (author.getName() == null) ? "IS NULL" : "= " + "\"" + author.getName() + "\"";
-        formattedAuthorQuery.append("nombre ").append(formattedName);
-        formattedAuthorQuery.append(" AND ");
-
-        String formattedSurnames = (author.getSurnames() == null) ? "IS NULL" : "= " + "\"" + author.getSurnames() + "\"";
-        formattedAuthorQuery.append("apellidos ").append(formattedSurnames);
-        formattedAuthorQuery.append(";");
-
-        String retrieveAuthorIdSqlQuery = formattedAuthorQuery.toString();
-
-//        String retrieveAuthorIdSqlQuery =
-//                "SELECT id FROM persona " +
-//                        "WHERE nombre = " + "\"" + author.getName() + "\"" + " AND " +
-//                        "apellidos = " + "\"" + author.getSurnames() + "\"" + ";";
+        String retrieveAuthorIdSqlQuery =
+                "SELECT id FROM persona " +
+                        "WHERE nombre " + formattedName + " AND " +
+                        "apellidos " + formattedSurnames + ";";
 
         Optional<Integer> retrievedAuthorId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveAuthorIdSqlQuery).stream().findFirst();
