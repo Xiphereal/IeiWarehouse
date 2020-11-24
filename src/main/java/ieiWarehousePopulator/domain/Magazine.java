@@ -34,18 +34,7 @@ public class Magazine {
             retrievedMagazineId = retrieveMagazineDatabaseId();
         }
 
-        if (!Copy.doesArticleHaveCopy(copyPublishedBy)) {
-            return null;
-        }
-
-        Integer retrievedCopyId = Copy.retrieveCopyDatabaseId(copyPublishedBy);
-
-        if (Copy.doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
-            //Update relations
-        } else {
-            Copy.insertNewCopyIntoDatabase(retrievedMagazineId, copyPublishedBy);
-            retrievedCopyId = Copy.retrieveCopyDatabaseId(copyPublishedBy);
-        }
+        Integer retrievedCopyId = copyPublishedBy.persistCopy(retrievedMagazineId);
 
         return retrievedCopyId;
     }

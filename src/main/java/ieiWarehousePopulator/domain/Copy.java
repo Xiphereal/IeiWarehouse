@@ -16,6 +16,23 @@ public class Copy {
         this.month = month;
     }
 
+    public Integer persistCopy(Integer retrievedMagazineId) {
+        if (!doesArticleHaveCopy(this)) {
+            return null;
+        }
+
+        Integer retrievedCopyId = retrieveCopyDatabaseId(this);
+
+        if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
+            //Update relations
+        } else {
+            insertNewCopyIntoDatabase(retrievedMagazineId, this);
+            retrievedCopyId = retrieveCopyDatabaseId(this);
+        }
+
+        return retrievedCopyId;
+    }
+
     public static Integer retrieveCopyDatabaseId(Copy copy) {
         String formattedVolume = copy.getVolume() != null ? "= " + copy.getVolume() : "IS NULL";
         String formattedNumber = copy.getNumber() != null ? "= " + copy.getNumber() : "IS NULL";
