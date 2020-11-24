@@ -57,6 +57,7 @@ public class EntitiesPersistence {
      * @return The Copy id retrieved from the database.
      * In case it already exist, it returns the existing Copy id.
      * If not, returns the newly inserted Copy.
+     * If the Publication doesn't have either Magazine or Copy, will return null.
      */
     private static Integer persistMagazineAndRelatedCopy(Article article) {
         String magazineName = article.getCopyPublishedBy().getMagazinePublishBy().getName();
