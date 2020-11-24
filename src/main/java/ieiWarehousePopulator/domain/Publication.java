@@ -17,9 +17,9 @@ public class Publication {
         this.url = url;
     }
 
-    protected static Integer retrievePublicationDatabaseId(Publication publication) {
-        String formattedTitle = publication.getTitle() != null ? "= " + "\"" + publication.getTitle() + "\"" : "IS NULL";
-        String formattedYear = publication.getYear() != null ? "= " + publication.getYear() : "IS NULL";
+    protected Integer retrievePublicationDatabaseId() {
+        String formattedTitle = this.getTitle() != null ? "= " + "\"" + this.getTitle() + "\"" : "IS NULL";
+        String formattedYear = this.getYear() != null ? "= " + this.getYear() : "IS NULL";
 
         String retrievePublicationIdSqlQuery =
                 "SELECT id FROM publicacion " +
@@ -32,12 +32,12 @@ public class Publication {
         return retrievedPublicationId.orElse(null);
     }
 
-    protected static void insertNewPublicationIntoDatabase(Publication publication) {
+    protected void insertNewPublicationIntoDatabase() {
         String addPublicationSqlUpdate =
                 "INSERT INTO publicacion (titulo, anyo, URL) " +
-                        "VALUES (" + "\"" + publication.getTitle() + "\", " +
-                        publication.getYear() + ", " +
-                        "\"" + publication.getUrl() + "\");";
+                        "VALUES (" + "\"" + this.getTitle() + "\", " +
+                        this.getYear() + ", " +
+                        "\"" + this.getUrl() + "\");";
 
         MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }

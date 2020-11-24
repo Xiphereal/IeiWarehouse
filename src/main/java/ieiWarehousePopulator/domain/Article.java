@@ -20,17 +20,17 @@ public class Article extends Publication implements Persistable {
     }
 
     public void persist() {
-        Integer retrievedPublicationId = Publication.retrievePublicationDatabaseId(this);
+        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
 
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             //Update relations
         } else {
             Integer retrievedCopyId = EntitiesPersistence.persistMagazineAndRelatedCopy(this);
 
-            Publication.insertNewPublicationIntoDatabase(this);
-            insertNewArticleIntoDatabase(this, retrievedCopyId);
+            super.insertNewPublicationIntoDatabase();
+            this.insertNewArticleIntoDatabase(retrievedCopyId);
 
-            retrievedPublicationId = Publication.retrievePublicationDatabaseId(this);
+            retrievedPublicationId = super.retrievePublicationDatabaseId();
 
             EntitiesPersistence.persistAuthors(this.getAuthors(), retrievedPublicationId);
         }
@@ -40,15 +40,15 @@ public class Article extends Publication implements Persistable {
         return retrievedId != null;
     }
 
-    private static void insertNewArticleIntoDatabase(Article article, Integer retrievedCopyId) {
-        Integer retrievedPublicationId = Publication.retrievePublicationDatabaseId(article);
+    private void insertNewArticleIntoDatabase(Integer retrievedCopyId) {
+        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
 
         String addArticleSqlUpdate =
                 "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +
                         "VALUES (" + retrievedPublicationId + ", " +
                         retrievedCopyId + ", " +
-                        article.getInitialPage() + ", " +
-                        article.getFinalPage() + ");";
+                        this.getInitialPage() + ", " +
+                        this.getFinalPage() + ");";
 
         MySQLConnection.performUpdate(addArticleSqlUpdate);
     }
