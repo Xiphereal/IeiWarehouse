@@ -11,11 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class EntitiesPersistence {
-    public static void persist(Publication publication) {
 
-        if (publication instanceof Article)
-            ((Article) publication).persist();
-
+    public static void persist(Persistable persistable) {
+        persistable.persist();
     }
 
     public static Integer retrievePublicationDatabaseId(Publication publication) {
