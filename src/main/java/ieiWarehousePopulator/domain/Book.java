@@ -1,12 +1,10 @@
-package domain;
-
-import java.util.List;
+package ieiWarehousePopulator.domain;
 
 public class Book extends Publication {
     private String editorial;
 
-    public Book(String title, Long year, String url, List<Person> authors, String editorial) {
-        super(title, year, url, authors);
+    public Book(String title, Long year, String url, String editorial) {
+        super(title, year, url);
         this.editorial = editorial;
     }
 

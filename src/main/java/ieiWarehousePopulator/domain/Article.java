@@ -1,6 +1,4 @@
-package domain;
-
-import java.util.List;
+package ieiWarehousePopulator.domain;
 
 public class Article extends Publication {
     private Integer initialPage;
@@ -10,14 +8,11 @@ public class Article extends Publication {
     public Article(String title,
                    Long year,
                    String url,
-                   List<Person> authors,
                    Integer initialPage,
-                   Integer finalPage,
-                   Copy copyPublishedBy) {
-        super(title, year, url, authors);
+                   Integer finalPage) {
+        super(title, year, url);
         this.initialPage = initialPage;
         this.finalPage = finalPage;
-        this.copyPublishedBy = copyPublishedBy;
     }
 
     public Integer getInitialPage() {

@@ -1,4 +1,4 @@
-package domain;
+package ieiWarehousePopulator.domain;
 
 import java.util.List;
 
@@ -8,11 +8,10 @@ public class Publication {
     private String url;
     private List<Person> authors;
 
-    public Publication(String title, Long year, String url, List<Person> authors) {
+    public Publication(String title, Long year, String url) {
         this.title = title;
         this.year = year;
         this.url = url;
-        this.authors = authors;
     }
 
     public String getTitle() {

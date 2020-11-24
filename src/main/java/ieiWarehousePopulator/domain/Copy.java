@@ -1,20 +1,15 @@
-package domain;
-
-import java.util.List;
+package ieiWarehousePopulator.domain;
 
 public class Copy {
     private Integer volume;
     private Integer number;
     private Integer month;
     private Magazine magazinePublishBy;
-    private List<Article> articles;
 
-    public Copy(Integer volume, Integer number, Integer month, Magazine magazinePublishBy, List<Article> articles) {
+    public Copy(Integer volume, Integer number, Integer month) {
         this.volume = volume;
         this.number = number;
         this.month = month;
-        this.magazinePublishBy = magazinePublishBy;
-        this.articles = articles;
     }
 
     public Integer getVolume() {
@@ -49,14 +44,6 @@ public class Copy {
         this.magazinePublishBy = magazinePublishBy;
     }
 
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
-    }
-
     @Override
     public String toString() {
         return "Copy{" +
@@ -64,7 +51,6 @@ public class Copy {
                 ", number=" + number +
                 ", month=" + month +
                 ", magazinePublishBy=" + magazinePublishBy +
-                ", articles=" + articles +
                 '}';
     }
 }

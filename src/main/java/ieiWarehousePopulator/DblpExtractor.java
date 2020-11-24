@@ -1,13 +1,16 @@
-import domain.Article;
-import domain.Copy;
-import domain.Person;
-import domain.utils.Tuple;
+package ieiWarehousePopulator;
+
+import ieiWarehousePopulator.domain.Article;
+import ieiWarehousePopulator.domain.Copy;
+import ieiWarehousePopulator.domain.Magazine;
+import ieiWarehousePopulator.domain.Person;
+import ieiWarehousePopulator.domain.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import utils.RomanToDecimalConverter;
-import utils.SimpleJsonUtils;
+import ieiWarehousePopulator.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -46,10 +49,13 @@ public class DblpExtractor {
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-            List<Person> person = extractAuthors(jsonObject);
+            List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
+            Magazine magazine = extractMagazineAttributes(jsonObject);
 
-            System.out.println(copy);
+            resolveEntitiesRelationships(article, authors, copy, magazine);
+
+            EntitiesPersistence.persist(article);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -63,18 +69,17 @@ public class DblpExtractor {
         String url = extractURL(jsonObject);
         Tuple<Integer, Integer> pages = extractPages(jsonObject);
 
-        // TODO: How to resolve the dependencies with other entities, like Article.authors & Article.copyPublishedBy.
         return new Article(title,
                 year,
                 url,
-                null,
                 pages.getFirstElement(),
-                pages.getSecondElement(),
-                null);
+                pages.getSecondElement());
     }
 
     private static String extractTitle(JSONObject jsonObject) {
-        return (String) jsonObject.get("title");
+        String title = (String) jsonObject.get("title");
+
+        return title.replaceAll("\"", "'");
     }
 
     private static Long extractYear(JSONObject jsonObject) {
@@ -232,7 +237,7 @@ public class DblpExtractor {
         String name = splitAuthor[0];
         String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
 
-        return new Person(name, surname, null);
+        return new Person(name, surname);
     }
 
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
@@ -240,7 +245,7 @@ public class DblpExtractor {
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
 
-        return new Copy(volume, number, month, null, null);
+        return new Copy(volume, number, month);
     }
 
     /**
@@ -294,5 +299,28 @@ public class DblpExtractor {
         }
 
         return null;
+    }
+
+    private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
+        Object name = jsonObject.get("journal");
+
+        if (name == null) {
+            System.out.println(System.lineSeparator() +
+                    "'journal' attribute is missing in " + jsonObject + System.lineSeparator());
+
+            return null;
+        }
+
+        String castedName = name.toString();
+        return new Magazine(castedName);
+    }
+
+    private static void resolveEntitiesRelationships(Article article, List<Person> authors, Copy copy, Magazine magazine) {
+        copy.setMagazinePublishBy(magazine);
+        article.setCopyPublishedBy(copy);
+        article.setAuthors(authors);
+
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(article.getTitle()));
     }
 }
