@@ -14,7 +14,7 @@ public class EntitiesPersistence {
     public static void persist(Publication publication) {
 
         if (publication instanceof Article)
-            Article.persistArticle(publication);
+            ((Article) publication).persistArticle();
 
     }
 

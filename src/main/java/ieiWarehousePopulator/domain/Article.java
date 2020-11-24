@@ -18,27 +18,29 @@ public class Article extends Publication {
         this.finalPage = finalPage;
     }
 
-    public static void persistArticle(Publication publication) {
-        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(publication);
+    public void persistArticle() {
+        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(this);
 
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             //Update relations
         } else {
-            Article article = (Article) publication;
+            Integer retrievedCopyId = EntitiesPersistence.persistMagazineAndRelatedCopy(this);
 
-            Integer retrievedCopyId = EntitiesPersistence.persistMagazineAndRelatedCopy(article);
+            EntitiesPersistence.insertNewPublicationIntoDatabase(this);
+            insertNewArticleIntoDatabase(this, retrievedCopyId);
 
-            EntitiesPersistence.insertNewPublicationIntoDatabase(publication);
-            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
+            retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(this);
 
-            retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(publication);
-
-            EntitiesPersistence.persistAuthors(article.getAuthors(), retrievedPublicationId);
+            EntitiesPersistence.persistAuthors(this.getAuthors(), retrievedPublicationId);
         }
     }
 
-    private static void insertNewArticleIntoDatabase(Article article, Publication publication, Integer retrievedCopyId) {
-        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(publication);
+    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
+        return retrievedId != null;
+    }
+
+    private static void insertNewArticleIntoDatabase(Article article, Integer retrievedCopyId) {
+        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(article);
 
         String addArticleSqlUpdate =
                 "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +
@@ -48,10 +50,6 @@ public class Article extends Publication {
                         article.getFinalPage() + ");";
 
         MySQLConnection.performUpdate(addArticleSqlUpdate);
-    }
-
-    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
     }
 
     public Integer getInitialPage() {
