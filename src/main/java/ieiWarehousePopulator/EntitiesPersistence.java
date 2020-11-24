@@ -132,7 +132,6 @@ public class EntitiesPersistence {
     }
 
     private static void insertNewCopyIntoDatabase(Integer retrievedMagazineId, Copy copy) {
-        Integer retrievedCopyId;
         String addCopySqlUpdate =
                 "INSERT INTO ejemplar (revista_id, volumen, numero, mes) " +
                         "VALUES (" + retrievedMagazineId + ", " +
