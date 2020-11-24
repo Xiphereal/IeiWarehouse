@@ -123,7 +123,7 @@ public class EntitiesPersistence {
     private static Integer retrieveMagazineDatabaseId(String magazineName) {
         StringBuilder formattedMagazineQuery = new StringBuilder( "SELECT id FROM revista WHERE ");
 
-        String formattedName = (magazineName == null) ? "IS NULL" : "= " + magazineName;
+        String formattedName = (magazineName == null) ? "IS NULL" : "= " + "\"" + magazineName + "\"";
         formattedMagazineQuery.append("nombre ").append(formattedName);
         formattedMagazineQuery.append(";");
 
@@ -211,11 +211,11 @@ public class EntitiesPersistence {
     private static Integer retrieveAuthorIdInDatabase(Person author) {
         StringBuilder formattedAuthorQuery = new StringBuilder( "SELECT id FROM persona WHERE ");
 
-        String formattedName = (author.getName() == null) ? "IS NULL" : "= " + author.getName();
+        String formattedName = (author.getName() == null) ? "IS NULL" : "= " + "\"" + author.getName() + "\"";
         formattedAuthorQuery.append("nombre ").append(formattedName);
         formattedAuthorQuery.append(" AND ");
 
-        String formattedSurnames = (author.getSurnames() == null) ? "IS NULL" : "= " + author.getSurnames();
+        String formattedSurnames = (author.getSurnames() == null) ? "IS NULL" : "= " + "\"" + author.getSurnames() + "\"";
         formattedAuthorQuery.append("apellidos ").append(formattedSurnames);
         formattedAuthorQuery.append(";");
 
