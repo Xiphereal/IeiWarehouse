@@ -77,7 +77,9 @@ public class DblpExtractor {
     }
 
     private static String extractTitle(JSONObject jsonObject) {
-        return (String) jsonObject.get("title");
+        String title = (String) jsonObject.get("title");
+
+        return title.replaceAll("\"", "'");
     }
 
     private static Long extractYear(JSONObject jsonObject) {
