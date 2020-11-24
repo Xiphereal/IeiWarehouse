@@ -12,43 +12,49 @@ public class Magazine {
     }
 
     /**
+     * @param copyPublishedBy The specific copy for in which the article has been published in. Since the current
+     *                        database scheme is being mirrored, there's no way of knowing which copies does a
+     *                        Magazine have, so the reference to the published copy is needed.
      * @return The Copy id retrieved from the database.
      * In case it already exist, it returns the existing Copy id.
      * If not, returns the newly inserted Copy.
      * If the Publication doesn't have either Magazine or Copy, will return null.
      */
-    public static Integer persistMagazineAndRelatedCopy(Article article) {
-        String magazineName = article.getCopyPublishedBy().getMagazinePublishBy().getName();
-
-        if (!doesArticleHaveMagazine(magazineName)) {
+    public Integer persistMagazineAndRelatedCopy(Copy copyPublishedBy) {
+        if (!doesArticleHaveMagazine()) {
             return null;
         }
 
-        Integer retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
+        Integer retrievedMagazineId = retrieveMagazineDatabaseId();
 
         if (doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
             //Update relations
         } else {
-            insertNewMagazineIntoDatabase(magazineName);
-            retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
+            insertNewMagazineIntoDatabase();
+            retrievedMagazineId = retrieveMagazineDatabaseId();
         }
 
-        Copy copy = article.getCopyPublishedBy();
-
-        if (!doesArticleHaveCopy(copy)) {
+        if (!doesArticleHaveCopy(copyPublishedBy)) {
             return null;
         }
 
-        Integer retrievedCopyId = retrieveCopyDatabaseId(copy);
+        Integer retrievedCopyId = retrieveCopyDatabaseId(copyPublishedBy);
 
         if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
             //Update relations
         } else {
-            insertNewCopyIntoDatabase(retrievedMagazineId, copy);
-            retrievedCopyId = retrieveCopyDatabaseId(copy);
+            insertNewCopyIntoDatabase(retrievedMagazineId, copyPublishedBy);
+            retrievedCopyId = retrieveCopyDatabaseId(copyPublishedBy);
         }
 
         return retrievedCopyId;
+    }
+
+    /**
+     * If the Article doesn't have a related Magazine, the Magazine instance is created with all its fields to null.
+     */
+    private boolean doesArticleHaveMagazine() {
+        return this.name != null;
     }
 
     private static Integer retrieveCopyDatabaseId(Copy copy) {
@@ -68,11 +74,10 @@ public class Magazine {
         return retrievedCopyId.orElse(null);
     }
 
-    private static Integer retrieveMagazineDatabaseId(String magazineName) {
-
+    private Integer retrieveMagazineDatabaseId() {
         String retrieveMagazineIdSqlQuery =
                 "SELECT id FROM revista " +
-                        "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
+                        "WHERE nombre = " + "\"" + this.name + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
@@ -99,10 +104,10 @@ public class Magazine {
         return copy.getVolume() != null || copy.getNumber() != null || copy.getMonth() != null;
     }
 
-    private static void insertNewMagazineIntoDatabase(String magazineName) {
+    private void insertNewMagazineIntoDatabase() {
         String addMagazineSqlUpdate =
                 "INSERT INTO revista (nombre) " +
-                        "VALUES (" + "\"" + magazineName + "\"" + ");";
+                        "VALUES (" + "\"" + this.name + "\"" + ");";
 
         MySQLConnection.performUpdate(addMagazineSqlUpdate);
     }
@@ -111,9 +116,6 @@ public class Magazine {
         return retrievedMagazineId != null;
     }
 
-    private static boolean doesArticleHaveMagazine(String magazineName) {
-        return magazineName != null;
-    }
 
     public String getName() {
         return name;

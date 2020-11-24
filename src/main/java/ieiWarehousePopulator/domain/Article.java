@@ -24,7 +24,9 @@ public class Article extends Publication implements Persistable {
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             //Update relations
         } else {
-            Integer retrievedCopyId = Magazine.persistMagazineAndRelatedCopy(this);
+            Integer retrievedCopyId = this.getCopyPublishedBy()
+                    .getMagazinePublishBy()
+                    .persistMagazineAndRelatedCopy(this.getCopyPublishedBy());
 
             super.insertNewPublicationIntoDatabase();
             this.insertNewArticleIntoDatabase(retrievedCopyId);
