@@ -92,11 +92,27 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveCopyDatabaseId(Copy copy) {
-        String retrieveCopyIdSqlQuery =
-                "SELECT id FROM ejemplar " +
-                        "WHERE volumen = " + copy.getVolume() + " AND " +
-                        "numero = " + copy.getNumber() + " AND " +
-                        "mes = " + copy.getMonth() + ";";
+        StringBuilder formattedCopyQuery = new StringBuilder( "SELECT id FROM ejemplar WHERE ");
+
+        String formattedVolume = (copy.getVolume() == null) ? "IS NULL" : "= " + copy.getVolume().toString();
+        formattedCopyQuery.append("volumen ").append(formattedVolume);
+        formattedCopyQuery.append(" AND ");
+
+        String formattedNumber = (copy.getNumber() == null) ? "IS NULL" : "= " + copy.getNumber().toString();
+        formattedCopyQuery.append("numero ").append(formattedNumber);
+        formattedCopyQuery.append(" AND ");
+
+        String formattedMonth = (copy.getMonth() == null) ? "IS NULL" : "= " + copy.getMonth().toString();
+        formattedCopyQuery.append("mes ").append(formattedMonth);
+        formattedCopyQuery.append(";");
+
+        String retrieveCopyIdSqlQuery = formattedCopyQuery.toString();
+
+//        String retrieveCopyIdSqlQuery =
+//                "SELECT id FROM ejemplar " +
+//                        "WHERE volumen = " + copy.getVolume() + " AND " +
+//                        "numero = " + copy.getNumber() + " AND " +
+//                        "mes = " + copy.getMonth() + ";";
 
         Optional<Integer> retrievedCopyId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveCopyIdSqlQuery).stream().findFirst();
