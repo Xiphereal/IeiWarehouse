@@ -121,9 +121,17 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveMagazineDatabaseId(String magazineName) {
-        String retrieveMagazineIdSqlQuery =
-                "SELECT id FROM revista " +
-                        "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
+        StringBuilder formattedMagazineQuery = new StringBuilder( "SELECT id FROM revista WHERE ");
+
+        String formattedName = (magazineName == null) ? "IS NULL" : "= " + magazineName;
+        formattedMagazineQuery.append("nombre ").append(formattedName);
+        formattedMagazineQuery.append(";");
+
+        String retrieveMagazineIdSqlQuery = formattedMagazineQuery.toString();
+
+//        String retrieveMagazineIdSqlQuery =
+//                "SELECT id FROM revista " +
+//                        "WHERE nombre = " + "\"" + magazineName + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
