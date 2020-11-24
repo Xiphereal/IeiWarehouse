@@ -32,7 +32,7 @@ public class Article extends Publication implements Persistable {
 
             retrievedPublicationId = super.retrievePublicationDatabaseId();
 
-            EntitiesPersistence.persistAuthors(this.getAuthors(), retrievedPublicationId);
+            Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
         }
     }
 
