@@ -21,22 +21,26 @@ public class Copy {
             return null;
         }
 
-        Integer retrievedCopyId = retrieveCopyDatabaseId(this);
+        Integer retrievedCopyId = this.retrieveCopyDatabaseId();
 
         if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
             //Update relations
         } else {
-            insertNewCopyIntoDatabase(retrievedMagazineId, this);
-            retrievedCopyId = retrieveCopyDatabaseId(this);
+            this.insertNewCopyIntoDatabase(retrievedMagazineId);
+            retrievedCopyId = this.retrieveCopyDatabaseId();
         }
 
         return retrievedCopyId;
     }
 
-    public static Integer retrieveCopyDatabaseId(Copy copy) {
-        String formattedVolume = copy.getVolume() != null ? "= " + copy.getVolume() : "IS NULL";
-        String formattedNumber = copy.getNumber() != null ? "= " + copy.getNumber() : "IS NULL";
-        String formattedMonth = copy.getMonth() != null ? "= " + copy.getMonth() : "IS NULL";
+    private static boolean doesArticleHaveCopy(Copy copy) {
+        return copy.getVolume() != null || copy.getNumber() != null || copy.getMonth() != null;
+    }
+
+    private Integer retrieveCopyDatabaseId() {
+        String formattedVolume = this.getVolume() != null ? "= " + this.getVolume() : "IS NULL";
+        String formattedNumber = this.getNumber() != null ? "= " + this.getNumber() : "IS NULL";
+        String formattedMonth = this.getMonth() != null ? "= " + this.getMonth() : "IS NULL";
 
         String retrieveCopyIdSqlQuery =
                 "SELECT id FROM ejemplar " +
@@ -50,23 +54,19 @@ public class Copy {
         return retrievedCopyId.orElse(null);
     }
 
-    public static boolean doesCopyAlreadyExistInDatabase(Integer retrievedCopyId) {
+    private static boolean doesCopyAlreadyExistInDatabase(Integer retrievedCopyId) {
         return retrievedCopyId != null;
     }
 
-    public static void insertNewCopyIntoDatabase(Integer retrievedMagazineId, Copy copy) {
+    private void insertNewCopyIntoDatabase(Integer retrievedMagazineId) {
         String addCopySqlUpdate =
                 "INSERT INTO ejemplar (revista_id, volumen, numero, mes) " +
                         "VALUES (" + retrievedMagazineId + ", " +
-                        copy.getVolume() + ", " +
-                        copy.getNumber() + ", " +
-                        copy.getMonth() + ");";
+                        this.getVolume() + ", " +
+                        this.getNumber() + ", " +
+                        this.getMonth() + ");";
 
         MySQLConnection.performUpdate(addCopySqlUpdate);
-    }
-
-    public static boolean doesArticleHaveCopy(Copy copy) {
-        return copy.getVolume() != null || copy.getNumber() != null || copy.getMonth() != null;
     }
 
     public Integer getVolume() {

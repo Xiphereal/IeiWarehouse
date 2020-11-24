@@ -69,7 +69,6 @@ public class Magazine {
         return retrievedMagazineId != null;
     }
 
-
     public String getName() {
         return name;
     }
