@@ -1,6 +1,6 @@
 package ieiWarehousePopulator.utils;
 
-import ieiWarehousePopulator.MySQLConnection;
+import ieiWarehousePopulator.persistence.MySQLConnection;
 
 public class DatabasePurge {
 

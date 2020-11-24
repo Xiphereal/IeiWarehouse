@@ -5,6 +5,7 @@ import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
 import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

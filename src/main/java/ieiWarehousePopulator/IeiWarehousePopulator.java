@@ -1,7 +1,12 @@
 package ieiWarehousePopulator;
 
+import ieiWarehousePopulator.utils.DatabasePurge;
+
 public class IeiWarehousePopulator {
     public static void main(String[] args) {
+
+        DatabasePurge.purgeAllTables();
+
         DblpExtractor.extractDataIntoWarehouse();
 
 //        Magazine magazine = new Magazine("Mi Revista");

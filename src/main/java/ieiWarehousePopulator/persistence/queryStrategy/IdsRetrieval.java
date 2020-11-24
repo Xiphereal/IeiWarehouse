@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.queryStrategy;
+package ieiWarehousePopulator.persistence.queryStrategy;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

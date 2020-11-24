@@ -1,7 +1,7 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.EntitiesPersistence;
-import ieiWarehousePopulator.MySQLConnection;
+import ieiWarehousePopulator.persistence.EntitiesPersistence;
+import ieiWarehousePopulator.persistence.MySQLConnection;
 
 public class Article extends Publication {
     private Integer initialPage;
