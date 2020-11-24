@@ -62,30 +62,31 @@ public class EntitiesPersistence {
     private static Integer persistMagazineAndRelatedCopy(Article article) {
         String magazineName = article.getCopyPublishedBy().getMagazinePublishBy().getName();
 
+        if (!doesArticleHaveMagazine(magazineName)) {
+            return null;
+        }
+
         Integer retrievedCopyId = null;
 
-        if (doesArticleHaveMagazine(magazineName)) {
+        Integer retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
 
-            Integer retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
+        if (doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
+            //Update relations
+        } else {
+            insertNewMagazineIntoDatabase(magazineName);
+            retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
+        }
 
-            if (doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
+        Copy copy = article.getCopyPublishedBy();
+        if (doesArticleHaveCopy(copy)) {
+
+            retrievedCopyId = retrieveCopyDatabaseId(copy);
+
+            if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
                 //Update relations
             } else {
-                insertNewMagazineIntoDatabase(magazineName);
-                retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
-            }
-
-            Copy copy = article.getCopyPublishedBy();
-            if (doesArticleHaveCopy(copy)) {
-
+                insertNewCopyIntoDatabase(retrievedMagazineId, copy);
                 retrievedCopyId = retrieveCopyDatabaseId(copy);
-
-                if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
-                    //Update relations
-                } else {
-                    insertNewCopyIntoDatabase(retrievedMagazineId, copy);
-                    retrievedCopyId = retrieveCopyDatabaseId(copy);
-                }
             }
         }
 
