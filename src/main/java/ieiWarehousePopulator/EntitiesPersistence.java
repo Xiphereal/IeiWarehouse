@@ -158,6 +158,11 @@ public class EntitiesPersistence {
     }
 
     private static void persistAuthors(List<Person> authors, Integer publicationId) {
+
+        if (!doesArticleHaveAuthors(authors)) {
+            return;
+        }
+
         List<Person> foundAuthorsInDatabase = Person.convertToPerson(retrieveAuthorsInDatabase(authors));
 
         authors.removeAll(foundAuthorsInDatabase);
@@ -169,6 +174,10 @@ public class EntitiesPersistence {
         // TODO: Update the relationships of every author that is already in the database.
 
         System.out.println(foundAuthorsInDatabase);
+    }
+
+    private static boolean doesArticleHaveAuthors(List<Person> authors) {
+        return authors != null;
     }
 
     private static void insertNewAuthorsIntoDatabase(Integer publicationId, List<Person> newlyFoundAuthors) {
