@@ -20,17 +20,17 @@ public class Article extends Publication implements Persistable {
     }
 
     public void persist() {
-        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(this);
+        Integer retrievedPublicationId = Publication.retrievePublicationDatabaseId(this);
 
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             //Update relations
         } else {
             Integer retrievedCopyId = EntitiesPersistence.persistMagazineAndRelatedCopy(this);
 
-            EntitiesPersistence.insertNewPublicationIntoDatabase(this);
+            Publication.insertNewPublicationIntoDatabase(this);
             insertNewArticleIntoDatabase(this, retrievedCopyId);
 
-            retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(this);
+            retrievedPublicationId = Publication.retrievePublicationDatabaseId(this);
 
             EntitiesPersistence.persistAuthors(this.getAuthors(), retrievedPublicationId);
         }
@@ -41,7 +41,7 @@ public class Article extends Publication implements Persistable {
     }
 
     private static void insertNewArticleIntoDatabase(Article article, Integer retrievedCopyId) {
-        Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(article);
+        Integer retrievedPublicationId = Publication.retrievePublicationDatabaseId(article);
 
         String addArticleSqlUpdate =
                 "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +

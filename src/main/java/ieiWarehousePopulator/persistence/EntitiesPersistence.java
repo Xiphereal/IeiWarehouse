@@ -16,21 +16,6 @@ public class EntitiesPersistence {
         persistable.persist();
     }
 
-    public static Integer retrievePublicationDatabaseId(Publication publication) {
-        String formattedTitle = publication.getTitle() != null ? "= " + "\"" + publication.getTitle() + "\"" : "IS NULL";
-        String formattedYear = publication.getYear() != null ? "= " + publication.getYear() : "IS NULL";
-
-        String retrievePublicationIdSqlQuery =
-                "SELECT id FROM publicacion " +
-                        "WHERE titulo " + formattedTitle + " AND " +
-                        "anyo " + formattedYear + ";";
-
-        Optional<Integer> retrievedPublicationId =
-                MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
-
-        return retrievedPublicationId.orElse(null);
-    }
-
     /**
      * @return The Copy id retrieved from the database.
      * In case it already exist, it returns the existing Copy id.
@@ -224,16 +209,6 @@ public class EntitiesPersistence {
         }
 
         return MySQLConnection.performQueryToRetrieveAuthors(retrieveAuthorsIdsSqlQuery.toString());
-    }
-
-    public static void insertNewPublicationIntoDatabase(Publication publication) {
-        String addPublicationSqlUpdate =
-                "INSERT INTO publicacion (titulo, anyo, URL) " +
-                        "VALUES (" + "\"" + publication.getTitle() + "\", " +
-                        publication.getYear() + ", " +
-                        "\"" + publication.getUrl() + "\");";
-
-        MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }
 
 }

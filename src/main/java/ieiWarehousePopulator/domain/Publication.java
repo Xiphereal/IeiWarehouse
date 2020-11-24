@@ -1,6 +1,9 @@
 package ieiWarehousePopulator.domain;
 
+import ieiWarehousePopulator.persistence.MySQLConnection;
+
 import java.util.List;
+import java.util.Optional;
 
 public class Publication {
     private String title;
@@ -12,6 +15,31 @@ public class Publication {
         this.title = title;
         this.year = year;
         this.url = url;
+    }
+
+    protected static Integer retrievePublicationDatabaseId(Publication publication) {
+        String formattedTitle = publication.getTitle() != null ? "= " + "\"" + publication.getTitle() + "\"" : "IS NULL";
+        String formattedYear = publication.getYear() != null ? "= " + publication.getYear() : "IS NULL";
+
+        String retrievePublicationIdSqlQuery =
+                "SELECT id FROM publicacion " +
+                        "WHERE titulo " + formattedTitle + " AND " +
+                        "anyo " + formattedYear + ";";
+
+        Optional<Integer> retrievedPublicationId =
+                MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
+
+        return retrievedPublicationId.orElse(null);
+    }
+
+    protected static void insertNewPublicationIntoDatabase(Publication publication) {
+        String addPublicationSqlUpdate =
+                "INSERT INTO publicacion (titulo, anyo, URL) " +
+                        "VALUES (" + "\"" + publication.getTitle() + "\", " +
+                        publication.getYear() + ", " +
+                        "\"" + publication.getUrl() + "\");";
+
+        MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }
 
     public String getTitle() {
