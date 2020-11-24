@@ -2,8 +2,9 @@ package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.persistence.MySQLConnection;
+import ieiWarehousePopulator.persistence.Persistable;
 
-public class Article extends Publication {
+public class Article extends Publication implements Persistable {
     private Integer initialPage;
     private Integer finalPage;
     private Copy copyPublishedBy;
@@ -18,7 +19,7 @@ public class Article extends Publication {
         this.finalPage = finalPage;
     }
 
-    public void persistArticle() {
+    public void persist() {
         Integer retrievedPublicationId = EntitiesPersistence.retrievePublicationDatabaseId(this);
 
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
