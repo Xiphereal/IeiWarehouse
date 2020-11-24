@@ -157,11 +157,11 @@ public class EntitiesPersistence {
     }
 
     private static void persistAuthors(List<Person> authors, Integer publicationId) {
-        List<Person> newlyFoundAuthors = authors;
-
         List<Person> foundAuthorsInDatabase = Person.convertToPerson(retrieveAuthorsInDatabase(authors));
 
-        newlyFoundAuthors.removeAll(foundAuthorsInDatabase);
+        authors.removeAll(foundAuthorsInDatabase);
+
+        List<Person> newlyFoundAuthors = authors;
 
         insertNewAuthorsIntoDatabase(publicationId, newlyFoundAuthors);
 
