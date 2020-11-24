@@ -2,11 +2,7 @@ package ieiWarehousePopulator.persistence;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Copy;
-import ieiWarehousePopulator.domain.Person;
-import ieiWarehousePopulator.domain.utils.Tuple;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 public class EntitiesPersistence {
@@ -28,8 +24,6 @@ public class EntitiesPersistence {
             return null;
         }
 
-        Integer retrievedCopyId = null;
-
         Integer retrievedMagazineId = retrieveMagazineDatabaseId(magazineName);
 
         if (doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
@@ -45,7 +39,7 @@ public class EntitiesPersistence {
             return null;
         }
 
-        retrievedCopyId = retrieveCopyDatabaseId(copy);
+        Integer retrievedCopyId = retrieveCopyDatabaseId(copy);
 
         if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
             //Update relations
