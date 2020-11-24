@@ -38,10 +38,13 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrievePublicationDatabaseId(Publication publication) {
+        String formattedTitle = publication.getTitle() != null ? "= " + "\"" + publication.getTitle() + "\"" : "IS NULL";
+        String formattedYear = publication.getYear() != null ? "= " + publication.getYear() : "IS NULL";
+
         String retrievePublicationIdSqlQuery =
                 "SELECT id FROM publicacion " +
-                        "WHERE titulo = " + "\"" + publication.getTitle() + "\"" + " AND " +
-                        "anyo =" + publication.getYear() + ";";
+                        "WHERE titulo " + formattedTitle + " AND " +
+                        "anyo " + formattedYear + ";";
 
         Optional<Integer> retrievedPublicationId =
                 MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
