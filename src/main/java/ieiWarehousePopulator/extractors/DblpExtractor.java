@@ -1,4 +1,4 @@
-package ieiWarehousePopulator;
+package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Copy;

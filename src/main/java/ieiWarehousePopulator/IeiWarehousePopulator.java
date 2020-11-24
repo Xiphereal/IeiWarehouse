@@ -1,5 +1,6 @@
 package ieiWarehousePopulator;
 
+import ieiWarehousePopulator.extractors.DblpExtractor;
 import ieiWarehousePopulator.utils.DatabasePurge;
 
 public class IeiWarehousePopulator {
