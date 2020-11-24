@@ -1,6 +1,5 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
 
@@ -25,7 +24,7 @@ public class Article extends Publication implements Persistable {
         if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             //Update relations
         } else {
-            Integer retrievedCopyId = EntitiesPersistence.persistMagazineAndRelatedCopy(this);
+            Integer retrievedCopyId = Magazine.persistMagazineAndRelatedCopy(this);
 
             super.insertNewPublicationIntoDatabase();
             this.insertNewArticleIntoDatabase(retrievedCopyId);
