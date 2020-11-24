@@ -14,30 +14,11 @@ public class EntitiesPersistence {
     public static void persist(Publication publication) {
 
         if (publication instanceof Article)
-            persistArticle(publication);
+            Article.persistArticle(publication);
 
     }
 
-    private static void persistArticle(Publication publication) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(publication);
-
-        if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
-            //Update relations
-        } else {
-            Article article = (Article) publication;
-
-            Integer retrievedCopyId = persistMagazineAndRelatedCopy(article);
-
-            insertNewPublicationIntoDatabase(publication);
-            insertNewArticleIntoDatabase(article, publication, retrievedCopyId);
-
-            retrievedPublicationId = retrievePublicationDatabaseId(publication);
-
-            persistAuthors(article.getAuthors(), retrievedPublicationId);
-        }
-    }
-
-    private static Integer retrievePublicationDatabaseId(Publication publication) {
+    public static Integer retrievePublicationDatabaseId(Publication publication) {
         String formattedTitle = publication.getTitle() != null ? "= " + "\"" + publication.getTitle() + "\"" : "IS NULL";
         String formattedYear = publication.getYear() != null ? "= " + publication.getYear() : "IS NULL";
 
@@ -52,17 +33,13 @@ public class EntitiesPersistence {
         return retrievedPublicationId.orElse(null);
     }
 
-    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
-    }
-
     /**
      * @return The Copy id retrieved from the database.
      * In case it already exist, it returns the existing Copy id.
      * If not, returns the newly inserted Copy.
      * If the Publication doesn't have either Magazine or Copy, will return null.
      */
-    private static Integer persistMagazineAndRelatedCopy(Article article) {
+    public static Integer persistMagazineAndRelatedCopy(Article article) {
         String magazineName = article.getCopyPublishedBy().getMagazinePublishBy().getName();
 
         if (!doesArticleHaveMagazine(magazineName)) {
@@ -162,7 +139,7 @@ public class EntitiesPersistence {
         return magazineName != null;
     }
 
-    private static void persistAuthors(List<Person> authors, Integer publicationId) {
+    public static void persistAuthors(List<Person> authors, Integer publicationId) {
 
         if (!doesArticleHaveAuthors(authors)) {
             return;
@@ -251,7 +228,7 @@ public class EntitiesPersistence {
         return MySQLConnection.performQueryToRetrieveAuthors(retrieveAuthorsIdsSqlQuery.toString());
     }
 
-    private static void insertNewPublicationIntoDatabase(Publication publication) {
+    public static void insertNewPublicationIntoDatabase(Publication publication) {
         String addPublicationSqlUpdate =
                 "INSERT INTO publicacion (titulo, anyo, URL) " +
                         "VALUES (" + "\"" + publication.getTitle() + "\", " +
@@ -261,16 +238,4 @@ public class EntitiesPersistence {
         MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }
 
-    private static void insertNewArticleIntoDatabase(Article article, Publication publication, Integer retrievedCopyId) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(publication);
-
-        String addArticleSqlUpdate =
-                "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +
-                        "VALUES (" + retrievedPublicationId + ", " +
-                        retrievedCopyId + ", " +
-                        article.getInitialPage() + ", " +
-                        article.getFinalPage() + ");";
-
-        MySQLConnection.performUpdate(addArticleSqlUpdate);
-    }
 }
