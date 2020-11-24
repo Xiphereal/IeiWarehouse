@@ -78,16 +78,18 @@ public class EntitiesPersistence {
         }
 
         Copy copy = article.getCopyPublishedBy();
-        if (doesArticleHaveCopy(copy)) {
 
+        if (!doesArticleHaveCopy(copy)) {
+            return null;
+        }
+
+        retrievedCopyId = retrieveCopyDatabaseId(copy);
+
+        if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
+            //Update relations
+        } else {
+            insertNewCopyIntoDatabase(retrievedMagazineId, copy);
             retrievedCopyId = retrieveCopyDatabaseId(copy);
-
-            if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
-                //Update relations
-            } else {
-                insertNewCopyIntoDatabase(retrievedMagazineId, copy);
-                retrievedCopyId = retrieveCopyDatabaseId(copy);
-            }
         }
 
         return retrievedCopyId;
