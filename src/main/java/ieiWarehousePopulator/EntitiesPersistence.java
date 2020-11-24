@@ -209,10 +209,22 @@ public class EntitiesPersistence {
     }
 
     private static Integer retrieveAuthorIdInDatabase(Person author) {
-        String retrieveAuthorIdSqlQuery =
-                "SELECT id FROM persona " +
-                        "WHERE nombre = " + "\"" + author.getName() + "\"" + " AND " +
-                        "apellidos = " + "\"" + author.getSurnames() + "\"" + ";";
+        StringBuilder formattedAuthorQuery = new StringBuilder( "SELECT id FROM persona WHERE ");
+
+        String formattedName = (author.getName() == null) ? "IS NULL" : "= " + author.getName();
+        formattedAuthorQuery.append("nombre ").append(formattedName);
+        formattedAuthorQuery.append(" AND ");
+
+        String formattedSurnames = (author.getSurnames() == null) ? "IS NULL" : "= " + author.getSurnames();
+        formattedAuthorQuery.append("apellidos ").append(formattedSurnames);
+        formattedAuthorQuery.append(";");
+
+        String retrieveAuthorIdSqlQuery = formattedAuthorQuery.toString();
+
+//        String retrieveAuthorIdSqlQuery =
+//                "SELECT id FROM persona " +
+//                        "WHERE nombre = " + "\"" + author.getName() + "\"" + " AND " +
+//                        "apellidos = " + "\"" + author.getSurnames() + "\"" + ";";
 
         Optional<Integer> retrievedAuthorId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveAuthorIdSqlQuery).stream().findFirst();
