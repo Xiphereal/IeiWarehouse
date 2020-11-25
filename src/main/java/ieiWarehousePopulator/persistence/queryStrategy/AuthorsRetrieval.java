@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.queryStrategy;
+package ieiWarehousePopulator.persistence.queryStrategy;
 
 import ieiWarehousePopulator.domain.utils.Tuple;
 
