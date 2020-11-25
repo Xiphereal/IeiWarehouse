@@ -11,7 +11,10 @@ public class IeiWarehousePopulator {
 
         DblpExtractor.extractDataIntoWarehouse();
 
-        MySQLConnection.closeConnection();
+        // Closes the SQL connection even when the VM terminates abruptly.
+        // ! Doesn't work in IDE executions.
+        // See: https://stackoverflow.com/questions/3366965/is-it-is-possible-to-do-something-when-the-java-program-exits-abruptly
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> MySQLConnection.closeConnection()));
 
 //        Magazine magazine = new Magazine("Mi Revista");
 //        Copy copy = new Copy(10, 9, 8);

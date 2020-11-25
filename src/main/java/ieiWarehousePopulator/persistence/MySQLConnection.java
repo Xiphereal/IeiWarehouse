@@ -26,6 +26,7 @@ public class MySQLConnection {
     public static void closeConnection() {
         try {
             connection.close();
+            System.out.println("The MySQL connection has been closed.");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
