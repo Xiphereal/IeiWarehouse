@@ -25,7 +25,7 @@ public class Person {
         return personList;
     }
 
-    public static void persistAuthors(List<Person> authors, Integer publicationId) {
+    public static void persistAuthors(Set<Person> authors, Integer publicationId) {
 
         if (!doesArticleHaveAuthors(authors)) {
             return;
@@ -35,7 +35,7 @@ public class Person {
 
         authors.removeAll(foundAuthorsInDatabase);
 
-        List<Person> newlyFoundAuthors = authors;
+        Set<Person> newlyFoundAuthors = authors;
 
         insertNewAuthorsIntoDatabase(publicationId, newlyFoundAuthors);
 
@@ -44,11 +44,11 @@ public class Person {
         System.out.println(foundAuthorsInDatabase);
     }
 
-    private static boolean doesArticleHaveAuthors(List<Person> authors) {
+    private static boolean doesArticleHaveAuthors(Set<Person> authors) {
         return authors != null;
     }
 
-    private static void insertNewAuthorsIntoDatabase(Integer publicationId, List<Person> newlyFoundAuthors) {
+    private static void insertNewAuthorsIntoDatabase(Integer publicationId, Set<Person> newlyFoundAuthors) {
         for (Person author : newlyFoundAuthors) {
             insertNewAuthorIntoDatabase(author);
 
@@ -82,7 +82,7 @@ public class Person {
         return retrievedAuthorId.orElse(null);
     }
 
-    private static List<Tuple<String, String>> retrieveAuthorsInDatabase(List<Person> authors) {
+    private static List<Tuple<String, String>> retrieveAuthorsInDatabase(Set<Person> authors) {
         StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
 
         for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {

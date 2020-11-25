@@ -2,15 +2,13 @@ package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.persistence.MySQLConnection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Publication {
     private String title;
     private Long year;
     private String url;
-    private List<Person> authors;
+    private Set<Person> authors;
 
     public Publication(String title, Long year, String url) {
         this.title = title;
@@ -67,25 +65,13 @@ public class Publication {
         this.url = url;
     }
 
-    public List<Person> getAuthors() {
+    public Set<Person> getAuthors() {
         return authors;
     }
 
     public void setAuthors(List<Person> authors) {
-        List<Person> uniqueAuthors = deleteRepeatedAuthorsInArticle(authors);
-
-        this.authors = uniqueAuthors;
-    }
-
-    private List<Person> deleteRepeatedAuthorsInArticle(List<Person> authors) {
-        List<Person> uniqueAuthors = new ArrayList<>();
-
-        for (Person author: authors) {
-            if (!uniqueAuthors.contains(author)) {
-                uniqueAuthors.add(author);
-            }
-        }
-        return uniqueAuthors;
+        if (authors != null)
+            this.authors = new HashSet<>(authors);
     }
 
     @Override
