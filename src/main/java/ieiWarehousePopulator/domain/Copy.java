@@ -23,11 +23,11 @@ public class Copy {
 
         Integer retrievedCopyId = this.retrieveCopyDatabaseId();
 
-        if (doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
-            //Update relations
-        } else {
+        if (!doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
             this.insertNewCopyIntoDatabase(retrievedMagazineId);
             retrievedCopyId = this.retrieveCopyDatabaseId();
+        } else {
+            // TODO: Notify that the Copy already exists in database.
         }
 
         return retrievedCopyId;

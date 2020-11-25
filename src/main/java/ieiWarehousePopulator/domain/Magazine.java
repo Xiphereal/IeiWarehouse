@@ -27,11 +27,11 @@ public class Magazine {
 
         Integer retrievedMagazineId = retrieveMagazineDatabaseId();
 
-        if (doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
-            //Update relations
-        } else {
+        if (!doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
             insertNewMagazineIntoDatabase();
             retrievedMagazineId = retrieveMagazineDatabaseId();
+        } else {
+            // TODO: Notify that the Magazine already exists in database.
         }
 
         Integer retrievedCopyId = copyPublishedBy.persistCopy(retrievedMagazineId);

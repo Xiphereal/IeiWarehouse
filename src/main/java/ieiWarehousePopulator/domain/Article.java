@@ -21,9 +21,7 @@ public class Article extends Publication implements Persistable {
     public void persist() {
         Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
 
-        if (doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
-            //Update relations
-        } else {
+        if (!doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
             Integer retrievedCopyId = this.getCopyPublishedBy()
                     .getMagazinePublishBy()
                     .persistMagazineAndRelatedCopy(this.getCopyPublishedBy());
@@ -34,6 +32,8 @@ public class Article extends Publication implements Persistable {
             retrievedPublicationId = super.retrievePublicationDatabaseId();
 
             Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
+        } else {
+            // TODO: Notify that the magazine already exists in database.
         }
     }
 
