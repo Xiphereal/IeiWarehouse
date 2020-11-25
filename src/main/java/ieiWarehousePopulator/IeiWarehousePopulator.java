@@ -1,6 +1,7 @@
 package ieiWarehousePopulator;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
+import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.utils.DatabasePurge;
 
 public class IeiWarehousePopulator {
@@ -9,6 +10,8 @@ public class IeiWarehousePopulator {
         DatabasePurge.purgeAllTables();
 
         DblpExtractor.extractDataIntoWarehouse();
+
+        MySQLConnection.closeConnection();
 
 //        Magazine magazine = new Magazine("Mi Revista");
 //        Copy copy = new Copy(10, 9, 8);
