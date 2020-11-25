@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IeeeExtractor {
+
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
 
@@ -40,6 +41,7 @@ public class IeeeExtractor {
             Article article;
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
+
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
             if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
@@ -68,6 +70,7 @@ public class IeeeExtractor {
         Long year = extractYear(jsonObject);
         String url = extractURL(jsonObject);
         String editorial = extractEditorial(jsonObject);
+
         return new Book(title,
                 year,
                 url,
@@ -110,9 +113,9 @@ public class IeeeExtractor {
     private static String extractURL(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        String pdf_url = jsonObject.get("pdf_url").toString();
+        String pdfUrl = jsonObject.get("pdf_url").toString();
 
-        return pdf_url;
+        return pdfUrl;
     }
 
     /**
@@ -160,19 +163,25 @@ public class IeeeExtractor {
         // 'instanceof' to determine its type.
         Object initial_page = jsonObject.get("start_page");
         Object final_page = jsonObject.get("end_page");
+
         int initialPage = 0;
+
         if (initial_page instanceof String) {
             if (isInRomanNotation((String) initial_page))
                 RomanToDecimalConverter.romanToDecimal((String) initial_page);
             else
                 initialPage = Integer.parseInt((String) initial_page);
         }
+
         int finalPage = 0;
-        if (final_page instanceof String)
+
+        if (final_page instanceof String) {
             if (isInRomanNotation((String) final_page))
                 RomanToDecimalConverter.romanToDecimal((String) final_page);
             else
                 finalPage = Integer.parseInt((String) initial_page);
+        }
+
         return new Tuple<>(initialPage, finalPage);
     }
 
@@ -193,13 +202,13 @@ public class IeeeExtractor {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
         Object volume = jsonObject.get("volume");
+
         try {
             return Integer.parseInt((String) volume);
         } catch (NumberFormatException e) {
             return null;
         }
     }
-
 
     /**
      * Only considers attribute 'number' being a plain Integer number.
@@ -221,12 +230,18 @@ public class IeeeExtractor {
      */
     private static Integer extractMonth(JSONObject jsonObject) {
         String date = extractDate(jsonObject);
-        if (date == null) return null;
+
+        if (date == null)
+            return null;
+
         String monthWritten = date.replaceAll("\\d", "");
         int firstMonthEnd = monthWritten.indexOf("-");
+
         if (firstMonthEnd != -1)
             monthWritten = monthWritten.substring(0, firstMonthEnd);
+
         monthWritten = monthWritten.replaceAll("\\s+", "");
+
         switch (monthWritten) {
             case "Jan.":
                 return 1;
