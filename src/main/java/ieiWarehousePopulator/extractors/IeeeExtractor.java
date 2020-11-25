@@ -1,4 +1,4 @@
-package ieiWarehousePopulator;
+package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
