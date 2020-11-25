@@ -1,11 +1,17 @@
 package ieiWarehousePopulator.domain;
 
-public class Book extends Publication {
+import ieiWarehousePopulator.persistence.Persistable;
+
+public class Book extends Publication implements Persistable {
     private String editorial;
 
     public Book(String title, Long year, String url, String editorial) {
         super(title, year, url);
         this.editorial = editorial;
+    }
+
+    @Override
+    public void persist() {
     }
 
     public String getEditorial() {

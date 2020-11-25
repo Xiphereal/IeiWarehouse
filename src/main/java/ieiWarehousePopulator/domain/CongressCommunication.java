@@ -1,6 +1,8 @@
 package ieiWarehousePopulator.domain;
 
-public class CongressCommunication extends Publication {
+import ieiWarehousePopulator.persistence.Persistable;
+
+public class CongressCommunication extends Publication implements Persistable {
     private String congress;
     private String edition;
     private String place;
@@ -21,6 +23,10 @@ public class CongressCommunication extends Publication {
         this.place = place;
         this.initialPage = initialPage;
         this.finalPage = finalPage;
+    }
+
+    @Override
+    public void persist() {
     }
 
     public String getCongress() {

@@ -2,6 +2,7 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.utils.RomanToDecimalConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,26 +39,33 @@ public class IeeeExtractor {
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
-            Article article;
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
 
-            //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
-            // Also check if that copy already exists, if it does Add the article to the copy
+            // TODO: Check if this magazine already exists, if it does add this publication to the magazine.
+            //  Also check if that copy already exists, if it does Add the article to the copy
             if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
-                article = extractArticleAttributes(jsonObject);
+                Article article = extractArticleAttributes(jsonObject);
                 Copy copy = extractCopyAttributes(jsonObject);
                 Magazine magazine = new Magazine((String) jsonObject.get("publication_title"));
 
                 resolveEntitiesRelationshipsArticle(article, person, copy, magazine);
 
+                EntitiesPersistence.persist(article);
+
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
                 //System.out.println(congressCommunication);
+
+                EntitiesPersistence.persist(congressCommunication);
+
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
                 resolveEntitiesRelationshipsBook(book, person);
+
+                EntitiesPersistence.persist(book);
+
             }
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
