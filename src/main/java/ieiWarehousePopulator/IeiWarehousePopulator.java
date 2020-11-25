@@ -9,6 +9,7 @@ public class IeiWarehousePopulator {
 
         DatabasePurge.purgeAllTables();
 
+        IeeeExtractor.extractDataIntoWarehouse();
         DblpExtractor.extractDataIntoWarehouse();
 
         // Closes the SQL connection even when the VM terminates abruptly.
