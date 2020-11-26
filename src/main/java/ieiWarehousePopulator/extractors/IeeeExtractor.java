@@ -144,6 +144,10 @@ public class IeeeExtractor {
         if (authorList instanceof JSONArray) {
             JSONArray castedAuthorAttribute = (JSONArray) authorList;
 
+            // If no authors are found, the author list should be null.
+            if (castedAuthorAttribute.size() == 0)
+                return null;
+
             List<Person> parsedAuthors = new ArrayList<>();
             int i;
             for (Object element : castedAuthorAttribute)
