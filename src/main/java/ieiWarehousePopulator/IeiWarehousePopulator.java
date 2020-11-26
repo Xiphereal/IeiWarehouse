@@ -1,6 +1,7 @@
 package ieiWarehousePopulator;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
+import ieiWarehousePopulator.extractors.IeeeExtractor;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.utils.DatabasePurge;
 
@@ -9,6 +10,7 @@ public class IeiWarehousePopulator {
 
         DatabasePurge.purgeAllTables();
 
+        IeeeExtractor.extractDataIntoWarehouse();
         DblpExtractor.extractDataIntoWarehouse();
 
         // Closes the SQL connection even when the VM terminates abruptly.
