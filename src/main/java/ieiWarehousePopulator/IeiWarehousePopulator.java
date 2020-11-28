@@ -1,6 +1,7 @@
 package ieiWarehousePopulator;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
+import ieiWarehousePopulator.extractors.GoogleSchoolar;
 import ieiWarehousePopulator.extractors.IeeeExtractor;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.utils.DatabasePurge;
