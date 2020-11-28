@@ -1,7 +1,8 @@
-package ieiWarehousePopulator;
+package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.utils.RomanToDecimalConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,7 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class IeeeExtractor {
+
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
 
@@ -23,6 +26,7 @@ public class IeeeExtractor {
             e.printStackTrace();
         }
     }
+
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
@@ -33,27 +37,33 @@ public class IeeeExtractor {
 
     private static void parseJsonObject(JSONObject jsonObject) {
         try {
-            Article article;
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
-            //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
-            // Also check if that copy already exists, if it does Add the article to the copy
-            if(type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0){
-                article = extractArticleAttributes(jsonObject);
+
+            // TODO: Check if this magazine already exists, if it does add this publication to the magazine.
+            //  Also check if that copy already exists, if it does Add the article to the copy
+            if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
+                Article article = extractArticleAttributes(jsonObject);
                 Copy copy = extractCopyAttributes(jsonObject);
                 Magazine magazine = new Magazine((String) jsonObject.get("publication_title"));
 
                 resolveEntitiesRelationshipsArticle(article, person, copy, magazine);
 
-            }
-            else if(type.compareTo("Conferences") == 0){
+                EntitiesPersistence.persist(article);
+
+            } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
-                resolveEntitiesRelationshipsCommunication(congressCommunication,person);
+                resolveEntitiesRelationshipsCommunication(congressCommunication, person);
                 //System.out.println(congressCommunication);
-            }
-            else if(type.compareTo("Books") == 0){
+
+                EntitiesPersistence.persist(congressCommunication);
+
+            } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
                 resolveEntitiesRelationshipsBook(book, person);
+
+                EntitiesPersistence.persist(book);
+
             }
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
@@ -66,6 +76,7 @@ public class IeeeExtractor {
         Long year = extractYear(jsonObject);
         String url = extractURL(jsonObject);
         String editorial = extractEditorial(jsonObject);
+
         return new Book(title,
                 year,
                 url,
@@ -108,9 +119,9 @@ public class IeeeExtractor {
     private static String extractURL(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        String pdf_url = jsonObject.get("pdf_url").toString();
+        String pdfUrl = jsonObject.get("pdf_url").toString();
 
-        return pdf_url;
+        return pdfUrl;
     }
 
     /**
@@ -130,6 +141,10 @@ public class IeeeExtractor {
 
         if (authorList instanceof JSONArray) {
             JSONArray castedAuthorAttribute = (JSONArray) authorList;
+
+            // If no authors are found, the author list should be null.
+            if (castedAuthorAttribute.size() == 0)
+                return null;
 
             List<Person> parsedAuthors = new ArrayList<>();
             int i;
@@ -158,19 +173,25 @@ public class IeeeExtractor {
         // 'instanceof' to determine its type.
         Object initial_page = jsonObject.get("start_page");
         Object final_page = jsonObject.get("end_page");
+
         int initialPage = 0;
-        if(initial_page instanceof String){
-            if(isInRomanNotation((String) initial_page))
+
+        if (initial_page instanceof String) {
+            if (isInRomanNotation((String) initial_page))
                 RomanToDecimalConverter.romanToDecimal((String) initial_page);
             else
                 initialPage = Integer.parseInt((String) initial_page);
         }
+
         int finalPage = 0;
-        if(final_page instanceof String)
-            if(isInRomanNotation((String) final_page))
+
+        if (final_page instanceof String) {
+            if (isInRomanNotation((String) final_page))
                 RomanToDecimalConverter.romanToDecimal((String) final_page);
             else
                 finalPage = Integer.parseInt((String) initial_page);
+        }
+
         return new Tuple<>(initialPage, finalPage);
     }
 
@@ -191,14 +212,13 @@ public class IeeeExtractor {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
         Object volume = jsonObject.get("volume");
-        try{
+
+        try {
             return Integer.parseInt((String) volume);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return null;
         }
     }
-
-
 
     /**
      * Only considers attribute 'number' being a plain Integer number.
@@ -212,6 +232,7 @@ public class IeeeExtractor {
 
         return number;
     }
+
     /**
      * Only considers attribute 'mdate' being a String separated by '-' with the month in the middle "x-mm-x".
      *
@@ -219,12 +240,18 @@ public class IeeeExtractor {
      */
     private static Integer extractMonth(JSONObject jsonObject) {
         String date = extractDate(jsonObject);
-        if(date == null) return null;
-        String monthWritten = date.replaceAll("\\d","");
+
+        if (date == null)
+            return null;
+
+        String monthWritten = date.replaceAll("\\d", "");
         int firstMonthEnd = monthWritten.indexOf("-");
-        if(firstMonthEnd != -1)
-            monthWritten = monthWritten.substring(0,firstMonthEnd);
+
+        if (firstMonthEnd != -1)
+            monthWritten = monthWritten.substring(0, firstMonthEnd);
+
         monthWritten = monthWritten.replaceAll("\\s+", "");
+
         switch (monthWritten) {
             case "Jan.":
                 return 1;
@@ -258,6 +285,7 @@ public class IeeeExtractor {
         // REGEX: Two numbers separated by '-'
         return stringPages.matches("\\d+-\\d+");
     }
+
     private static String extractTitle(JSONObject jsonObject) {
         return (String) jsonObject.get("publication_title");
     }
@@ -290,6 +318,7 @@ public class IeeeExtractor {
         // REGEX: Contains any number.
         return !stringPages.matches(".*[0-9].*");
     }
+
     private static void resolveEntitiesRelationshipsArticle(Article article, List<Person> authors, Copy copy, Magazine magazine) {
         copy.setMagazinePublishBy(magazine);
         article.setCopyPublishedBy(copy);

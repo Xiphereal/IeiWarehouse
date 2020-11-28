@@ -1,9 +1,9 @@
-package ieiWarehousePopulator;
+package ieiWarehousePopulator.persistence;
 
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.queryStrategy.AuthorsRetrieval;
-import ieiWarehousePopulator.queryStrategy.IdsRetrieval;
-import ieiWarehousePopulator.queryStrategy.QueryStrategy;
+import ieiWarehousePopulator.persistence.queryStrategy.AuthorsRetrieval;
+import ieiWarehousePopulator.persistence.queryStrategy.IdsRetrieval;
+import ieiWarehousePopulator.persistence.queryStrategy.QueryStrategy;
 
 import java.sql.*;
 import java.util.List;
@@ -21,6 +21,17 @@ public class MySQLConnection {
     private static final String password = "Valencia2020";
     private static final String connectionOptions = "?useTimezone=true&serverTimezone=UTC&useSSL=false";
 
+    private static Connection connection;
+
+    public static void closeConnection() {
+        try {
+            connection.close();
+            System.out.println("The MySQL connection has been closed.");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static List<Integer> performQueryToRetrieveIds(String sqlQuery) {
         return performQuery(sqlQuery, new IdsRetrieval());
     }
@@ -35,29 +46,31 @@ public class MySQLConnection {
      */
     private static <T> List<T> performQuery(String sqlQuery, QueryStrategy queryStrategy) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + serverHostName + ":3306/" + databaseSchemaName + connectionOptions,
-                    username,
-                    password
-            );
+            if (connection == null)
+                openConnection();
 
             Statement statement = connection.createStatement();
             ResultSet queryResultSet = statement.executeQuery(sqlQuery);
 
             List<T> queryRetrievedResults = queryStrategy.retrieveQueryResults(queryResultSet);
 
-            connection.close();
-
             return queryRetrievedResults;
 
-        } catch (Exception e) {
-            System.err.println(e.toString());
-            e.printStackTrace();
+        }  catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
         }
 
         return null;
+    }
+
+    private static void openConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        connection = DriverManager.getConnection(
+                "jdbc:mysql://" + serverHostName + ":3306/" + databaseSchemaName + connectionOptions,
+                username,
+                password
+        );
     }
 
     private static void printQueryResults(ResultSet queryResult) throws SQLException {
@@ -73,23 +86,16 @@ public class MySQLConnection {
 
     public static void performUpdate(String sqlQuery) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + serverHostName + ":3306/" + databaseSchemaName + connectionOptions,
-                    username,
-                    password
-            );
+            if (connection == null)
+                openConnection();
 
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
 
             System.out.println("Update: " + sqlQuery + " was successful!");
 
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.toString());
-            e.printStackTrace();
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
         }
     }
 }
