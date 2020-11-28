@@ -5,7 +5,6 @@ import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
 import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -56,7 +55,7 @@ public class DblpExtractor {
 
             resolveEntitiesRelationships(article, authors, copy, magazine);
 
-            EntitiesPersistence.persist(article);
+            article.persist();
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);

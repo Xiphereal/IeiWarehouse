@@ -2,7 +2,6 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.utils.RomanToDecimalConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -49,20 +48,20 @@ public class IeeeExtractor {
 
                 resolveEntitiesRelationshipsArticle(article, person, copy, magazine);
 
-                EntitiesPersistence.persist(article);
+                article.persist();
 
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
                 //System.out.println(congressCommunication);
 
-                EntitiesPersistence.persist(congressCommunication);
+                congressCommunication.persist();
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
                 resolveEntitiesRelationshipsBook(book, person);
 
-                EntitiesPersistence.persist(book);
+                book.persist();
 
             }
         } catch (ClassCastException e) {
