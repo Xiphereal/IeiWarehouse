@@ -1,7 +1,6 @@
 package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 
 import java.util.*;
@@ -48,13 +47,36 @@ public class Person {
         return authors != null;
     }
 
+    private static List<Tuple<String, String>> retrieveAuthorsInDatabase(Set<Person> authors) {
+        StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
+
+        for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
+            Person author = iterator.next();
+
+            retrieveAuthorsIdsSqlQuery.append("(");
+
+            retrieveAuthorsIdsSqlQuery.append("nombre = ").append("\"").append(author.getName()).append("\"");
+            retrieveAuthorsIdsSqlQuery.append(" AND ");
+            retrieveAuthorsIdsSqlQuery.append("apellidos =").append("\"").append(author.getSurnames()).append("\"");
+
+            retrieveAuthorsIdsSqlQuery.append(")");
+
+            if (iterator.hasNext())
+                retrieveAuthorsIdsSqlQuery.append(" OR ");
+            else
+                retrieveAuthorsIdsSqlQuery.append(";");
+        }
+
+        return MySQLConnection.performQueryToRetrieveAuthors(retrieveAuthorsIdsSqlQuery.toString());
+    }
+
     private static void insertNewAuthorsIntoDatabase(Integer publicationId, Set<Person> newlyFoundAuthors) {
         for (Person author : newlyFoundAuthors) {
             insertNewAuthorIntoDatabase(author);
 
             Integer authorId = retrieveAuthorIdInDatabase(author);
 
-            EntitiesPersistence.insertNewPublicationHasPerson(publicationId, authorId);
+            insertNewPublicationHasPerson(publicationId, authorId);
         }
     }
 
@@ -82,27 +104,13 @@ public class Person {
         return retrievedAuthorId.orElse(null);
     }
 
-    private static List<Tuple<String, String>> retrieveAuthorsInDatabase(Set<Person> authors) {
-        StringBuilder retrieveAuthorsIdsSqlQuery = new StringBuilder("SELECT nombre, apellidos FROM persona WHERE ");
+    private static void insertNewPublicationHasPerson(Integer publicationId, Integer authorId) {
+        String addNewPublicationHasPersonSqlUpdate =
+                "INSERT INTO publicacion_has_persona (publicacion_id, persona_id) " +
+                        "VALUES (" + "\"" + publicationId + "\", " +
+                        "\"" + authorId + "\");";
 
-        for (Iterator<Person> iterator = authors.iterator(); iterator.hasNext(); ) {
-            Person author = iterator.next();
-
-            retrieveAuthorsIdsSqlQuery.append("(");
-
-            retrieveAuthorsIdsSqlQuery.append("nombre = ").append("\"").append(author.getName()).append("\"");
-            retrieveAuthorsIdsSqlQuery.append(" AND ");
-            retrieveAuthorsIdsSqlQuery.append("apellidos =").append("\"").append(author.getSurnames()).append("\"");
-
-            retrieveAuthorsIdsSqlQuery.append(")");
-
-            if (iterator.hasNext())
-                retrieveAuthorsIdsSqlQuery.append(" OR ");
-            else
-                retrieveAuthorsIdsSqlQuery.append(";");
-        }
-
-        return MySQLConnection.performQueryToRetrieveAuthors(retrieveAuthorsIdsSqlQuery.toString());
+        MySQLConnection.performUpdate(addNewPublicationHasPersonSqlUpdate);
     }
 
     public String getName() {
