@@ -1,7 +1,7 @@
 package ieiWarehousePopulator;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
-import ieiWarehousePopulator.extractors.GoogleSchoolar;
+import ieiWarehousePopulator.extractors.GoogleSchoolarExtractor;
 import ieiWarehousePopulator.extractors.IeeeExtractor;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.utils.DatabasePurge;
@@ -13,7 +13,7 @@ public class IeiWarehousePopulator {
 
         IeeeExtractor.extractDataIntoWarehouse();
         DblpExtractor.extractDataIntoWarehouse();
-        GoogleSchoolar.extractDataIntoWarehouse();
+        GoogleSchoolarExtractor.extractDataIntoWarehouse();
 
         // Closes the SQL connection even when the VM terminates abruptly.
         // ! Doesn't work in IDE executions.

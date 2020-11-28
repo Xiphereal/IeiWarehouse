@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleSchoolar {
+public class GoogleSchoolarExtractor {
     public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array (2).json")) {
 
