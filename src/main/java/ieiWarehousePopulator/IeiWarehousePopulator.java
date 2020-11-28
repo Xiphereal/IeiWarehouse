@@ -2,7 +2,7 @@ package ieiWarehousePopulator;
 
 public class IeiWarehousePopulator {
     public static void main(String[] args) {
-        DblpExtractor.extractDataIntoWarehouse();
+        GoogleSchoolar.extractDataIntoWarehouse();
 
 //        Magazine magazine = new Magazine("Mi Revista");
 //        Copy copy = new Copy(10, 9, 8);

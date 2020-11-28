@@ -17,9 +17,7 @@ public class IeeeExtractor {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
-
             articles.forEach(article -> parseJsonObject((JSONObject) article));
-
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
