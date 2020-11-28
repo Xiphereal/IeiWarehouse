@@ -29,7 +29,6 @@ public class GoogleSchoolarExtractor {
             JSONArray communicationCongress = getCommunicationCongress(entireJsonFile);
             communicationCongress.forEach(congress -> parseJsonCommunicationCongress((JSONObject) congress));
 
-
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
@@ -38,10 +37,11 @@ public class GoogleSchoolarExtractor {
 
     private static void parseJsonCommunicationCongress(JSONObject jsonObject) {
         try {
-            CongressCommunication congressCommunication;
             List<Person> authors = extractAuthors(jsonObject);
-            congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+            CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
+
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
         } catch (ClassCastException e) {
@@ -60,10 +60,11 @@ public class GoogleSchoolarExtractor {
 
     private static void parseJsonBook(JSONObject jsonObject) {
         try {
-            Book book;
             List<Person> authors = extractAuthors(jsonObject);
-            book = extractBookAttributes(jsonObject);
+            Book book = extractBookAttributes(jsonObject);
+
             resolveEntitiesRelationshipsBook(book, authors);
+
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
         } catch (ClassCastException e) {
@@ -80,7 +81,6 @@ public class GoogleSchoolarExtractor {
     }
 
     private static JSONArray getArticlesFromJson(JSONObject entireJsonFile) throws IOException, ParseException {
-
         JSONArray jsonObjectContainer = (JSONArray) entireJsonFile.get("articles");
 
         return jsonObjectContainer;
@@ -88,13 +88,13 @@ public class GoogleSchoolarExtractor {
 
     private static void parseJsonArticle(JSONObject jsonObject) {
         try {
-            Article article;
+            Article article = extractArticleAttributes(jsonObject);
             List<Person> person = extractAuthors(jsonObject);
-            article = extractArticleAttributes(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
 
             resolveEntitiesRelationships(article, person, copy, magazine);
+
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
         } catch (ClassCastException e) {
@@ -144,7 +144,8 @@ public class GoogleSchoolarExtractor {
     private static Article extractArticleAttributes(JSONObject jsonObject) {
         String title = extractTitle(jsonObject);
         Long year = extractYear(jsonObject);
-        String url = extractURL(jsonObject);Tuple<Integer, Integer> pages = extractPages(jsonObject);
+        String url = extractURL(jsonObject);
+        Tuple<Integer, Integer> pages = extractPages(jsonObject);
 
         return new Article(title,
                 year,
@@ -165,9 +166,9 @@ public class GoogleSchoolarExtractor {
      * As reference for the edge cases see: https://github.com/Xiphereal/ProyectoIEI/pull/1#issuecomment-730471867
      */
     private static List<Person> extractAuthors(JSONObject jsonObject) {
-
         Object authorList = jsonObject.get("author");
         List<Person> parsedAuthors;
+
         if (authorList == null) {
             System.out.println(System.lineSeparator() +
                     "'author' attribute is missing in " + jsonObject + System.lineSeparator());
@@ -176,18 +177,19 @@ public class GoogleSchoolarExtractor {
         }
 
         if (authorList instanceof String) {
-            parsedAuthors= new ArrayList<>();
+            parsedAuthors = new ArrayList<>();
             String parserString = (String) ((String) authorList).trim();
-            parserString = parserString.replaceAll(",","-");
+            parserString = parserString.replaceAll(",", "-");
+
             //extract each name from the whole string of names
-            while(!parserString.isEmpty()) {
+            while (!parserString.isEmpty()) {
                 int separator = ((String) parserString).indexOf("-");
                 String fullName = "";
                 Person person;
-                if(separator != -1) {
+                if (separator != -1) {
                     fullName = (parserString.trim()).substring(0, separator - 1);
-                     person = extractPersonAttributes(fullName);
-                    parserString = parserString.substring(separator+1);
+                    person = extractPersonAttributes(fullName);
+                    parserString = parserString.substring(separator + 1);
                 } else {
                     person = extractPersonAttributes(parserString.trim());
                     parserString = "";
@@ -195,6 +197,7 @@ public class GoogleSchoolarExtractor {
 
                 parsedAuthors.add(person);
             }
+
             return parsedAuthors;
         }
 
@@ -204,11 +207,11 @@ public class GoogleSchoolarExtractor {
         return null;
     }
 
-
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
         Integer volume = extractVolume(jsonObject);
         Integer number = extractNumber(jsonObject);
         Integer month = extractMonth(jsonObject);
+
         return new Copy(volume, number, month);
     }
 
@@ -221,7 +224,7 @@ public class GoogleSchoolarExtractor {
             System.out.println(System.lineSeparator() +
                     "'pages' attribute is missing in " + jsonObject + System.lineSeparator());
 
-            return new Tuple<>(-1,-1);
+            return new Tuple<>(-1, -1);
         }
 
         int initialPage = 0;
@@ -235,8 +238,8 @@ public class GoogleSchoolarExtractor {
             initialPage = extractInitialPage(stringPages);
             finalPage = extractFinalPage(stringPages);
         } else {
-                return new Tuple<>();
-            }
+            return new Tuple<>();
+        }
         return new Tuple<>(initialPage, finalPage);
     }
 
@@ -264,8 +267,10 @@ public class GoogleSchoolarExtractor {
 
     private static Integer extractVolume(JSONObject jsonObject) {
         Object volume = jsonObject.get("volume");
-        if(volume == null)
+
+        if (volume == null)
             return null;
+
         return Integer.parseInt(volume.toString());
     }
 
@@ -276,10 +281,13 @@ public class GoogleSchoolarExtractor {
      */
     private static Integer extractNumber(JSONObject jsonObject) {
         Object number = jsonObject.get("number");
-        if(number == null || number.toString().compareTo("Preprint") == 0)
+
+        if (number == null || number.toString().compareTo("Preprint") == 0)
             return null;
+
         return Integer.parseInt(number.toString());
     }
+
     /**
      * Only considers attribute 'mdate' being a String separated by '-' with the month in the middle "x-mm-x".
      *
@@ -294,24 +302,29 @@ public class GoogleSchoolarExtractor {
         // REGEX: Two numbers separated by '-'
         return stringPages.matches("\\d+-\\d+");
     }
+
     private static String extractTitle(JSONObject jsonObject) {
         return (String) jsonObject.get("title");
     }
 
     private static Long extractYear(JSONObject jsonObject) {
         String year = jsonObject.get("year").toString();
-        if(year == null)
+
+        if (year == null)
             return null;
+
         return Long.parseLong(year);
     }
 
     private static String extractDate(JSONObject jsonObject) {
         return null;
     }
+
     //we can't get the congress name in google schoolar inproceedings
     private static String extractCongress(JSONObject jsonObject) {
         return null;
     }
+
     //we can't get the place in google schoolar inproceedings
     private static String extractCongressCommunicationPlace(JSONObject jsonObject) {
         return null;
@@ -325,6 +338,7 @@ public class GoogleSchoolarExtractor {
         // REGEX: Contains any number.
         return !stringPages.matches(".*[0-9].*");
     }
+
     private static void resolveEntitiesRelationshipsArticle(Article article, List<Person> authors, Copy copy, Magazine magazine) {
         return;
     }
@@ -336,6 +350,7 @@ public class GoogleSchoolarExtractor {
     private static void resolveEntitiesRelationshipsCommunication(CongressCommunication congressCommunication, List<Person> authors) {
         return;
     }
+
     private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
         Object name = jsonObject.get("journal");
 
@@ -346,8 +361,7 @@ public class GoogleSchoolarExtractor {
             return null;
         }
 
-        String castedName = name.toString();
-        return new Magazine(castedName);
+        return new Magazine(name.toString());
     }
 
     private static void resolveEntitiesRelationships(Article article, List<Person> authors, Copy copy, Magazine magazine) {
