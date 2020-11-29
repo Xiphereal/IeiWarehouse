@@ -2,7 +2,6 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.persistence.EntitiesPersistence;
 import ieiWarehousePopulator.utils.RomanToDecimalConverter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,9 +19,7 @@ public class IeeeExtractor {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
-
             articles.forEach(article -> parseJsonObject((JSONObject) article));
-
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
@@ -51,20 +48,20 @@ public class IeeeExtractor {
 
                 resolveEntitiesRelationshipsArticle(article, person, copy, magazine);
 
-                EntitiesPersistence.persist(article);
+                article.persist();
 
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
                 //System.out.println(congressCommunication);
 
-                EntitiesPersistence.persist(congressCommunication);
+                congressCommunication.persist();
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
                 resolveEntitiesRelationshipsBook(book, person);
 
-                EntitiesPersistence.persist(book);
+                book.persist();
 
             }
         } catch (ClassCastException e) {
