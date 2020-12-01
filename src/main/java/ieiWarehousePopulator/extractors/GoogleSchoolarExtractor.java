@@ -42,6 +42,8 @@ public class GoogleSchoolarExtractor {
 
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
 
+            congressCommunication.persist();
+
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
         } catch (ClassCastException e) {
@@ -64,6 +66,8 @@ public class GoogleSchoolarExtractor {
             Book book = extractBookAttributes(jsonObject);
 
             resolveEntitiesRelationshipsBook(book, authors);
+
+            book.persist();
 
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
@@ -94,6 +98,8 @@ public class GoogleSchoolarExtractor {
             Magazine magazine = extractMagazineAttributes(jsonObject);
 
             resolveEntitiesRelationships(article, person, copy, magazine);
+
+            article.persist();
 
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
