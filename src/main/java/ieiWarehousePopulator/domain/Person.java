@@ -81,8 +81,8 @@ public class Person {
     }
 
     private static void insertNewAuthorIntoDatabase(Person author) {
-        String formattedName = author.getName() != null ? "= " + "\"" + author.getName() + "\"" : "NULL";
-        String formattedSurnames = author.getSurnames() != null ? "= " + "\"" + author.getSurnames() + "\"" : "NULL";
+        String formattedName = author.getName() != null ? "\"" + author.getName() + "\"" : "NULL";
+        String formattedSurnames = author.getSurnames() != null ? "\"" + author.getSurnames() + "\"" : "NULL";
 
         String addAuthorSqlUpdate =
                 "INSERT INTO persona (nombre, apellidos) " +
