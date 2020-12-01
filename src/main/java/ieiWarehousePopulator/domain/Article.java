@@ -26,6 +26,9 @@ public class Article extends Publication implements Persistable {
                     .getMagazinePublishBy()
                     .persistMagazineAndRelatedCopy(this.getCopyPublishedBy());
 
+            if (!doesArticleHaveCopy(retrievedCopyId))
+                return;
+
             super.insertNewPublicationIntoDatabase();
             this.insertNewArticleIntoDatabase(retrievedCopyId);
 
@@ -35,6 +38,10 @@ public class Article extends Publication implements Persistable {
         } else {
             // TODO: Notify that the magazine already exists in database.
         }
+    }
+
+    private boolean doesArticleHaveCopy(Integer retrievedCopyId) {
+        return retrievedCopyId != null;
     }
 
     private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
