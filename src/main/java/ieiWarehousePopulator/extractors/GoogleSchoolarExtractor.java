@@ -274,10 +274,19 @@ public class GoogleSchoolarExtractor {
     private static Integer extractVolume(JSONObject jsonObject) {
         Object volume = jsonObject.get("volume");
 
-        if (volume == null)
-            return null;
+        if (volume instanceof String) {
+            String castedVolume = (String) volume;
 
-        return Integer.parseInt(volume.toString());
+            if (isANumber(castedVolume))
+                return Integer.valueOf(castedVolume);
+        }
+
+        return null;
+    }
+
+    private static boolean isANumber(String castedVolume) {
+        // REGEX: Not empty number.
+        return castedVolume.matches("\\d+\\d*");
     }
 
     /**
@@ -314,12 +323,19 @@ public class GoogleSchoolarExtractor {
     }
 
     private static Long extractYear(JSONObject jsonObject) {
-        String year = jsonObject.get("year").toString();
+        Object year = jsonObject.get("year");
 
-        if (year == null)
-            return null;
+        if (year instanceof Long)
+            return (Long) jsonObject.get("year");
 
-        return Long.parseLong(year);
+        if (year instanceof String) {
+            String castedYear = (String) year;
+
+            if (isANumber(castedYear))
+                return Long.valueOf(castedYear);
+        }
+
+        return null;
     }
 
     private static String extractDate(JSONObject jsonObject) {
