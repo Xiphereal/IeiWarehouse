@@ -16,7 +16,7 @@ import java.util.List;
 public class IeeeExtractor {
 
     public static void extractDataIntoWarehouse() {
-        try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020.json")) {
+        try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
             articles.forEach(article -> parseJsonObject((JSONObject) article));

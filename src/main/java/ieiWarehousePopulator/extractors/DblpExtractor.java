@@ -23,7 +23,7 @@ import java.util.List;
 public class DblpExtractor {
 
     public static void extractDataIntoWarehouse() {
-        try (FileReader fileReader = new FileReader("src/main/resources/dblp/dblp-solo-article-1.json")) {
+        try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 

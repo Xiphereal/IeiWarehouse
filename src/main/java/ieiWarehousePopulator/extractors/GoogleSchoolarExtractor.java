@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GoogleSchoolarExtractor {
     public static void extractDataIntoWarehouse() {
-        try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array (2).json")) {
+        try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
