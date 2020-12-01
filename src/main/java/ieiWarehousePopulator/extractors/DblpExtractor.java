@@ -87,8 +87,15 @@ public class DblpExtractor {
         // 'instanceof' to determine its type.
         Object year = jsonObject.get("year");
 
-        if(year instanceof Long)
+        if (year instanceof Long)
             return (Long) jsonObject.get("year");
+
+        if (year instanceof String) {
+            String castedYear = (String) year;
+
+            if (isANumber(castedYear))
+                return Long.valueOf(castedYear);
+        }
 
         return null;
     }
@@ -269,7 +276,19 @@ public class DblpExtractor {
             return ((Long) volume).intValue();
         }
 
+        if (volume instanceof String) {
+            String castedVolume = (String) volume;
+
+            if (isANumber(castedVolume))
+                return Integer.valueOf(castedVolume);
+        }
+
         return null;
+    }
+
+    private static boolean isANumber(String castedVolume) {
+        // REGEX: Not empty number.
+        return castedVolume.matches("\\d+\\d*");
     }
 
     /**
@@ -284,6 +303,13 @@ public class DblpExtractor {
 
         if (number instanceof Long) {
             return ((Long) number).intValue();
+        }
+
+        if (number instanceof String) {
+            String castedNumber = (String) number;
+
+            if (isANumber(castedNumber))
+                return Integer.valueOf(castedNumber);
         }
 
         return null;
