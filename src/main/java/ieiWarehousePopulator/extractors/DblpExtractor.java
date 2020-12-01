@@ -83,7 +83,14 @@ public class DblpExtractor {
     }
 
     private static Long extractYear(JSONObject jsonObject) {
-        return (Long) jsonObject.get("year");
+        // The variable in which the data is extracted to, must be of type Object so that we can use
+        // 'instanceof' to determine its type.
+        Object year = jsonObject.get("year");
+
+        if(year instanceof Long)
+            return (Long) jsonObject.get("year");
+
+        return null;
     }
 
     private static String extractURL(JSONObject jsonObject) {
