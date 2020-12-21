@@ -39,12 +39,15 @@ public class LoadApi {
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
         if (extractFromDblp)
+            // TODO: Support the start and end year data filtering.
             DblpExtractor.extractDataIntoWarehouse();
 
         if (extractFromIeee)
+            // TODO: Support the start and end year data filtering.
             IeeeExtractor.extractDataIntoWarehouse();
 
         if (extractFromGoogleScholar)
+            // TODO: Support the start and end year data filtering.
             GoogleSchoolarExtractor.extractDataIntoWarehouse();
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
