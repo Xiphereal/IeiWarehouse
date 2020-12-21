@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.restService;
+package ieiWarehousePopulator.restService.tutorial;
 
 /**
  * This is a test resource representation class. Must be removed upon tutorial completion.
