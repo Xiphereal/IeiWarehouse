@@ -21,7 +21,8 @@ public class LoadApi {
     private final AtomicLong requestId = new AtomicLong();
 
     private static final String ERROR_MESSAGE = "ERROR: The given parameters for the extraction are invalid. " +
-            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'";
+            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'. " +
+            "The valid year range goes from 1000 to 2999.";
     private static final String OK_MESSAGE = "OK: The extraction has finished has expected.";
 
     @GetMapping("/extractData")
