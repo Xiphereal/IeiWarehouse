@@ -38,6 +38,9 @@ public class LoadApi {
         if (isStartYearInvalid || isEndYearInvalid)
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
+        // TODO: Convert all extractor from sync to async, so that this REST request answers back
+        //  immediately to the requester with the corresponding response message.
+
         if (extractFromDblp)
             // TODO: Support the start and end year data filtering.
             DblpExtractor.extractDataIntoWarehouse();
