@@ -50,7 +50,7 @@ public class LoadApi {
     }
 
     private boolean isYear(String input) {
-        // REGEX: String that begins and ends with four digit.
-        return input.matches("^d{4}");
+        // REGEX: Numbers from 1000 to 2999.
+        return input.matches("^[12][0-9]{3}$");
     }
 }
