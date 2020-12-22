@@ -22,12 +22,12 @@ import java.util.List;
  */
 public class DblpExtractor {
 
-    public static void extractDataIntoWarehouse() {
+    public static void extractDataIntoWarehouse(Integer startYear, Integer endYear) {
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
-            articles.forEach(article -> parseJsonObject((JSONObject) article));
+            articles.forEach(article -> parseJsonObject((JSONObject) article, startYear, endYear));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
@@ -46,9 +46,16 @@ public class DblpExtractor {
         return (JSONArray) jsonObjectContainer.get("article");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject) {
+    private static void parseJsonObject(JSONObject jsonObject, Integer startYear, Integer endYear) {
         try {
             Article article = extractArticleAttributes(jsonObject);
+
+            boolean isArticleWithinYearRange = article.getYear() < startYear || article.getYear() > endYear;
+
+            // If the article is from outside the requested range, there's no need in continuing parsing.
+            if (!isArticleWithinYearRange)
+                return;
+
             List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
