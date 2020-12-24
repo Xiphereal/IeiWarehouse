@@ -26,8 +26,8 @@ public class LoadApi {
     private static final String OK_MESSAGE = "OK: The extraction has finished has expected.";
 
     @GetMapping("/extractData")
-    public RequestStatusResponse extractData(@RequestParam(value = "startYear", defaultValue = "") String startYear,
-                                             @RequestParam(value = "endYear", defaultValue = "") String endYear,
+    public RequestStatusResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
+                                             @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
                                              @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar) {
