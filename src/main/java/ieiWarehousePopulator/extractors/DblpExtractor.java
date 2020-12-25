@@ -5,6 +5,7 @@ import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
 import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.extractors.utils.YearRangeChecker;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 public class DblpExtractor {
 
-    public static void extractDataIntoWarehouse(Integer startYear, Integer endYear) {
+    public static void extractDataIntoWarehouse(Long startYear, Long endYear) {
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
@@ -46,14 +47,12 @@ public class DblpExtractor {
         return (JSONArray) jsonObjectContainer.get("article");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject, Integer startYear, Integer endYear) {
+    private static void parseJsonObject(JSONObject jsonObject, Long startYear, Long endYear) {
         try {
             Article article = extractArticleAttributes(jsonObject);
 
-            boolean isArticleWithinYearRange = startYear <= article.getYear() && article.getYear() <= endYear;
-
             // If the article is from outside the requested range, there's no need in continuing parsing.
-            if (!isArticleWithinYearRange)
+            if (!YearRangeChecker.isGivenYearBetweenRange(article.getYear(), startYear, endYear))
                 return;
 
             List<Person> authors = extractAuthors(jsonObject);
