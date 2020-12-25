@@ -32,9 +32,8 @@ public class IeeeExtractor {
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-        JSONArray jsonObjectContainer = (JSONArray) entireJsonFile.get("articles");
 
-        return jsonObjectContainer;
+        return (JSONArray) entireJsonFile.get("articles");
     }
 
     private static void parseJsonObject(JSONObject jsonObject, Long startYear, Long endYear) {
@@ -135,9 +134,8 @@ public class IeeeExtractor {
     private static String extractURL(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        String pdfUrl = jsonObject.get("pdf_url").toString();
 
-        return pdfUrl;
+        return jsonObject.get("pdf_url").toString();
     }
 
     /**
@@ -244,9 +242,8 @@ public class IeeeExtractor {
     private static Integer extractNumber(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Integer number = Integer.parseInt(jsonObject.get("article_number").toString());
 
-        return number;
+        return Integer.parseInt(jsonObject.get("article_number").toString());
     }
 
     /**
