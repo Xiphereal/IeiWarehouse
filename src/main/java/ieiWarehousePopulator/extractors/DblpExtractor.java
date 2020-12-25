@@ -9,8 +9,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import ieiWarehousePopulator.utils.RomanToDecimalConverter;
-import ieiWarehousePopulator.utils.SimpleJsonUtils;
+import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
