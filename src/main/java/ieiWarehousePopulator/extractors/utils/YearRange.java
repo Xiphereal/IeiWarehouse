@@ -1,8 +1,8 @@
 package ieiWarehousePopulator.extractors.utils;
 
 public class YearRange {
-    private Long startYear;
-    private Long endYear;
+    private final Long startYear;
+    private final Long endYear;
 
     public YearRange(Long startYear, Long endYear) {
         this.startYear = startYear;
