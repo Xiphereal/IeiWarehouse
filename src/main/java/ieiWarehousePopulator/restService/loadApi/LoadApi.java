@@ -48,8 +48,7 @@ public class LoadApi {
             IeeeExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         if (extractFromGoogleScholar)
-            // TODO: Support the start and end year data filtering.
-            GoogleSchoolarExtractor.extractDataIntoWarehouse();
+            GoogleSchoolarExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }

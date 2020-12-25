@@ -2,6 +2,7 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.extractors.utils.YearRangeChecker;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,21 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleSchoolarExtractor {
-    public static void extractDataIntoWarehouse() {
+    public static void extractDataIntoWarehouse(Long startYear, Long endYear) {
         try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
 
-            //extract articles
             JSONArray articles = getArticlesFromJson(entireJsonFile);
-            articles.forEach(article -> parseJsonArticle((JSONObject) article));
+            articles.forEach(article -> parseJsonArticle((JSONObject) article, startYear, endYear));
 
             JSONArray books = getBooksFromJson(entireJsonFile);
-            books.forEach(book -> parseJsonBook((JSONObject) book));
+            books.forEach(book -> parseJsonBook((JSONObject) book, startYear, endYear));
 
             JSONArray communicationCongress = getCommunicationCongress(entireJsonFile);
-            communicationCongress.forEach(congress -> parseJsonCommunicationCongress((JSONObject) congress));
+            communicationCongress.forEach(congress -> parseJsonCommunicationCongress((JSONObject) congress, startYear, endYear));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
@@ -35,10 +35,14 @@ public class GoogleSchoolarExtractor {
         }
     }
 
-    private static void parseJsonCommunicationCongress(JSONObject jsonObject) {
+    private static void parseJsonCommunicationCongress(JSONObject jsonObject, Long startYear, Long endYear) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+
+            // If the congress communication is from outside the requested range, there's no need in continuing parsing.
+            if (!YearRangeChecker.isGivenYearBetweenRange(congressCommunication.getYear(), startYear, endYear))
+                return;
 
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
 
@@ -60,10 +64,14 @@ public class GoogleSchoolarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonBook(JSONObject jsonObject) {
+    private static void parseJsonBook(JSONObject jsonObject, Long startYear, Long endYear) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             Book book = extractBookAttributes(jsonObject);
+
+            // If the book is from outside the requested range, there's no need in continuing parsing.
+            if (!YearRangeChecker.isGivenYearBetweenRange(book.getYear(), startYear, endYear))
+                return;
 
             resolveEntitiesRelationshipsBook(book, authors);
 
@@ -90,9 +98,14 @@ public class GoogleSchoolarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonArticle(JSONObject jsonObject) {
+    private static void parseJsonArticle(JSONObject jsonObject, Long startYear, Long endYear) {
         try {
             Article article = extractArticleAttributes(jsonObject);
+
+            // If the article is from outside the requested range, there's no need in continuing parsing.
+            if (!YearRangeChecker.isGivenYearBetweenRange(article.getYear(), startYear, endYear))
+                return;
+
             List<Person> person = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
