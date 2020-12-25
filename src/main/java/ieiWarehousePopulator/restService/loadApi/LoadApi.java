@@ -1,7 +1,7 @@
 package ieiWarehousePopulator.restService.loadApi;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
-import ieiWarehousePopulator.extractors.GoogleSchoolarExtractor;
+import ieiWarehousePopulator.extractors.GoogleScholarExtractor;
 import ieiWarehousePopulator.extractors.IeeeExtractor;
 import ieiWarehousePopulator.restService.RequestStatusResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * Represents the endpoint for the load form, receiving the configuration
  * for the {@link ieiWarehousePopulator.extractors.DblpExtractor},
- * {@link ieiWarehousePopulator.extractors.GoogleSchoolarExtractor} and
+ * {@link GoogleScholarExtractor} and
  * {@link ieiWarehousePopulator.extractors.IeeeExtractor}.
  */
 @RestController
@@ -48,7 +48,7 @@ public class LoadApi {
             IeeeExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         if (extractFromGoogleScholar)
-            GoogleSchoolarExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
+            GoogleScholarExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }

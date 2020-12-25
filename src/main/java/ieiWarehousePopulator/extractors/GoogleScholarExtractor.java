@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleSchoolarExtractor {
+public class GoogleScholarExtractor {
     public static void extractDataIntoWarehouse(Long startYear, Long endYear) {
         try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
 
