@@ -3,6 +3,7 @@ package ieiWarehousePopulator.restService.loadApi;
 import ieiWarehousePopulator.extractors.DblpExtractor;
 import ieiWarehousePopulator.extractors.GoogleScholarExtractor;
 import ieiWarehousePopulator.extractors.IeeeExtractor;
+import ieiWarehousePopulator.extractors.utils.YearRange;
 import ieiWarehousePopulator.restService.RequestStatusResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,17 +39,20 @@ public class LoadApi {
         if (isStartYearInvalid || isEndYearInvalid)
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
+        YearRange yearRange =
+                new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+
         // TODO: Convert all extractor from sync to async, so that this REST request answers back
         //  immediately to the requester with the corresponding response message.
 
         if (extractFromDblp)
-            DblpExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
+            DblpExtractor.extractDataIntoWarehouse(yearRange);
 
         if (extractFromIeee)
-            IeeeExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
+            IeeeExtractor.extractDataIntoWarehouse(yearRange);
 
         if (extractFromGoogleScholar)
-            GoogleScholarExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
+            GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }

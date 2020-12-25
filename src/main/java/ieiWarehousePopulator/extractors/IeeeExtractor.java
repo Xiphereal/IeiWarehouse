@@ -3,7 +3,7 @@ package ieiWarehousePopulator.extractors;
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
 import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
-import ieiWarehousePopulator.extractors.utils.YearRangeChecker;
+import ieiWarehousePopulator.extractors.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,12 +16,12 @@ import java.util.List;
 
 public class IeeeExtractor {
 
-    public static void extractDataIntoWarehouse(Long startYear, Long endYear) {
+    public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
-            articles.forEach(article -> parseJsonObject((JSONObject) article, startYear, endYear));
+            articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
@@ -36,7 +36,7 @@ public class IeeeExtractor {
         return (JSONArray) entireJsonFile.get("articles");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject, Long startYear, Long endYear) {
+    private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
         try {
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
@@ -47,7 +47,7 @@ public class IeeeExtractor {
                 Article article = extractArticleAttributes(jsonObject);
 
                 // If the article is from outside the requested range, there's no need in continuing parsing.
-                if (!YearRangeChecker.isGivenYearBetweenRange(article.getYear(), startYear, endYear))
+                if (!yearRange.isGivenYearBetweenRange(article.getYear()))
                     return;
 
                 Copy copy = extractCopyAttributes(jsonObject);
@@ -60,8 +60,9 @@ public class IeeeExtractor {
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
 
-                // If the congress communication is from outside the requested range, there's no need in continuing parsing.
-                if (!YearRangeChecker.isGivenYearBetweenRange(congressCommunication.getYear(), startYear, endYear))
+                // If the congress communication is from outside the requested range,
+                // there's no need in continuing parsing.
+                if (!yearRange.isGivenYearBetweenRange(congressCommunication.getYear()))
                     return;
 
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
@@ -72,7 +73,7 @@ public class IeeeExtractor {
                 Book book = extractBookAttributes(jsonObject);
 
                 // If the book is from outside the requested range, there's no need in continuing parsing.
-                if (!YearRangeChecker.isGivenYearBetweenRange(book.getYear(), startYear, endYear))
+                if (!yearRange.isGivenYearBetweenRange(book.getYear()))
                     return;
 
                 resolveEntitiesRelationshipsBook(book, person);
