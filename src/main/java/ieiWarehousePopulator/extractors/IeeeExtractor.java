@@ -3,6 +3,7 @@ package ieiWarehousePopulator.extractors;
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
 import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.YearRangeChecker;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,11 +16,13 @@ import java.util.List;
 
 public class IeeeExtractor {
 
-    public static void extractDataIntoWarehouse() {
+    public static void extractDataIntoWarehouse(Long startYear, Long endYear) {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
-            articles.forEach(article -> parseJsonObject((JSONObject) article));
+
+            articles.forEach(article -> parseJsonObject((JSONObject) article, startYear, endYear));
+
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
@@ -34,7 +37,7 @@ public class IeeeExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonObject(JSONObject jsonObject) {
+    private static void parseJsonObject(JSONObject jsonObject, Long startYear, Long endYear) {
         try {
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
@@ -43,6 +46,11 @@ public class IeeeExtractor {
             //  Also check if that copy already exists, if it does Add the article to the copy
             if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
                 Article article = extractArticleAttributes(jsonObject);
+
+                // If the article is from outside the requested range, there's no need in continuing parsing.
+                if (!YearRangeChecker.isGivenYearBetweenRange(article.getYear(), startYear, endYear))
+                    return;
+
                 Copy copy = extractCopyAttributes(jsonObject);
                 Magazine magazine = new Magazine((String) jsonObject.get("publication_title"));
 
@@ -52,13 +60,22 @@ public class IeeeExtractor {
 
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+
+                // If the congress communication is from outside the requested range, there's no need in continuing parsing.
+                if (!YearRangeChecker.isGivenYearBetweenRange(congressCommunication.getYear(), startYear, endYear))
+                    return;
+
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
-                //System.out.println(congressCommunication);
 
                 congressCommunication.persist();
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
+
+                // If the book is from outside the requested range, there's no need in continuing parsing.
+                if (!YearRangeChecker.isGivenYearBetweenRange(book.getYear(), startYear, endYear))
+                    return;
+
                 resolveEntitiesRelationshipsBook(book, person);
 
                 book.persist();

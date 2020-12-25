@@ -45,8 +45,7 @@ public class LoadApi {
             DblpExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         if (extractFromIeee)
-            // TODO: Support the start and end year data filtering.
-            IeeeExtractor.extractDataIntoWarehouse();
+            IeeeExtractor.extractDataIntoWarehouse(Long.valueOf(startYear), Long.valueOf(endYear));
 
         if (extractFromGoogleScholar)
             // TODO: Support the start and end year data filtering.
