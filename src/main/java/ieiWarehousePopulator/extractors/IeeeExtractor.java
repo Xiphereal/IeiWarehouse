@@ -295,11 +295,6 @@ public class IeeeExtractor {
         return null;
     }
 
-    private static boolean isInSimpleRangeFormat(String stringPages) {
-        // REGEX: Two numbers separated by '-'
-        return stringPages.matches("\\d+-\\d+");
-    }
-
     private static String extractTitle(JSONObject jsonObject) {
         return (String) jsonObject.get("publication_title");
     }

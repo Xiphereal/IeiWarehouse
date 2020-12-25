@@ -135,14 +135,6 @@ public class GoogleScholarExtractor {
                 editorial);
     }
 
-    private static JSONObject getInfoFromJson(FileReader fileReader) throws IOException, ParseException {
-        JSONParser jsonParser = new JSONParser();
-        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("bibtex");
-
-        return jsonObjectContainer;
-    }
-
     private static CongressCommunication extractCongressCommunicationAttributes(JSONObject jsonObject) {
         String title = extractTitle(jsonObject);
         Long year = extractYear(jsonObject);
@@ -328,11 +320,6 @@ public class GoogleScholarExtractor {
         return null;
     }
 
-    private static boolean isInSimpleRangeFormat(String stringPages) {
-        // REGEX: Two numbers separated by '-'
-        return stringPages.matches("\\d+-\\d+");
-    }
-
     private static String extractTitle(JSONObject jsonObject) {
         return (String) jsonObject.get("title");
     }
@@ -353,10 +340,6 @@ public class GoogleScholarExtractor {
         return null;
     }
 
-    private static String extractDate(JSONObject jsonObject) {
-        return null;
-    }
-
     //we can't get the congress name in google schoolar inproceedings
     private static String extractCongress(JSONObject jsonObject) {
         return null;
@@ -369,15 +352,6 @@ public class GoogleScholarExtractor {
 
     private static String extractEditorial(JSONObject jsonObject) {
         return null;
-    }
-
-    private static boolean isInRomanNotation(String stringPages) {
-        // REGEX: Contains any number.
-        return !stringPages.matches(".*[0-9].*");
-    }
-
-    private static void resolveEntitiesRelationshipsArticle(Article article, List<Person> authors, Copy copy, Magazine magazine) {
-        return;
     }
 
     private static void resolveEntitiesRelationshipsBook(Book book, List<Person> authors) {
