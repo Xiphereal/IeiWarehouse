@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Represents the endpoint for the load form, receiving the configuration
- * for the {@link ieiWarehousePopulator.extractors.DblpExtractor},
+ * for the {@link DblpExtractor},
  * {@link GoogleScholarExtractor} and
- * {@link ieiWarehousePopulator.extractors.IeeeExtractor}.
+ * {@link IeeeExtractor}.
  */
 @RestController
 public class LoadApi {
