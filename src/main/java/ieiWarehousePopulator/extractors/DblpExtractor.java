@@ -50,7 +50,7 @@ public class DblpExtractor {
         try {
             Article article = extractArticleAttributes(jsonObject);
 
-            boolean isArticleWithinYearRange = article.getYear() < startYear || article.getYear() > endYear;
+            boolean isArticleWithinYearRange = startYear <= article.getYear() && article.getYear() <= endYear;
 
             // If the article is from outside the requested range, there's no need in continuing parsing.
             if (!isArticleWithinYearRange)
