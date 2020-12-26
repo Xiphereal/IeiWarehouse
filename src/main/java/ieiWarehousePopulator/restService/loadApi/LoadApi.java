@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -47,18 +48,25 @@ public class LoadApi {
         YearRange yearRange =
                 new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        // TODO: Convert all extractor from sync to async, so that this REST request answers back
-        //  immediately to the requester with the corresponding response message.
-
-        if (extractFromDblp)
-            DblpExtractor.extractDataIntoWarehouse(yearRange);
-
-        if (extractFromIeee)
-            IeeeExtractor.extractDataIntoWarehouse(yearRange);
-
-        if (extractFromGoogleScholar)
-            GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
+    }
+
+    private void runExtractorsAsync(boolean extractFromDblp,
+                                    boolean extractFromIeee,
+                                    boolean extractFromGoogleScholar,
+                                    YearRange yearRange) {
+        CompletableFuture.runAsync(() -> {
+                    if (extractFromDblp)
+                        DblpExtractor.extractDataIntoWarehouse(yearRange);
+
+                    if (extractFromIeee)
+                        IeeeExtractor.extractDataIntoWarehouse(yearRange);
+
+                    if (extractFromGoogleScholar)
+                        GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+                }
+        );
     }
 }
