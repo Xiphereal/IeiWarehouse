@@ -49,18 +49,18 @@ public class SearchApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        return getResponseContentsFromWarehouse(yearRange,
+        return getDataFromWarehouse(yearRange,
                 author,
                 searchArticles,
                 searchBooks,
                 searchCongressCommunications);
     }
 
-    private RequestResultResponse getResponseContentsFromWarehouse(YearRange yearRange,
-                                                                   String author,
-                                                                   boolean searchArticles,
-                                                                   boolean searchBooks,
-                                                                   boolean searchCongressCommunications) {
+    private RequestResultResponse getDataFromWarehouse(YearRange yearRange,
+                                                       String author,
+                                                       boolean searchArticles,
+                                                       boolean searchBooks,
+                                                       boolean searchCongressCommunications) {
         List<Article> retrievedArticles = new ArrayList<>();
         List<Book> retrievedBooks = new ArrayList<>();
         List<CongressCommunication> retrievedCongressCommunications = new ArrayList<>();
