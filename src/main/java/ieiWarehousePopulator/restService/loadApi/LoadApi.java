@@ -22,7 +22,8 @@ public class LoadApi {
     private final AtomicLong requestId = new AtomicLong();
 
     private static final String ERROR_MESSAGE = "ERROR: The given parameters for the extraction are invalid. " +
-            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'. " +
+            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'" +
+            ", with startYear being less than endYear. " +
             "The valid year range goes from 1000 to 2999.";
     private static final String OK_MESSAGE = "OK: The extraction has finished has expected.";
 
@@ -35,12 +36,17 @@ public class LoadApi {
         boolean isStartYearInvalid = !startYear.isEmpty() && !isYear(startYear);
         boolean isEndYearInvalid = !endYear.isEmpty() && !isYear(endYear);
 
+        Long startYearValue = Long.valueOf(startYear);
+        Long endYearValue = Long.valueOf(endYear);
+
+        boolean isEndYearAfterStartYear = startYearValue <= endYearValue;
+
         // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (isStartYearInvalid || isEndYearInvalid)
+        if (isStartYearInvalid || isEndYearInvalid || !isEndYearAfterStartYear)
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
         YearRange yearRange =
-                new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+                new YearRange(startYearValue, endYearValue);
 
         // TODO: Convert all extractor from sync to async, so that this REST request answers back
         //  immediately to the requester with the corresponding response message.
