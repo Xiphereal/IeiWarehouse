@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.persistence;
+package ieiWarehousePopulator.restService.requestResponses;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
