@@ -1,5 +1,6 @@
 package ieiWarehousePopulator.restService.searchApi;
 
+import ieiWarehousePopulator.extractors.utils.YearRange;
 import ieiWarehousePopulator.restService.RequestStatusResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,31 @@ public class SearchApi {
                                          @RequestParam(value = "searchArticles", defaultValue = "true") boolean searchArticles,
                                          @RequestParam(value = "searchCongressCommunications", defaultValue = "true") boolean searchCongressCommunications,
                                          @RequestParam(value = "searchBooks", defaultValue = "true") boolean searchBooks) {
+
+        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+
+        // If either any parameter is invalid, the request is considered completely invalid as well.
+        if (!isYearRangeValid)
+            return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
+
+        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+
+        String responseContents = getResponseContentsFromWarehouse(startYear,
+                endYear,
+                author,
+                searchArticles,
+                searchBooks,
+                searchCongressCommunications);
+
+        return new RequestStatusResponse(requestId.incrementAndGet(), responseContents);
+    }
+
+    private String getResponseContentsFromWarehouse(String startYear,
+                                                    String endYear,
+                                                    String author,
+                                                    boolean searchArticles,
+                                                    boolean searchBooks,
+                                                    boolean searchCongressCommunications) {
         return null;
     }
 }
