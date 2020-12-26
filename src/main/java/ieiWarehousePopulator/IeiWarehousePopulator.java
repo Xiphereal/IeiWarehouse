@@ -13,10 +13,6 @@ public class IeiWarehousePopulator {
 
         SpringApplication.run(IeiWarehousePopulator.class, args);
         
-//        IeeeExtractor.extractDataIntoWarehouse();
-//        DblpExtractor.extractDataIntoWarehouse();
-//        GoogleSchoolarExtractor.extractDataIntoWarehouse();
-
         // Closes the SQL connection even when the VM terminates abruptly.
         // ! Doesn't work in IDE executions.
         // See: https://stackoverflow.com/questions/3366965/is-it-is-possible-to-do-something-when-the-java-program-exits-abruptly
