@@ -52,11 +52,9 @@ public class MySQLConnection {
             Statement statement = connection.createStatement();
             ResultSet queryResultSet = statement.executeQuery(sqlQuery);
 
-            List<T> queryRetrievedResults = queryStrategy.retrieveQueryResults(queryResultSet);
+            return queryStrategy.retrieveQueryResults(queryResultSet);
 
-            return queryRetrievedResults;
-
-        }  catch (SQLException | ClassNotFoundException throwables) {
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
 
