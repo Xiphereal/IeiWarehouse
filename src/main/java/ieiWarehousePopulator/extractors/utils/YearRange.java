@@ -24,6 +24,14 @@ public class YearRange {
         return isStartYearBeforeEndYear;
     }
 
+    public Long getStartYear() {
+        return startYear;
+    }
+
+    public Long getEndYear() {
+        return endYear;
+    }
+
     private static boolean isYear(String input) {
         // REGEX: Numbers from 1000 to 2999.
         return input.matches("^[12][0-9]{3}$");
