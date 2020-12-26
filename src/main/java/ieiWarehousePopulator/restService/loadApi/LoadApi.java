@@ -37,20 +37,15 @@ public class LoadApi {
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
                                              @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar) {
-        boolean isStartYearInvalid = !startYear.isEmpty() && !isYear(startYear);
-        boolean isEndYearInvalid = !endYear.isEmpty() && !isYear(endYear);
 
-        Long startYearValue = Long.valueOf(startYear);
-        Long endYearValue = Long.valueOf(endYear);
-
-        boolean isEndYearAfterStartYear = startYearValue <= endYearValue;
+        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
 
         // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (isStartYearInvalid || isEndYearInvalid || !isEndYearAfterStartYear)
+        if (!isYearRangeValid)
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
         YearRange yearRange =
-                new YearRange(startYearValue, endYearValue);
+                new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
         // TODO: Convert all extractor from sync to async, so that this REST request answers back
         //  immediately to the requester with the corresponding response message.
@@ -65,10 +60,5 @@ public class LoadApi {
             GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
-    }
-
-    private boolean isYear(String input) {
-        // REGEX: Numbers from 1000 to 2999.
-        return input.matches("^[12][0-9]{3}$");
     }
 }
