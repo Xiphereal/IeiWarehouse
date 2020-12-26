@@ -5,13 +5,13 @@ import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
 import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.SimpleJsonUtils;
 import ieiWarehousePopulator.extractors.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
-import ieiWarehousePopulator.extractors.utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class DblpExtractor {
 
+    // TODO: Revert the changes made for the year-filtered extractions and support the
+    //  performing of a REST API request to the wrapper for obtaining the already
+    //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
 
@@ -36,9 +39,6 @@ public class DblpExtractor {
         }
     }
 
-    // TODO: Get the articles from an interface passed by argument, so that we can later
-    //  change the data source (from a file to the API REST request) by creating a new
-    //  class that implements that interface.
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);

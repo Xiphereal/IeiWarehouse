@@ -16,6 +16,9 @@ import java.util.List;
 
 public class IeeeExtractor {
 
+    // TODO: Revert the changes made for the year-filtered extractions and support the
+    //  performing of a REST API request to the wrapper for obtaining the already
+    //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 

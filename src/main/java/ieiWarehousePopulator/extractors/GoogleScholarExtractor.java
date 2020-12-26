@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleScholarExtractor {
+
+    // TODO: Revert the changes made for the year-filtered extractions and support the
+    //  performing of a REST API request to the wrapper for obtaining the already
+    //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
 
