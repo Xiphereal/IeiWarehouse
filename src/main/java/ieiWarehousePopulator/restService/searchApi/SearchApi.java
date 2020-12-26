@@ -4,6 +4,9 @@ import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
 import ieiWarehousePopulator.domain.CongressCommunication;
 import ieiWarehousePopulator.extractors.utils.YearRange;
+import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
+import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
+import ieiWarehousePopulator.persistence.dataAccessObjects.CongressCommunicationDAO;
 import ieiWarehousePopulator.restService.requestResponses.RequestResponse;
 import ieiWarehousePopulator.restService.requestResponses.RequestResultResponse;
 import ieiWarehousePopulator.restService.requestResponses.RequestStatusResponse;
@@ -62,7 +65,15 @@ public class SearchApi {
         List<Book> retrievedBooks = new ArrayList<>();
         List<CongressCommunication> retrievedCongressCommunications = new ArrayList<>();
 
-        // TODO: Retrieve the different publications from the persistence layer.
+        if (searchArticles)
+            retrievedArticles = ArticleDAO.retrieveArticles(yearRange, author);
+
+        if (searchBooks)
+            retrievedBooks = BookDAO.retrieveBooks(yearRange, author);
+
+        if (searchCongressCommunications)
+            retrievedCongressCommunications =
+                    CongressCommunicationDAO.retrieveCongressCommunications(yearRange, author);
 
         return new RequestResultResponse(retrievedArticles, retrievedBooks, retrievedCongressCommunications);
     }
