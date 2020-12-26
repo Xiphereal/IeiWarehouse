@@ -1,11 +1,15 @@
 package ieiWarehousePopulator.restService.searchApi;
 
 import ieiWarehousePopulator.extractors.utils.YearRange;
+import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
+import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
+import ieiWarehousePopulator.persistence.dataAccessObjects.CongressCommunicationDAO;
 import ieiWarehousePopulator.restService.RequestStatusResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -53,7 +57,33 @@ public class SearchApi {
                                                     boolean searchArticles,
                                                     boolean searchBooks,
                                                     boolean searchCongressCommunications) {
+        StringBuilder responseContents = new StringBuilder();
 
-        return null;
+        if (searchArticles) {
+            List<ArticleDAO> articleDAOs = ArticleDAO.getArticleDAOs();
+
+            for (ArticleDAO articleDAO : articleDAOs) {
+                // TODO: Append each article to the response contents.
+            }
+        }
+
+        if (searchBooks) {
+            List<BookDAO> bookDAOs = BookDAO.getBookDAOs();
+
+            for (BookDAO bookDAO : bookDAOs) {
+                // TODO: Append each book to the response contents.
+            }
+        }
+
+        if (searchCongressCommunications) {
+            List<CongressCommunicationDAO> congressCommunicationDAOs =
+                    CongressCommunicationDAO.getCongressCommunicationDAOs();
+
+            for (CongressCommunicationDAO congressCommunicationDAO : congressCommunicationDAOs) {
+                // TODO: Append each communication congress to the response contents.
+            }
+        }
+
+        return responseContents.toString();
     }
 }
