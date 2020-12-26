@@ -47,8 +47,7 @@ public class LoadApi {
         if (!isYearRangeValid)
             return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
 
-        YearRange yearRange =
-                new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
         runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange);
 
