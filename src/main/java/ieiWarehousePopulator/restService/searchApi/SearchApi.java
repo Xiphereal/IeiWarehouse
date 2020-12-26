@@ -39,8 +39,7 @@ public class SearchApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        String responseContents = getResponseContentsFromWarehouse(startYear,
-                endYear,
+        String responseContents = getResponseContentsFromWarehouse(yearRange,
                 author,
                 searchArticles,
                 searchBooks,
@@ -49,12 +48,12 @@ public class SearchApi {
         return new RequestStatusResponse(requestId.incrementAndGet(), responseContents);
     }
 
-    private String getResponseContentsFromWarehouse(String startYear,
-                                                    String endYear,
+    private String getResponseContentsFromWarehouse(YearRange yearRange,
                                                     String author,
                                                     boolean searchArticles,
                                                     boolean searchBooks,
                                                     boolean searchCongressCommunications) {
+
         return null;
     }
 }
