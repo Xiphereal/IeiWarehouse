@@ -2,7 +2,8 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,11 +16,16 @@ import java.util.List;
 
 public class IeeeExtractor {
 
-    public static void extractDataIntoWarehouse() {
+    // TODO: Revert the changes made for the year-filtered extractions and support the
+    //  performing of a REST API request to the wrapper for obtaining the already
+    //  filtered JSON file.
+    public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
-            articles.forEach(article -> parseJsonObject((JSONObject) article));
+
+            articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
+
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
@@ -29,12 +35,11 @@ public class IeeeExtractor {
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-        JSONArray jsonObjectContainer = (JSONArray) entireJsonFile.get("articles");
 
-        return jsonObjectContainer;
+        return (JSONArray) entireJsonFile.get("articles");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject) {
+    private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
         try {
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
@@ -43,6 +48,11 @@ public class IeeeExtractor {
             //  Also check if that copy already exists, if it does Add the article to the copy
             if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
                 Article article = extractArticleAttributes(jsonObject);
+
+                // If the article is from outside the requested range, there's no need in continuing parsing.
+                if (!yearRange.isGivenYearBetweenRange(article.getYear()))
+                    return;
+
                 Copy copy = extractCopyAttributes(jsonObject);
                 Magazine magazine = new Magazine((String) jsonObject.get("publication_title"));
 
@@ -52,13 +62,23 @@ public class IeeeExtractor {
 
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
+
+                // If the congress communication is from outside the requested range,
+                // there's no need in continuing parsing.
+                if (!yearRange.isGivenYearBetweenRange(congressCommunication.getYear()))
+                    return;
+
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
-                //System.out.println(congressCommunication);
 
                 congressCommunication.persist();
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
+
+                // If the book is from outside the requested range, there's no need in continuing parsing.
+                if (!yearRange.isGivenYearBetweenRange(book.getYear()))
+                    return;
+
                 resolveEntitiesRelationshipsBook(book, person);
 
                 book.persist();
@@ -118,9 +138,8 @@ public class IeeeExtractor {
     private static String extractURL(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        String pdfUrl = jsonObject.get("pdf_url").toString();
 
-        return pdfUrl;
+        return jsonObject.get("pdf_url").toString();
     }
 
     /**
@@ -227,9 +246,8 @@ public class IeeeExtractor {
     private static Integer extractNumber(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Integer number = Integer.parseInt(jsonObject.get("article_number").toString());
 
-        return number;
+        return Integer.parseInt(jsonObject.get("article_number").toString());
     }
 
     /**
@@ -278,11 +296,6 @@ public class IeeeExtractor {
                 return 12;
         }
         return null;
-    }
-
-    private static boolean isInSimpleRangeFormat(String stringPages) {
-        // REGEX: Two numbers separated by '-'
-        return stringPages.matches("\\d+-\\d+");
     }
 
     private static String extractTitle(JSONObject jsonObject) {

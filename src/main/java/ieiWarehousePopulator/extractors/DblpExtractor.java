@@ -5,12 +5,13 @@ import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
 import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
+import ieiWarehousePopulator.extractors.utils.SimpleJsonUtils;
+import ieiWarehousePopulator.extractors.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import ieiWarehousePopulator.utils.RomanToDecimalConverter;
-import ieiWarehousePopulator.utils.SimpleJsonUtils;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,12 +23,15 @@ import java.util.List;
  */
 public class DblpExtractor {
 
-    public static void extractDataIntoWarehouse() {
+    // TODO: Revert the changes made for the year-filtered extractions and support the
+    //  performing of a REST API request to the wrapper for obtaining the already
+    //  filtered JSON file.
+    public static void extractDataIntoWarehouse(YearRange yearRange) {
         try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
-            articles.forEach(article -> parseJsonObject((JSONObject) article));
+            articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
@@ -35,9 +39,6 @@ public class DblpExtractor {
         }
     }
 
-    // TODO: Get the articles from an interface passed by argument, so that we can later
-    //  change the data source (from a file to the API REST request) by creating a new
-    //  class that implements that interface.
     private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
@@ -46,9 +47,14 @@ public class DblpExtractor {
         return (JSONArray) jsonObjectContainer.get("article");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject) {
+    private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
         try {
             Article article = extractArticleAttributes(jsonObject);
+
+            // If the article is from outside the requested range, there's no need in continuing parsing.
+            if (!yearRange.isGivenYearBetweenRange(article.getYear()))
+                return;
+
             List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);

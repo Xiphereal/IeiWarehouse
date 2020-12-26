@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.utils;
+package ieiWarehousePopulator.persistence.utils;
 
 import ieiWarehousePopulator.persistence.MySQLConnection;
 

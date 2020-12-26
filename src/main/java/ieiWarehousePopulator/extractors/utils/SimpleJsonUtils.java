@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.utils;
+package ieiWarehousePopulator.extractors.utils;
 
 import org.json.simple.JSONArray;
 

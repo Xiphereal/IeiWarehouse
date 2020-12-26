@@ -1,20 +1,18 @@
 package ieiWarehousePopulator;
 
-import ieiWarehousePopulator.extractors.DblpExtractor;
-import ieiWarehousePopulator.extractors.GoogleSchoolarExtractor;
-import ieiWarehousePopulator.extractors.IeeeExtractor;
 import ieiWarehousePopulator.persistence.MySQLConnection;
-import ieiWarehousePopulator.utils.DatabasePurge;
+import ieiWarehousePopulator.persistence.utils.DatabasePurge;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class IeiWarehousePopulator {
     public static void main(String[] args) {
 
         DatabasePurge.purgeAllTables();
 
-        IeeeExtractor.extractDataIntoWarehouse();
-        DblpExtractor.extractDataIntoWarehouse();
-        GoogleSchoolarExtractor.extractDataIntoWarehouse();
-
+        SpringApplication.run(IeiWarehousePopulator.class, args);
+        
         // Closes the SQL connection even when the VM terminates abruptly.
         // ! Doesn't work in IDE executions.
         // See: https://stackoverflow.com/questions/3366965/is-it-is-possible-to-do-something-when-the-java-program-exits-abruptly
