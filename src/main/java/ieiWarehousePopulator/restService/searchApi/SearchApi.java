@@ -22,7 +22,7 @@ public class SearchApi {
      * A typical URL request could be:
      * "http://localhost:8080/extractData?startYear=2015&endYear=2018&extractFromDBLP=false&extractFromGoogleScholar=false"
      */
-    @GetMapping("/extractData")
+    @GetMapping("/getData")
     public RequestStatusResponse getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                          @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
                                          @RequestParam(value = "author", defaultValue = "") String author,
