@@ -26,7 +26,9 @@ public class LoadApi {
             "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'" +
             ", with startYear being less than endYear. " +
             "The valid year range goes from 1000 to 2999.";
-    private static final String OK_MESSAGE = "OK: The extraction has finished has expected.";
+
+    private static final String OK_MESSAGE = "OK: The extraction has started as expected. " +
+            "The results will be ready at the warehouse after a few minutes.";
 
     /**
      * A typical URL request could be:
