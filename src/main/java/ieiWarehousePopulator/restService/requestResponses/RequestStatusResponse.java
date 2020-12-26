@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.restService;
+package ieiWarehousePopulator.restService.requestResponses;
 
 public class RequestStatusResponse {
     private final long requestId;
