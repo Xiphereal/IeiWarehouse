@@ -6,7 +6,7 @@ import ieiWarehousePopulator.domain.CongressCommunication;
 
 import java.util.List;
 
-public class RequestResultResponse {
+public class RequestResultResponse implements RequestResponse {
     private List<Article> articles;
     private List<Book> books;
     private List<CongressCommunication> congressCommunications;
