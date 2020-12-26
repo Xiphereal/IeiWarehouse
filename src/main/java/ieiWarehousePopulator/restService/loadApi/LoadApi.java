@@ -27,6 +27,10 @@ public class LoadApi {
             "The valid year range goes from 1000 to 2999.";
     private static final String OK_MESSAGE = "OK: The extraction has finished has expected.";
 
+    /**
+     * A typical URL request could be:
+     * "http://localhost:8080/extractData?startYear=2015&endYear=2018&extractFromDBLP=false&extractFromGoogleScholar=false"
+     */
     @GetMapping("/extractData")
     public RequestStatusResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                              @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
