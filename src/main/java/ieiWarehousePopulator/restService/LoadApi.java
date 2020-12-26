@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.restService.loadApi;
+package ieiWarehousePopulator.restService;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
 import ieiWarehousePopulator.extractors.GoogleScholarExtractor;

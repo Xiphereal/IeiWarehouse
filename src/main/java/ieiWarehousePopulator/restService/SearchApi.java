@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.restService.searchApi;
+package ieiWarehousePopulator.restService;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
