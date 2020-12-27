@@ -20,6 +20,7 @@ public class Article extends Publication implements Persistable {
 
     // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
     //  substituting it with a call to that class.
+    @Override
     public void persist() {
         Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
 
