@@ -24,6 +24,8 @@ public class Person {
         return personList;
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     public static void persistAuthors(Set<Person> authors, Integer publicationId) {
 
         if (!doesArticleHaveAuthors(authors)) {

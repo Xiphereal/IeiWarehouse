@@ -18,6 +18,8 @@ public class Article extends Publication implements Persistable {
         this.finalPage = finalPage;
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     public void persist() {
         Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
 

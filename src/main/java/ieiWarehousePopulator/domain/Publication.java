@@ -2,7 +2,10 @@ package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.persistence.MySQLConnection;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class Publication {
     private String title;
@@ -16,6 +19,8 @@ public class Publication {
         this.url = url;
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     protected Integer retrievePublicationDatabaseId() {
         String formattedTitle = this.getTitle() != null ? "= " + "\"" + this.getTitle() + "\"" : "IS NULL";
         String formattedYear = this.getYear() != null ? "= " + this.getYear() : "IS NULL";
@@ -31,6 +36,8 @@ public class Publication {
         return retrievedPublicationId.orElse(null);
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     protected void insertNewPublicationIntoDatabase() {
         String addPublicationSqlUpdate =
                 "INSERT INTO publicacion (titulo, anyo, URL) " +

@@ -16,6 +16,8 @@ public class Copy {
         this.month = month;
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     public Integer persistCopy(Integer retrievedMagazineId) {
         if (!doesArticleHaveCopy(this)) {
             return null;
