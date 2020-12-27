@@ -7,6 +7,7 @@ import java.util.List;
 
 public class ArticleDAO {
     public static List<Article> retrieveArticles(YearRange yearRange, String author) {
+        // TODO: Populate the result list with the filtered Articles from the Warehouse.
         return null;
     }
 }
