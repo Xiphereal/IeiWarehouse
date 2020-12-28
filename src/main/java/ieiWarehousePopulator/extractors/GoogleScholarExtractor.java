@@ -120,8 +120,6 @@ public class GoogleScholarExtractor {
 
             article.persist();
 
-            //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
-            // Also check if that copy already exists, if it does Add the article to the copy
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
             e.printStackTrace();
@@ -359,11 +357,17 @@ public class GoogleScholarExtractor {
     }
 
     private static void resolveEntitiesRelationshipsBook(Book book, List<Person> authors) {
-        return;
+        book.setAuthors(authors);
+
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(book.getTitle()));
     }
 
     private static void resolveEntitiesRelationshipsCommunication(CongressCommunication congressCommunication, List<Person> authors) {
-        return;
+        congressCommunication.setAuthors(authors);
+
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(congressCommunication.getTitle()));
     }
 
     private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
