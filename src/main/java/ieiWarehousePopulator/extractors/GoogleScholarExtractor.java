@@ -367,7 +367,8 @@ public class GoogleScholarExtractor {
         congressCommunication.setAuthors(authors);
 
         if (authors != null)
-            authors.forEach(author -> author.setAuthoredPublication(congressCommunication.getTitle()));    }
+            authors.forEach(author -> author.setAuthoredPublication(congressCommunication.getTitle()));
+    }
 
     private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
         Object name = jsonObject.get("journal");
