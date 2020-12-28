@@ -29,6 +29,8 @@ public class ArticlesRetrieval implements QueryStrategy {
 
             String magazineName = (String) queryResultSet.getObject(9);
 
+            // TODO: Retrieve the list of the article's authors.
+
             Article article = resolveRelationships(title,
                     year,
                     url,
