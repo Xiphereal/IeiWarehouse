@@ -17,9 +17,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
         Integer retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication.getTitle());
 
         if (!doesCongressCommunicationAlreadyExistInDatabase(retrievedPublicationId)) {
-            insertNewPublicationIntoDatabase(congressCommunication.getTitle(),
-                    congressCommunication.getYear(),
-                    congressCommunication.getUrl());
+            insertNewPublicationIntoDatabase(congressCommunication);
             insertNewCongressCommunicationIntoDatabase(congressCommunication);
 
             retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication.getTitle());

@@ -22,8 +22,8 @@ public class Publication {
         return PublicationDAO.retrievePublicationDatabaseId(this.getTitle());
     }
 
-    protected void insertNewPublicationIntoDatabase() {
-        PublicationDAO.insertNewPublicationIntoDatabase(this.getTitle(), this.getYear(),this.getUrl());
+    protected void insertNewPublicationIntoDatabase(Publication publication) {
+        PublicationDAO.insertNewPublicationIntoDatabase(publication);
     }
 
     public String getTitle() {

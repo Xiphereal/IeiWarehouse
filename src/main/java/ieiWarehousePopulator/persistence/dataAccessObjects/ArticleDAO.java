@@ -24,7 +24,7 @@ public class ArticleDAO {
             if (!doesArticleHaveCopy(retrievedCopyId))
                 return;
 
-            PublicationDAO.insertNewPublicationIntoDatabase(article.getTitle(), article.getYear(), article.getUrl());
+            PublicationDAO.insertNewPublicationIntoDatabase(article);
             insertNewArticleIntoDatabase(retrievedCopyId, article);
 
             retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article.getTitle());

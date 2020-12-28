@@ -17,7 +17,7 @@ public class BookDAO extends PublicationDAO {
         Integer retrievedPublicationId = retrievePublicationDatabaseId(book.getTitle());
 
         if (!doesBookAlreadyExistInDatabase(retrievedPublicationId)) {
-            insertNewPublicationIntoDatabase(book.getTitle(), book.getYear(), book.getUrl());
+            insertNewPublicationIntoDatabase(book);
             insertNewBookIntoDatabase(book);
 
             retrievedPublicationId = retrievePublicationDatabaseId(book.getTitle());

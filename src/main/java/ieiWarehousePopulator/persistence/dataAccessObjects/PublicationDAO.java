@@ -1,5 +1,6 @@
 package ieiWarehousePopulator.persistence.dataAccessObjects;
 
+import ieiWarehousePopulator.domain.Publication;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 
 import java.util.Optional;
@@ -20,12 +21,12 @@ public class PublicationDAO {
         return retrievedPublicationId.orElse(null);
     }
 
-    public static void insertNewPublicationIntoDatabase(String title, long year, String url) {
+    public static void insertNewPublicationIntoDatabase(Publication publication) {
         String addPublicationSqlUpdate =
                 "INSERT INTO publicacion (titulo, anyo, URL) " +
-                        "VALUES (" + "\"" + title + "\", " +
-                        year + ", " +
-                        "\"" + url + "\");";
+                        "VALUES (" + "\"" + publication.getTitle() + "\", " +
+                        publication.getYear() + ", " +
+                        "\"" + publication.getUrl() + "\");";
 
         MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }
