@@ -1,9 +1,7 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
 import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
-import ieiWarehousePopulator.persistence.dataAccessObjects.PublicationDAO;
 
 public class Article extends Publication implements Persistable {
     private Integer initialPage;
@@ -20,8 +18,6 @@ public class Article extends Publication implements Persistable {
         this.finalPage = finalPage;
     }
 
-    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
-    //  substituting it with a call to that class.
     @Override
     public void persist() {
         ArticleDAO.persist(this);

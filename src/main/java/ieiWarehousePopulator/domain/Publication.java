@@ -1,11 +1,9 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.dataAccessObjects.PublicationDAO;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class Publication {

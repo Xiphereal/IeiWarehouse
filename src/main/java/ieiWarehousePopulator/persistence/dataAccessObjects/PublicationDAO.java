@@ -19,6 +19,7 @@ public class PublicationDAO {
 
         return retrievedPublicationId.orElse(null);
     }
+
     public static void insertNewPublicationIntoDatabase(String title, long year, String url) {
         String addPublicationSqlUpdate =
                 "INSERT INTO publicacion (titulo, anyo, URL) " +

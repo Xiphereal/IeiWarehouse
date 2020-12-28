@@ -1,20 +1,18 @@
 package ieiWarehousePopulator.persistence.dataAccessObjects;
 
 import ieiWarehousePopulator.domain.Article;
-import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Person;
-import ieiWarehousePopulator.domain.Publication;
 import ieiWarehousePopulator.extractors.utils.YearRange;
 import ieiWarehousePopulator.persistence.MySQLConnection;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ArticleDAO {
     public static List<Article> retrieveArticles(YearRange yearRange, String author) {
         // TODO: Populate the result list with the filtered Articles from the Warehouse.
         return null;
     }
+
     public static void persist(Article article) {
         Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article.getTitle());
 
