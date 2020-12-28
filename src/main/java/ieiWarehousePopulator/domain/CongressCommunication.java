@@ -1,7 +1,7 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
+import ieiWarehousePopulator.persistence.dataAccessObjects.CongressCommunicationDAO;
 
 public class CongressCommunication extends Publication implements Persistable {
     private String congress;
@@ -26,40 +26,9 @@ public class CongressCommunication extends Publication implements Persistable {
         this.finalPage = finalPage;
     }
 
-    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
-    //  substituting it with a call to that class.
     @Override
     public void persist() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        if (!doesCongressCommunicationAlreadyExistInDatabase(retrievedPublicationId)) {
-            super.insertNewPublicationIntoDatabase();
-            this.insertNewCongressCommunicationIntoDatabase();
-
-            retrievedPublicationId = super.retrievePublicationDatabaseId();
-            Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
-        } else {
-            // TODO: Notify that the Congress Communication already exists in database.
-        }
-    }
-
-    private boolean doesCongressCommunicationAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
-    }
-
-    private void insertNewCongressCommunicationIntoDatabase() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        String addCongressCommunicationSqlUpdate =
-                "INSERT INTO comunicacioncongreso (publicacion_id, congreso, edicion, lugar, pagina_inicio, pagina_fin) " +
-                        "VALUES (" + retrievedPublicationId + ", " +
-                        "\"" + this.getCongress() + "\"" + ", " +
-                        "\"" + this.getEdition() + "\"" + ", " +
-                        "\"" + this.getPlace() + "\"" + ", " +
-                        this.getInitialPage() + ", " +
-                        this.getFinalPage() + ");";
-
-        MySQLConnection.performUpdate(addCongressCommunicationSqlUpdate);
+        CongressCommunicationDAO.persist(this);
     }
 
     public String getCongress() {
