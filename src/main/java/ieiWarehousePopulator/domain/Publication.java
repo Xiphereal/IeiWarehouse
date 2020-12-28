@@ -1,6 +1,7 @@
 package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.persistence.MySQLConnection;
+import ieiWarehousePopulator.persistence.dataAccessObjects.PublicationDAO;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,33 +20,12 @@ public class Publication {
         this.url = url;
     }
 
-    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
-    //  substituting it with a call to that class.
     protected Integer retrievePublicationDatabaseId() {
-        String formattedTitle = this.getTitle() != null ? "= " + "\"" + this.getTitle() + "\"" : "IS NULL";
-        String formattedYear = this.getYear() != null ? "= " + this.getYear() : "IS NULL";
-
-        String retrievePublicationIdSqlQuery =
-                "SELECT id FROM publicacion " +
-                        "WHERE titulo " + formattedTitle + " AND " +
-                        "anyo " + formattedYear + ";";
-
-        Optional<Integer> retrievedPublicationId =
-                MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
-
-        return retrievedPublicationId.orElse(null);
+        return PublicationDAO.retrievePublicationDatabaseId(this.getTitle());
     }
 
-    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
-    //  substituting it with a call to that class.
     protected void insertNewPublicationIntoDatabase() {
-        String addPublicationSqlUpdate =
-                "INSERT INTO publicacion (titulo, anyo, URL) " +
-                        "VALUES (" + "\"" + this.getTitle() + "\", " +
-                        this.getYear() + ", " +
-                        "\"" + this.getUrl() + "\");";
-
-        MySQLConnection.performUpdate(addPublicationSqlUpdate);
+        PublicationDAO.insertNewPublicationIntoDatabase(this.getTitle(), this.getYear(),this.getUrl());
     }
 
     public String getTitle() {

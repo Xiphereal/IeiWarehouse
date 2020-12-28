@@ -2,6 +2,8 @@ package ieiWarehousePopulator.domain;
 
 import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
+import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
+import ieiWarehousePopulator.persistence.dataAccessObjects.PublicationDAO;
 
 public class Article extends Publication implements Persistable {
     private Integer initialPage;
@@ -22,46 +24,7 @@ public class Article extends Publication implements Persistable {
     //  substituting it with a call to that class.
     @Override
     public void persist() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        if (!doesArticleAlreadyExistInDatabase(retrievedPublicationId)) {
-            Integer retrievedCopyId = this.getCopyPublishedBy()
-                    .getMagazinePublishBy()
-                    .persistMagazineAndRelatedCopy(this.getCopyPublishedBy());
-
-            if (!doesArticleHaveCopy(retrievedCopyId))
-                return;
-
-            super.insertNewPublicationIntoDatabase();
-            this.insertNewArticleIntoDatabase(retrievedCopyId);
-
-            retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-            Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
-        } else {
-            // TODO: Notify that the magazine already exists in database.
-        }
-    }
-
-    private boolean doesArticleHaveCopy(Integer retrievedCopyId) {
-        return retrievedCopyId != null;
-    }
-
-    private static boolean doesArticleAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
-    }
-
-    private void insertNewArticleIntoDatabase(Integer retrievedCopyId) {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        String addArticleSqlUpdate =
-                "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +
-                        "VALUES (" + retrievedPublicationId + ", " +
-                        retrievedCopyId + ", " +
-                        this.getInitialPage() + ", " +
-                        this.getFinalPage() + ");";
-
-        MySQLConnection.performUpdate(addArticleSqlUpdate);
+        ArticleDAO.persist(this);
     }
 
     public Integer getInitialPage() {
