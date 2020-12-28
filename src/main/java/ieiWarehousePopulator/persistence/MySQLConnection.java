@@ -1,6 +1,8 @@
 package ieiWarehousePopulator.persistence;
 
+import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.utils.Tuple;
+import ieiWarehousePopulator.persistence.queryStrategy.ArticlesRetrieval;
 import ieiWarehousePopulator.persistence.queryStrategy.AuthorsRetrieval;
 import ieiWarehousePopulator.persistence.queryStrategy.IdsRetrieval;
 import ieiWarehousePopulator.persistence.queryStrategy.QueryStrategy;
@@ -38,6 +40,10 @@ public class MySQLConnection {
 
     public static List<Tuple<String, String>> performQueryToRetrieveAuthors(String sqlQuery) {
         return performQuery(sqlQuery, new AuthorsRetrieval());
+    }
+
+    public static List<Article> performQueryToRetrieveArticles(String sqlQuery) {
+        return performQuery(sqlQuery, new ArticlesRetrieval());
     }
 
     /**
