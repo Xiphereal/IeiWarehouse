@@ -1,7 +1,5 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.dataAccessObjects.PublicationDAO;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,14 +14,6 @@ public class Publication {
         this.title = title;
         this.year = year;
         this.url = url;
-    }
-
-    protected Integer retrievePublicationDatabaseId() {
-        return PublicationDAO.retrievePublicationDatabaseId(this.getTitle());
-    }
-
-    protected void insertNewPublicationIntoDatabase(Publication publication) {
-        PublicationDAO.insertNewPublicationIntoDatabase(publication);
     }
 
     public String getTitle() {
