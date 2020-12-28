@@ -1,7 +1,7 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
+import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
 
 public class Book extends Publication implements Persistable {
     private String editorial;
@@ -11,36 +11,9 @@ public class Book extends Publication implements Persistable {
         this.editorial = editorial;
     }
 
-    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
-    //  substituting it with a call to that class.
     @Override
     public void persist() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        if (!doesBookAlreadyExistInDatabase(retrievedPublicationId)) {
-            super.insertNewPublicationIntoDatabase();
-            this.insertNewBookIntoDatabase();
-
-            retrievedPublicationId = super.retrievePublicationDatabaseId();
-            Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
-        } else {
-            // TODO: Notify that the book already exists in database.
-        }
-    }
-
-    private boolean doesBookAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
-    }
-
-    private void insertNewBookIntoDatabase() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        String addBookSqlUpdate =
-                "INSERT INTO libro (publicacion_id, editorial) " +
-                        "VALUES (" + retrievedPublicationId + ", " +
-                        "\"" + this.getEditorial() + "\");";
-
-        MySQLConnection.performUpdate(addBookSqlUpdate);
+        BookDAO.persist(this);
     }
 
     public String getEditorial() {
