@@ -2,7 +2,6 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.extractors.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,26 +12,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleScholarExtractor {
-
-    // TODO: Revert the changes made for the year-filtered extractions and support the
-    //  performing of a REST API request to the wrapper for obtaining the already
-    //  filtered JSON file.
-    public static void extractDataIntoWarehouse(YearRange yearRange) {
+public class GoogleSchoolarExtractor {
+    public static void extractDataIntoWarehouse() {
         try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
 
+            //extract articles
             JSONArray articles = getArticlesFromJson(entireJsonFile);
-            articles.forEach(article -> parseJsonArticle((JSONObject) article, yearRange));
+            articles.forEach(article -> parseJsonArticle((JSONObject) article));
 
             JSONArray books = getBooksFromJson(entireJsonFile);
-            books.forEach(book -> parseJsonBook((JSONObject) book, yearRange));
+            books.forEach(book -> parseJsonBook((JSONObject) book));
 
             JSONArray communicationCongress = getCommunicationCongress(entireJsonFile);
-            communicationCongress.forEach(congress ->
-                    parseJsonCommunicationCongress((JSONObject) congress, yearRange));
+            communicationCongress.forEach(congress -> parseJsonCommunicationCongress((JSONObject) congress));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
@@ -40,15 +35,10 @@ public class GoogleScholarExtractor {
         }
     }
 
-    private static void parseJsonCommunicationCongress(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonCommunicationCongress(JSONObject jsonObject) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
-
-            // If the congress communication is from outside the requested range,
-            // there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(congressCommunication.getYear()))
-                return;
 
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
 
@@ -70,14 +60,10 @@ public class GoogleScholarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonBook(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonBook(JSONObject jsonObject) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             Book book = extractBookAttributes(jsonObject);
-
-            // If the book is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(book.getYear()))
-                return;
 
             resolveEntitiesRelationshipsBook(book, authors);
 
@@ -104,14 +90,9 @@ public class GoogleScholarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonArticle(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonArticle(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-
-            // If the article is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(article.getYear()))
-                return;
-
             List<Person> person = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
@@ -137,6 +118,14 @@ public class GoogleScholarExtractor {
                 year,
                 url,
                 editorial);
+    }
+
+    private static JSONObject getInfoFromJson(FileReader fileReader) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("bibtex");
+
+        return jsonObjectContainer;
     }
 
     private static CongressCommunication extractCongressCommunicationAttributes(JSONObject jsonObject) {
@@ -324,6 +313,11 @@ public class GoogleScholarExtractor {
         return null;
     }
 
+    private static boolean isInSimpleRangeFormat(String stringPages) {
+        // REGEX: Two numbers separated by '-'
+        return stringPages.matches("\\d+-\\d+");
+    }
+
     private static String extractTitle(JSONObject jsonObject) {
         return (String) jsonObject.get("title");
     }
@@ -344,6 +338,10 @@ public class GoogleScholarExtractor {
         return null;
     }
 
+    private static String extractDate(JSONObject jsonObject) {
+        return null;
+    }
+
     //we can't get the congress name in google schoolar inproceedings
     private static String extractCongress(JSONObject jsonObject) {
         return null;
@@ -358,12 +356,26 @@ public class GoogleScholarExtractor {
         return null;
     }
 
-    private static void resolveEntitiesRelationshipsBook(Book book, List<Person> authors) {
+    private static boolean isInRomanNotation(String stringPages) {
+        // REGEX: Contains any number.
+        return !stringPages.matches(".*[0-9].*");
+    }
+
+    private static void resolveEntitiesRelationshipsArticle(Article article, List<Person> authors, Copy copy, Magazine magazine) {
         return;
     }
 
+    private static void resolveEntitiesRelationshipsBook(Book book, List<Person> authors) {
+        book.setAuthors(authors);
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(book.getTitle()));
+    }
+
     private static void resolveEntitiesRelationshipsCommunication(CongressCommunication congressCommunication, List<Person> authors) {
-        return;
+        congressCommunication.setAuthors(authors);
+
+        if (authors != null)
+            authors.forEach(author -> author.setAuthoredPublication(congressCommunication.getTitle()));
     }
 
     private static Magazine extractMagazineAttributes(JSONObject jsonObject) {
