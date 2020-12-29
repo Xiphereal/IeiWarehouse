@@ -13,7 +13,7 @@ public class BookDAO extends PublicationDAO {
         // TODO: Retrieve the list of the article's authors.
         String sqlQuery =
                 "SELECT DISTINCT titulo, anyo, url, " +
-                        "editorial " +
+                        "editorial, " +
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
@@ -23,6 +23,7 @@ public class BookDAO extends PublicationDAO {
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +
                         "AND anyo <= " + yearRange.getEndYear() + " " +
                         "GROUP BY titulo;";
+
         return MySQLConnection.performQueryToRetrieveBooks(sqlQuery);
     }
 
