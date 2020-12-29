@@ -33,14 +33,8 @@ public class CongressCommunicationRetrieval implements QueryStrategy {
             String authorName = (String) queryResultSet.getObject(10);
             String authorSurnames = (String) queryResultSet.getObject(11);
 
-            CongressCommunication congressCommunication = resolveRelationships(title,
-                    year,
-                    url,
-                    congress,
-                    edition,
-                    place,
-                    initialPage,
-                    finalPage);
+            CongressCommunication congressCommunication =
+                    new CongressCommunication(title, year, url, congress, edition, place, initialPage, finalPage);
 
             Person author = getAuthor(authorName, authorSurnames);
 
@@ -56,19 +50,6 @@ public class CongressCommunicationRetrieval implements QueryStrategy {
         }
 
         return new ArrayList<>(identifiedCongresses.values());
-    }
-
-    private CongressCommunication resolveRelationships(String title,
-                                                       Long year,
-                                                       String url,
-                                                       String congress,
-                                                       String edition,
-                                                       String place,
-                                                       Integer initialPage,
-                                                       Integer finalPage) {
-        CongressCommunication congressCommunication = new CongressCommunication(title, year, url, congress, edition, place, initialPage, finalPage);
-
-        return congressCommunication;
     }
 
     private Person getAuthor(String authorName, String authorSurnames) {

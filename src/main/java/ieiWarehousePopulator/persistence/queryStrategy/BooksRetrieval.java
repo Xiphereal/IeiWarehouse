@@ -28,10 +28,7 @@ public class BooksRetrieval implements QueryStrategy {
             String authorName = (String) queryResultSet.getObject(6);
             String authorSurnames = (String) queryResultSet.getObject(7);
 
-            Book book = resolveRelationships(title,
-                    year,
-                    url,
-                    publisher);
+            Book book = new Book(title, year, url, publisher);
 
             Person author = getAuthor(authorName, authorSurnames);
 
@@ -45,15 +42,6 @@ public class BooksRetrieval implements QueryStrategy {
         }
 
         return new ArrayList<>(identifiedBooks.values());
-    }
-
-    private Book resolveRelationships(String title,
-                                      Long year,
-                                      String url,
-                                      String publisher) {
-        Book book = new Book(title, year, url, publisher);
-
-        return book;
     }
 
     private Person getAuthor(String authorName, String authorSurnames) {
