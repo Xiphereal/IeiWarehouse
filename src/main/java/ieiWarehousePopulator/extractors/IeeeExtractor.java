@@ -167,7 +167,7 @@ public class IeeeExtractor {
             List<Person> parsedAuthors = new ArrayList<>();
             int i;
             for (Object element : castedAuthorAttribute)
-                parsedAuthors.add(extractPersonAttributes(((JSONObject) element).get("full_name").toString()));
+                parsedAuthors.add(Person.extractPersonAttributes(((JSONObject) element).get("full_name").toString()));
 
             return parsedAuthors;
         }
@@ -177,7 +177,6 @@ public class IeeeExtractor {
 
         return null;
     }
-
 
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
         Integer volume = extractVolume(jsonObject);
@@ -211,19 +210,6 @@ public class IeeeExtractor {
         }
 
         return new Tuple<>(initialPage, finalPage);
-    }
-
-    /**
-     * @param author The name is the first encountered word, the surname the second.
-     */
-    private static Person extractPersonAttributes(String author) {
-        // Split the string using spaces as separators.
-        String[] splitAuthor = author.split(" ");
-
-        String name = splitAuthor[0];
-        String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
-
-        return new Person(name, surname);
     }
 
     private static Integer extractVolume(JSONObject jsonObject) {

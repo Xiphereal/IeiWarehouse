@@ -235,7 +235,7 @@ public class DblpExtractor {
                 List<Person> parsedAuthors = new ArrayList<>();
 
                 for (String element : authorElements)
-                    parsedAuthors.add(extractPersonAttributes(element));
+                    parsedAuthors.add(Person.extractPersonAttributes(element));
 
                 return parsedAuthors;
             }
@@ -245,19 +245,6 @@ public class DblpExtractor {
                 "The author collection will be set to null" + System.lineSeparator());
 
         return null;
-    }
-
-    /**
-     * @param author The name is the first encountered word, the surname the second.
-     */
-    private static Person extractPersonAttributes(String author) {
-        // Split the string using spaces as separators.
-        String[] splitAuthor = author.split(" ");
-
-        String name = splitAuthor[0];
-        String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
-
-        return new Person(name, surname);
     }
 
     private static Copy extractCopyAttributes(JSONObject jsonObject) {
