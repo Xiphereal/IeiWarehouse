@@ -22,7 +22,7 @@ public class BookDAO extends PublicationDAO {
                         "LEFT JOIN persona ON publicacion_has_persona.persona_id=persona.id " +
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +
                         "AND anyo <= " + yearRange.getEndYear() + " " +
-                        "GROUP BY titulo;";
+                        "GROUP BY titulo, persona.id;";
 
         return MySQLConnection.performQueryToRetrieveBooks(sqlQuery);
     }
