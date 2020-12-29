@@ -8,7 +8,7 @@ import ieiWarehousePopulator.restService.utils.YearRange;
 import java.util.List;
 
 public class CongressCommunicationDAO extends PublicationDAO {
-    public static List<CongressCommunication> retrieveCongressCommunications(YearRange yearRange, String author) {
+    public static List<CongressCommunication> retrieveCongressCommunications(YearRange yearRange, Person requestedAuthor) {
         // TODO: Populate the result list with the filtered CongressCommunications from the Warehouse.
         String sqlQuery =
                 "SELECT titulo, anyo, url, " +

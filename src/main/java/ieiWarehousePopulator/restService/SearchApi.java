@@ -3,6 +3,7 @@ package ieiWarehousePopulator.restService;
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
 import ieiWarehousePopulator.domain.CongressCommunication;
+import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
 import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
 import ieiWarehousePopulator.persistence.dataAccessObjects.CongressCommunicationDAO;
@@ -49,15 +50,17 @@ public class SearchApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
+        Person requestedAuthor = Person.extractPersonAttributes(author);
+
         return getDataFromWarehouse(yearRange,
-                author,
+                requestedAuthor,
                 searchArticles,
                 searchBooks,
                 searchCongressCommunications);
     }
 
     private RequestResultResponse getDataFromWarehouse(YearRange yearRange,
-                                                       String author,
+                                                       Person requestedAuthor,
                                                        boolean searchArticles,
                                                        boolean searchBooks,
                                                        boolean searchCongressCommunications) {
@@ -66,14 +69,14 @@ public class SearchApi {
         List<CongressCommunication> retrievedCongressCommunications = new ArrayList<>();
 
         if (searchArticles)
-            retrievedArticles = ArticleDAO.retrieveArticles(yearRange, author);
+            retrievedArticles = ArticleDAO.retrieveArticles(yearRange, requestedAuthor);
 
         if (searchBooks)
-            retrievedBooks = BookDAO.retrieveBooks(yearRange, author);
+            retrievedBooks = BookDAO.retrieveBooks(yearRange, requestedAuthor);
 
         if (searchCongressCommunications)
             retrievedCongressCommunications =
-                    CongressCommunicationDAO.retrieveCongressCommunications(yearRange, author);
+                    CongressCommunicationDAO.retrieveCongressCommunications(yearRange, requestedAuthor);
 
         return new RequestResultResponse(retrievedArticles, retrievedBooks, retrievedCongressCommunications);
     }

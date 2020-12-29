@@ -8,7 +8,7 @@ import ieiWarehousePopulator.restService.utils.YearRange;
 import java.util.List;
 
 public class ArticleDAO {
-    public static List<Article> retrieveArticles(YearRange yearRange, String author) {
+    public static List<Article> retrieveArticles(YearRange yearRange, Person requestedAuthor) {
         // TODO: Populate the result list with the filtered Articles from the Warehouse.
         String sqlQuery =
                 "SELECT titulo, anyo, url, " +
