@@ -12,7 +12,7 @@ public class BookDAO extends PublicationDAO {
         // TODO: Populate the result list with the filtered Articles from the Warehouse.
         // TODO: Retrieve the list of the article's authors.
         String sqlQuery =
-                "SELECT DISTINCT titulo, anyo, url, " +
+                "SELECT titulo, anyo, url, " +
                         "editorial, " +
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
