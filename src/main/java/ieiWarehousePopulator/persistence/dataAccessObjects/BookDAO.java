@@ -51,7 +51,7 @@ public class BookDAO extends PublicationDAO {
         String addBookSqlUpdate =
                 "INSERT INTO libro (publicacion_id, editorial) " +
                         "VALUES (" + retrievedPublicationId + ", " +
-                        "\"" + book.getEditorial() + "\");";
+                        "\"" + book.getPublisher() + "\");";
 
         MySQLConnection.performUpdate(addBookSqlUpdate);
     }
