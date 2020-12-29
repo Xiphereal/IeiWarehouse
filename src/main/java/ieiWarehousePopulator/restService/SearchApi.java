@@ -50,7 +50,10 @@ public class SearchApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        Person requestedAuthor = Person.extractPersonAttributes(author);
+        Person requestedAuthor = null;
+
+        if (!author.isEmpty() && !author.isBlank())
+            requestedAuthor = Person.extractPersonAttributes(author);
 
         return getDataFromWarehouse(yearRange,
                 requestedAuthor,
