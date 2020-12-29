@@ -60,7 +60,7 @@ public class SearchApi {
     }
 
     private RequestResultResponse getDataFromWarehouse(YearRange yearRange,
-                                                       Person author,
+                                                       Person requestedAuthor,
                                                        boolean searchArticles,
                                                        boolean searchBooks,
                                                        boolean searchCongressCommunications) {
@@ -69,14 +69,14 @@ public class SearchApi {
         List<CongressCommunication> retrievedCongressCommunications = new ArrayList<>();
 
         if (searchArticles)
-            retrievedArticles = ArticleDAO.retrieveArticles(yearRange, author);
+            retrievedArticles = ArticleDAO.retrieveArticles(yearRange, requestedAuthor);
 
         if (searchBooks)
-            retrievedBooks = BookDAO.retrieveBooks(yearRange, author);
+            retrievedBooks = BookDAO.retrieveBooks(yearRange, requestedAuthor);
 
         if (searchCongressCommunications)
             retrievedCongressCommunications =
-                    CongressCommunicationDAO.retrieveCongressCommunications(yearRange, author);
+                    CongressCommunicationDAO.retrieveCongressCommunications(yearRange, requestedAuthor);
 
         return new RequestResultResponse(retrievedArticles, retrievedBooks, retrievedCongressCommunications);
     }
