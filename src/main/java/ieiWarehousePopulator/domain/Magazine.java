@@ -20,6 +20,8 @@ public class Magazine {
      * If not, returns the newly inserted Copy.
      * If the Publication doesn't have either Magazine or Copy, will return null.
      */
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     public Integer persistMagazineAndRelatedCopy(Copy copyPublishedBy) {
         if (!doesArticleHaveMagazine()) {
             return null;

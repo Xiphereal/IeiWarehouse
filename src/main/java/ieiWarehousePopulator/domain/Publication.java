@@ -1,8 +1,8 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
-
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Publication {
     private String title;
@@ -14,31 +14,6 @@ public class Publication {
         this.title = title;
         this.year = year;
         this.url = url;
-    }
-
-    protected Integer retrievePublicationDatabaseId() {
-        String formattedTitle = this.getTitle() != null ? "= " + "\"" + this.getTitle() + "\"" : "IS NULL";
-        String formattedYear = this.getYear() != null ? "= " + this.getYear() : "IS NULL";
-
-        String retrievePublicationIdSqlQuery =
-                "SELECT id FROM publicacion " +
-                        "WHERE titulo " + formattedTitle + " AND " +
-                        "anyo " + formattedYear + ";";
-
-        Optional<Integer> retrievedPublicationId =
-                MySQLConnection.performQueryToRetrieveIds(retrievePublicationIdSqlQuery).stream().findFirst();
-
-        return retrievedPublicationId.orElse(null);
-    }
-
-    protected void insertNewPublicationIntoDatabase() {
-        String addPublicationSqlUpdate =
-                "INSERT INTO publicacion (titulo, anyo, URL) " +
-                        "VALUES (" + "\"" + this.getTitle() + "\", " +
-                        this.getYear() + ", " +
-                        "\"" + this.getUrl() + "\");";
-
-        MySQLConnection.performUpdate(addPublicationSqlUpdate);
     }
 
     public String getTitle() {
@@ -67,6 +42,16 @@ public class Publication {
 
     public Set<Person> getAuthors() {
         return authors;
+    }
+
+    public void addAuthor(Person author) {
+        if (author == null)
+            return;
+
+        if (this.authors == null)
+            this.authors = new HashSet<>();
+
+        this.authors.add(author);
     }
 
     public void setAuthors(List<Person> authors) {

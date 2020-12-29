@@ -1,58 +1,33 @@
 package ieiWarehousePopulator.domain;
 
-import ieiWarehousePopulator.persistence.MySQLConnection;
 import ieiWarehousePopulator.persistence.Persistable;
+import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
 
 public class Book extends Publication implements Persistable {
-    private String editorial;
+    private String publisher;
 
     public Book(String title, Long year, String url, String editorial) {
         super(title, year, url);
-        this.editorial = editorial;
+        this.publisher = editorial;
     }
 
     @Override
     public void persist() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        if (!doesBookAlreadyExistInDatabase(retrievedPublicationId)) {
-            super.insertNewPublicationIntoDatabase();
-            this.insertNewBookIntoDatabase();
-
-            retrievedPublicationId = super.retrievePublicationDatabaseId();
-            Person.persistAuthors(this.getAuthors(), retrievedPublicationId);
-        } else {
-            // TODO: Notify that the book already exists in database.
-        }
+        BookDAO.persist(this);
     }
 
-    private boolean doesBookAlreadyExistInDatabase(Integer retrievedId) {
-        return retrievedId != null;
+    public String getPublisher() {
+        return publisher;
     }
 
-    private void insertNewBookIntoDatabase() {
-        Integer retrievedPublicationId = super.retrievePublicationDatabaseId();
-
-        String addBookSqlUpdate =
-                "INSERT INTO libro (publicacion_id, editorial) " +
-                        "VALUES (" + retrievedPublicationId + ", " +
-                        "\"" + this.getEditorial() + "\");";
-
-        MySQLConnection.performUpdate(addBookSqlUpdate);
-    }
-
-    public String getEditorial() {
-        return editorial;
-    }
-
-    public void setEditorial(String editorial) {
-        this.editorial = editorial;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "editorial='" + editorial + '\'' +
+                "editorial='" + publisher + '\'' +
                 "} " + super.toString();
     }
 }

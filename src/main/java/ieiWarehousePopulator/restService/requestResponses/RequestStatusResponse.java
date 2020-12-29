@@ -1,6 +1,6 @@
-package ieiWarehousePopulator.restService;
+package ieiWarehousePopulator.restService.requestResponses;
 
-public class RequestStatusResponse {
+public class RequestStatusResponse implements RequestResponse {
     private final long requestId;
     private final String message;
 

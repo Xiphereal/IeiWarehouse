@@ -1,10 +1,10 @@
-package ieiWarehousePopulator.restService.loadApi;
+package ieiWarehousePopulator.restService;
 
 import ieiWarehousePopulator.extractors.DblpExtractor;
 import ieiWarehousePopulator.extractors.GoogleScholarExtractor;
 import ieiWarehousePopulator.extractors.IeeeExtractor;
-import ieiWarehousePopulator.extractors.utils.YearRange;
-import ieiWarehousePopulator.restService.RequestStatusResponse;
+import ieiWarehousePopulator.restService.requestResponses.RequestStatusResponse;
+import ieiWarehousePopulator.restService.utils.YearRange;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

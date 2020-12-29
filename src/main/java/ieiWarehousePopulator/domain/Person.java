@@ -24,6 +24,8 @@ public class Person {
         return personList;
     }
 
+    // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
+    //  substituting it with a call to that class.
     public static void persistAuthors(Set<Person> authors, Integer publicationId) {
 
         if (!doesArticleHaveAuthors(authors)) {
@@ -114,6 +116,19 @@ public class Person {
                         "\"" + authorId + "\");";
 
         MySQLConnection.performUpdate(addNewPublicationHasPersonSqlUpdate);
+    }
+
+    /**
+     * @param author The name is the first encountered word, the surname the second.
+     */
+    public static Person extractPersonAttributes(String author) {
+        // Split the string using spaces as separators.
+        String[] splitAuthor = author.split(" ");
+
+        String name = splitAuthor[0];
+        String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
+
+        return new Person(name, surname);
     }
 
     public String getName() {

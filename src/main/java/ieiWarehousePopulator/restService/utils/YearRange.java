@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.extractors.utils;
+package ieiWarehousePopulator.restService.utils;
 
 public class YearRange {
     private final Long startYear;
@@ -22,6 +22,14 @@ public class YearRange {
         boolean isStartYearBeforeEndYear = Long.parseLong(startYear) <= Long.parseLong(endYear);
 
         return isStartYearBeforeEndYear;
+    }
+
+    public Long getStartYear() {
+        return startYear;
+    }
+
+    public Long getEndYear() {
+        return endYear;
     }
 
     private static boolean isYear(String input) {
