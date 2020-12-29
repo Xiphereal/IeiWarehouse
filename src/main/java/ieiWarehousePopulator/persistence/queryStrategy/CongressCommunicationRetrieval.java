@@ -28,10 +28,10 @@ public class CongressCommunicationRetrieval implements QueryStrategy{
             String edition = (String) queryResultSet.getObject(7);
             String place = (String) queryResultSet.getObject(8);
 
-            Integer publicationId = (Integer) queryResultSet.getObject(10);
+            Integer publicationId = (Integer) queryResultSet.getObject(9);
 
-            String authorName = (String) queryResultSet.getObject(11);
-            String authorSurnames = (String) queryResultSet.getObject(12);
+            String authorName = (String) queryResultSet.getObject(10);
+            String authorSurnames = (String) queryResultSet.getObject(11);
 
             CongressCommunication congressCommunication = resolveRelationships(title,
                     year,
