@@ -14,7 +14,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
                 "SELECT titulo, anyo, url, " +
                         "pagina_inicio, pagina_fin, " +
                         "congreso, edicion, " +
-                        "lugar" +
+                        "lugar, " +
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
