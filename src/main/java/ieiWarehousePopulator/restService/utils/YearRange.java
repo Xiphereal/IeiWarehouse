@@ -1,4 +1,4 @@
-package ieiWarehousePopulator.extractors.utils;
+package ieiWarehousePopulator.restService.utils;
 
 public class YearRange {
     private final Long startYear;

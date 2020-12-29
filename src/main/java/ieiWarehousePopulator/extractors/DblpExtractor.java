@@ -7,7 +7,7 @@ import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.domain.utils.Tuple;
 import ieiWarehousePopulator.extractors.utils.RomanToDecimalConverter;
 import ieiWarehousePopulator.extractors.utils.SimpleJsonUtils;
-import ieiWarehousePopulator.extractors.utils.YearRange;
+import ieiWarehousePopulator.restService.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
