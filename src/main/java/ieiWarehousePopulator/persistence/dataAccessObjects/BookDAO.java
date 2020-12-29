@@ -9,8 +9,17 @@ import java.util.List;
 
 public class BookDAO extends PublicationDAO {
     public static List<Book> retrieveBooks(YearRange yearRange, String author) {
-        // TODO: Populate the result list with the filtered Books from the Warehouse.
-        return null;
+        // TODO: Populate the result list with the filtered Articles from the Warehouse.
+        // TODO: Retrieve the list of the article's authors.
+        String sqlQuery =
+                "SELECT DISTINCT titulo, anyo, url, " +
+                        "editorial " +
+                        "FROM publicacion " +
+                        "LEFT JOIN articulo ON libro.publicacion_id=publicacion.id " +
+                        "WHERE anyo >= " + yearRange.getStartYear() + " " +
+                        "AND anyo <= " + yearRange.getEndYear() + " " +
+                        "GROUP BY titulo;";
+        return MySQLConnection.performQueryToRetrieveBooks(sqlQuery);
     }
 
     public static void persist(Book book) {

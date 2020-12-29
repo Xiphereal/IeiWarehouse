@@ -1,11 +1,9 @@
 package ieiWarehousePopulator.persistence;
 
 import ieiWarehousePopulator.domain.Article;
+import ieiWarehousePopulator.domain.Book;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.persistence.queryStrategy.ArticlesRetrieval;
-import ieiWarehousePopulator.persistence.queryStrategy.AuthorsRetrieval;
-import ieiWarehousePopulator.persistence.queryStrategy.IdsRetrieval;
-import ieiWarehousePopulator.persistence.queryStrategy.QueryStrategy;
+import ieiWarehousePopulator.persistence.queryStrategy.*;
 
 import java.sql.*;
 import java.util.List;
@@ -44,6 +42,10 @@ public class MySQLConnection {
 
     public static List<Article> performQueryToRetrieveArticles(String sqlQuery) {
         return performQuery(sqlQuery, new ArticlesRetrieval());
+    }
+
+    public static List<Book> performQueryToRetrieveBooks(String sqlQuery) {
+        return performQuery(sqlQuery, new BooksRetrieval());
     }
 
     /**
