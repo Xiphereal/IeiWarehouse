@@ -32,6 +32,8 @@ public class BooksRetrieval implements QueryStrategy {
 
             Person author = getAuthor(authorName, authorSurnames);
 
+            // If the book has been already retrieved,
+            // update that precise object from the map.
             if (identifiedBooks.containsKey(publicationId)) {
                 book = identifiedBooks.get(publicationId);
             }
