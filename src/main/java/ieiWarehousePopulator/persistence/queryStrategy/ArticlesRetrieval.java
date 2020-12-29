@@ -15,7 +15,6 @@ import java.util.Map;
 public class ArticlesRetrieval implements QueryStrategy {
     @Override
     public List<Article> retrieveQueryResults(ResultSet queryResultSet) throws SQLException {
-
         Map<Integer, Article> identifiedArticles = new HashMap<>();
 
         while (queryResultSet.next()) {
