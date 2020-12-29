@@ -19,9 +19,6 @@ public class BookDAO extends PublicationDAO {
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +
                         "AND anyo <= " + yearRange.getEndYear() + " " +
                         "GROUP BY titulo;";
-
-
-
         return MySQLConnection.performQueryToRetrieveBooks(sqlQuery);
     }
 
