@@ -7,8 +7,8 @@ public class CongressCommunication extends Publication implements Persistable {
     private String congress;
     private String edition;
     private String place;
-    private int initialPage;
-    private int finalPage;
+    private Integer initialPage;
+    private Integer finalPage;
 
     public CongressCommunication(String title,
                                  Long year,
@@ -16,8 +16,8 @@ public class CongressCommunication extends Publication implements Persistable {
                                  String congress,
                                  String edition,
                                  String place,
-                                 int initialPage,
-                                 int finalPage) {
+                                 Integer initialPage,
+                                 Integer finalPage) {
         super(title, year, url);
         this.congress = congress;
         this.edition = edition;
@@ -55,7 +55,7 @@ public class CongressCommunication extends Publication implements Persistable {
         this.place = place;
     }
 
-    public int getInitialPage() {
+    public Integer getInitialPage() {
         return initialPage;
     }
 
@@ -63,7 +63,7 @@ public class CongressCommunication extends Publication implements Persistable {
         this.initialPage = initialPage;
     }
 
-    public int getFinalPage() {
+    public Integer getFinalPage() {
         return finalPage;
     }
 
