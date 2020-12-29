@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ArticleDAO {
     public static List<Article> retrieveArticles(YearRange yearRange, Person requestedAuthor) {
-        // TODO: Populate the result list with the filtered Articles from the Warehouse.
         String sqlQuery =
                 "SELECT titulo, anyo, url, " +
                         "pagina_inicio, pagina_fin, " +
@@ -24,8 +23,14 @@ public class ArticleDAO {
                         "LEFT JOIN publicacion_has_persona ON publicacion.id=publicacion_has_persona.publicacion_id " +
                         "LEFT JOIN persona ON publicacion_has_persona.persona_id=persona.id " +
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +
-                        "AND anyo <= " + yearRange.getEndYear() + " " +
-                        "GROUP BY titulo, persona.id;";
+                        "AND anyo <= " + yearRange.getEndYear() + " ";
+
+        if (requestedAuthor != null)
+            sqlQuery +=
+                    "AND persona.nombre = '" + requestedAuthor.getName() + "' " +
+                            "AND persona.apellidos = '" + requestedAuthor.getSurnames() + "' ";
+
+        sqlQuery += "GROUP BY titulo, persona.id;";
 
         return MySQLConnection.performQueryToRetrieveArticles(sqlQuery);
     }
