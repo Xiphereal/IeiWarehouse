@@ -12,7 +12,7 @@ public class ArticleDAO {
         // TODO: Populate the result list with the filtered Articles from the Warehouse.
         // TODO: Retrieve the list of the article's authors.
         String sqlQuery =
-                "SELECT DISTINCT titulo, anyo, url, " +
+                "SELECT titulo, anyo, url, " +
                         "pagina_inicio, pagina_fin, " +
                         "volumen, numero, mes, " +
                         "nombre " +
