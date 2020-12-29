@@ -18,14 +18,14 @@ public class ArticlesRetrieval implements QueryStrategy {
             // Each parameter 'i' passed to the getObject() method indicates
             // from which column to retrieve. Columns indexes are 1 based, not 0.
             String title = (String) queryResultSet.getObject(1);
-            Long year = (Long) queryResultSet.getObject(2);
+            Long year = Long.valueOf((Integer) queryResultSet.getObject(2));
             String url = (String) queryResultSet.getObject(3);
-            int initialPage = (int) queryResultSet.getObject(4);
-            int finalPage = (int) queryResultSet.getObject(5);
+            Integer initialPage = (Integer) queryResultSet.getObject(4);
+            Integer finalPage = (Integer) queryResultSet.getObject(5);
 
-            int copyVolume = (int) queryResultSet.getObject(6);
-            int copyNumber = (int) queryResultSet.getObject(7);
-            int copyMonth = (int) queryResultSet.getObject(8);
+            Integer copyVolume = (Integer) queryResultSet.getObject(6);
+            Integer copyNumber = (Integer) queryResultSet.getObject(7);
+            Integer copyMonth = (Integer) queryResultSet.getObject(8);
 
             String magazineName = (String) queryResultSet.getObject(9);
 
@@ -50,11 +50,11 @@ public class ArticlesRetrieval implements QueryStrategy {
     private Article resolveRelationships(String title,
                                          Long year,
                                          String url,
-                                         int initialPage,
-                                         int finalPage,
-                                         int copyVolume,
-                                         int copyNumber,
-                                         int copyMonth,
+                                         Integer initialPage,
+                                         Integer finalPage,
+                                         Integer copyVolume,
+                                         Integer copyNumber,
+                                         Integer copyMonth,
                                          String magazineName) {
         Article article = new Article(title, year, url, initialPage, finalPage);
 
