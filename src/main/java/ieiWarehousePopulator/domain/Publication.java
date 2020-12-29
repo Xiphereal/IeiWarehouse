@@ -44,6 +44,16 @@ public class Publication {
         return authors;
     }
 
+    public void addAuthor(Person author) {
+        if (author == null)
+            return;
+
+        if (this.authors == null)
+            this.authors = new HashSet<>();
+
+        this.authors.add(author);
+    }
+
     public void setAuthors(List<Person> authors) {
         if (authors != null)
             this.authors = new HashSet<>(authors);
