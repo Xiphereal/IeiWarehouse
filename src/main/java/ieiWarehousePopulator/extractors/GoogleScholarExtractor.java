@@ -2,7 +2,7 @@ package ieiWarehousePopulator.extractors;
 
 import ieiWarehousePopulator.domain.*;
 import ieiWarehousePopulator.domain.utils.Tuple;
-import ieiWarehousePopulator.extractors.utils.YearRange;
+import ieiWarehousePopulator.restService.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -203,10 +203,10 @@ public class GoogleScholarExtractor {
                 Person person;
                 if (separator != -1) {
                     fullName = (parserString.trim()).substring(0, separator - 1);
-                    person = extractPersonAttributes(fullName);
+                    person = Person.extractPersonAttributes(fullName);
                     parserString = parserString.substring(separator + 1);
                 } else {
-                    person = extractPersonAttributes(parserString.trim());
+                    person = Person.extractPersonAttributes(parserString.trim());
                     parserString = "";
                 }
 
@@ -265,19 +265,6 @@ public class GoogleScholarExtractor {
     private static int extractFinalPage(String pages) {
         // The '+ 12' is because String.substring(int startIndex) includes the char at startIndex and we need 1 more index since the format is "pag--pag".
         return Integer.parseInt(pages.substring(pages.indexOf("-") + 2));
-    }
-
-    /**
-     * @param author The name is the first encountered word, the surname the second.
-     */
-    private static Person extractPersonAttributes(String author) {
-        // Split the string using spaces as separators.
-        String[] splitAuthor = author.split(" ");
-
-        String name = splitAuthor[0];
-        String surname = splitAuthor.length > 1 ? splitAuthor[1] : null;
-
-        return new Person(name, surname);
     }
 
     private static Integer extractVolume(JSONObject jsonObject) {

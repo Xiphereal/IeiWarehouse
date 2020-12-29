@@ -2,8 +2,8 @@ package ieiWarehousePopulator.persistence.dataAccessObjects;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Person;
-import ieiWarehousePopulator.extractors.utils.YearRange;
 import ieiWarehousePopulator.persistence.MySQLConnection;
+import ieiWarehousePopulator.restService.utils.YearRange;
 
 import java.util.List;
 
