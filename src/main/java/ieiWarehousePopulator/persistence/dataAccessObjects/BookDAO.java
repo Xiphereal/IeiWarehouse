@@ -14,8 +14,12 @@ public class BookDAO extends PublicationDAO {
         String sqlQuery =
                 "SELECT DISTINCT titulo, anyo, url, " +
                         "editorial " +
+                        "publicacion.id, " +
+                        "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
-                        "LEFT JOIN articulo ON libro.publicacion_id=publicacion.id " +
+                        "LEFT JOIN libro ON libro.publicacion_id=publicacion.id " +
+                        "LEFT JOIN publicacion_has_persona ON publicacion.id=publicacion_has_persona.publicacion_id " +
+                        "LEFT JOIN persona ON publicacion_has_persona.persona_id=persona.id " +
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +
                         "AND anyo <= " + yearRange.getEndYear() + " " +
                         "GROUP BY titulo;";
