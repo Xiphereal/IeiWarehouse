@@ -14,13 +14,13 @@ public class BookDAO extends PublicationDAO {
     }
 
     public static void persist(Book book) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(book.getTitle());
+        Integer retrievedPublicationId = retrievePublicationDatabaseId(book);
 
         if (!doesBookAlreadyExistInDatabase(retrievedPublicationId)) {
             insertNewPublicationIntoDatabase(book);
             insertNewBookIntoDatabase(book);
 
-            retrievedPublicationId = retrievePublicationDatabaseId(book.getTitle());
+            retrievedPublicationId = retrievePublicationDatabaseId(book);
             Person.persistAuthors(book.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the book already exists in database.
@@ -32,7 +32,7 @@ public class BookDAO extends PublicationDAO {
     }
 
     private static void insertNewBookIntoDatabase(Book book) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(book.getTitle());
+        Integer retrievedPublicationId = retrievePublicationDatabaseId(book);
 
         String addBookSqlUpdate =
                 "INSERT INTO libro (publicacion_id, editorial) " +

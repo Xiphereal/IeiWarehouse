@@ -14,7 +14,7 @@ public class ArticleDAO {
     }
 
     public static void persist(Article article) {
-        Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article.getTitle());
+        Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article);
 
         if (retrievedPublicationId == null) {
             Integer retrievedCopyId = article.getCopyPublishedBy()
@@ -27,7 +27,7 @@ public class ArticleDAO {
             PublicationDAO.insertNewPublicationIntoDatabase(article);
             insertNewArticleIntoDatabase(retrievedCopyId, article);
 
-            retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article.getTitle());
+            retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article);
 
             Person.persistAuthors(article.getAuthors(), retrievedPublicationId);
         } else {
@@ -40,7 +40,7 @@ public class ArticleDAO {
     }
 
     public static void insertNewArticleIntoDatabase(Integer retrievedCopyId, Article article) {
-        Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article.getTitle());
+        Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article);
 
         String addArticleSqlUpdate =
                 "INSERT INTO articulo (publicacion_id, ejemplar_id, pagina_inicio, pagina_fin) " +

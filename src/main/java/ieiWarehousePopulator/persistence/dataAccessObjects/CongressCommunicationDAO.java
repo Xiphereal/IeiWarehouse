@@ -14,13 +14,13 @@ public class CongressCommunicationDAO extends PublicationDAO {
     }
 
     public static void persist(CongressCommunication congressCommunication) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication.getTitle());
+        Integer retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication);
 
         if (!doesCongressCommunicationAlreadyExistInDatabase(retrievedPublicationId)) {
             insertNewPublicationIntoDatabase(congressCommunication);
             insertNewCongressCommunicationIntoDatabase(congressCommunication);
 
-            retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication.getTitle());
+            retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication);
             Person.persistAuthors(congressCommunication.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the Congress Communication already exists in database.
@@ -32,7 +32,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
     }
 
     private static void insertNewCongressCommunicationIntoDatabase(CongressCommunication congressCommunication) {
-        Integer retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication.getTitle());
+        Integer retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication);
 
         String addCongressCommunicationSqlUpdate =
                 "INSERT INTO comunicacioncongreso (publicacion_id, congreso, edicion, lugar, pagina_inicio, pagina_fin) " +

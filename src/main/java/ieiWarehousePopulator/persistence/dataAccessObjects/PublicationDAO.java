@@ -6,9 +6,13 @@ import ieiWarehousePopulator.persistence.MySQLConnection;
 import java.util.Optional;
 
 public class PublicationDAO {
-    public static Integer retrievePublicationDatabaseId(String title) {
-        String formattedTitle = title != null ? "= " + "\"" + title + "\"" : "IS NULL";
-        String formattedYear = title != null ? "= " + title : "IS NULL";
+    public static Integer retrievePublicationDatabaseId(Publication publication) {
+        String formattedTitle = publication.getTitle() != null ?
+                "= " + "\"" + publication.getTitle() + "\"" :
+                "IS NULL";
+        String formattedYear = publication.getYear() != null ?
+                "= " + publication.getYear() :
+                "IS NULL";
 
         String retrievePublicationIdSqlQuery =
                 "SELECT id FROM publicacion " +
