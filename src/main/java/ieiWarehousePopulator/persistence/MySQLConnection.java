@@ -2,6 +2,7 @@ package ieiWarehousePopulator.persistence;
 
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
+import ieiWarehousePopulator.domain.CongressCommunication;
 import ieiWarehousePopulator.domain.utils.Tuple;
 import ieiWarehousePopulator.persistence.queryStrategy.*;
 
@@ -46,6 +47,10 @@ public class MySQLConnection {
 
     public static List<Book> performQueryToRetrieveBooks(String sqlQuery) {
         return performQuery(sqlQuery, new BooksRetrieval());
+    }
+
+    public static List<CongressCommunication> performQueryToRetrieveCongressCommunications(String sqlQuery) {
+        return performQuery(sqlQuery, new CongressCommunicationRetrieval());
     }
 
     /**
