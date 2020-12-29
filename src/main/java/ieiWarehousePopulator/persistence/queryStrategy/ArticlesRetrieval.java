@@ -3,16 +3,20 @@ package ieiWarehousePopulator.persistence.queryStrategy;
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Copy;
 import ieiWarehousePopulator.domain.Magazine;
+import ieiWarehousePopulator.domain.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArticlesRetrieval implements QueryStrategy {
     @Override
     public List<Article> retrieveQueryResults(ResultSet queryResultSet) throws SQLException {
-        List<Article> retrievedArticles = new ArrayList<>();
+
+        Map<Integer, Article> identifiedArticles = new HashMap<>();
 
         while (queryResultSet.next()) {
             // Each parameter 'i' passed to the getObject() method indicates
@@ -29,7 +33,10 @@ public class ArticlesRetrieval implements QueryStrategy {
 
             String magazineName = (String) queryResultSet.getObject(9);
 
-            // TODO: Retrieve the list of the article's authors.
+            Integer publicationId = (Integer) queryResultSet.getObject(10);
+
+            String authorName = (String) queryResultSet.getObject(11);
+            String authorSurnames = (String) queryResultSet.getObject(12);
 
             Article article = resolveRelationships(title,
                     year,
@@ -41,10 +48,20 @@ public class ArticlesRetrieval implements QueryStrategy {
                     copyMonth,
                     magazineName);
 
-            retrievedArticles.add(article);
+            Person author = getAuthor(authorName, authorSurnames);
+
+            // If the article has been already retrieved,
+            // update that precise object from the map.
+            if (identifiedArticles.containsKey(publicationId)) {
+                article = identifiedArticles.get(publicationId);
+            }
+
+            article.addAuthor(author);
+
+            identifiedArticles.put(publicationId, article);
         }
 
-        return retrievedArticles;
+        return new ArrayList<>(identifiedArticles.values());
     }
 
     private Article resolveRelationships(String title,
@@ -65,5 +82,14 @@ public class ArticlesRetrieval implements QueryStrategy {
         copy.setMagazinePublishBy(magazine);
 
         return article;
+    }
+
+    private Person getAuthor(String authorName, String authorSurnames) {
+        Person author = null;
+
+        if (authorName != null || authorSurnames != null)
+            author = new Person(authorName, authorSurnames);
+
+        return author;
     }
 }
