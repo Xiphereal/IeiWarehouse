@@ -20,6 +20,8 @@ public class ArticleDAO {
                         "LEFT JOIN articulo ON articulo.publicacion_id=publicacion.id " +
                         "LEFT JOIN ejemplar ON articulo.ejemplar_id=ejemplar.id " +
                         "LEFT JOIN revista ON ejemplar.revista_id=revista.id " +
+                        "WHERE anyo >= " + yearRange.getStartYear() + " " +
+                        "AND anyo <= " + yearRange.getEndYear() + " " +
                         "GROUP BY titulo;";
 
         return MySQLConnection.performQueryToRetrieveArticles(sqlQuery);
