@@ -3,6 +3,7 @@ package ieiWarehousePopulator.restService;
 import ieiWarehousePopulator.domain.Article;
 import ieiWarehousePopulator.domain.Book;
 import ieiWarehousePopulator.domain.CongressCommunication;
+import ieiWarehousePopulator.domain.Person;
 import ieiWarehousePopulator.persistence.dataAccessObjects.ArticleDAO;
 import ieiWarehousePopulator.persistence.dataAccessObjects.BookDAO;
 import ieiWarehousePopulator.persistence.dataAccessObjects.CongressCommunicationDAO;
@@ -49,15 +50,17 @@ public class SearchApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
+        Person requestedAuthor = Person.extractPersonAttributes(author);
+
         return getDataFromWarehouse(yearRange,
-                author,
+                requestedAuthor,
                 searchArticles,
                 searchBooks,
                 searchCongressCommunications);
     }
 
     private RequestResultResponse getDataFromWarehouse(YearRange yearRange,
-                                                       String author,
+                                                       Person author,
                                                        boolean searchArticles,
                                                        boolean searchBooks,
                                                        boolean searchCongressCommunications) {

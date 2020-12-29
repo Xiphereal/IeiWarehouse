@@ -8,7 +8,7 @@ import ieiWarehousePopulator.restService.utils.YearRange;
 import java.util.List;
 
 public class BookDAO extends PublicationDAO {
-    public static List<Book> retrieveBooks(YearRange yearRange, String author) {
+    public static List<Book> retrieveBooks(YearRange yearRange, Person requestedAuthor) {
         // TODO: Populate the result list with the filtered Articles from the Warehouse.
         // TODO: Retrieve the list of the article's authors.
         String sqlQuery =
