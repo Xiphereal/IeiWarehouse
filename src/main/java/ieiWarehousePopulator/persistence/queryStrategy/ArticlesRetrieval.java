@@ -63,6 +63,7 @@ public class ArticlesRetrieval implements QueryStrategy {
 
         Magazine magazine = new Magazine(magazineName);
         copy.setMagazinePublishBy(magazine);
+
         return article;
     }
 }
