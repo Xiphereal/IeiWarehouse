@@ -13,8 +13,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
         String sqlQuery =
                 "SELECT titulo, anyo, url, " +
                         "pagina_inicio, pagina_fin, " +
-                        "congreso, edicion, " +
-                        "lugar, " +
+                        "congreso, edicion, lugar, " +
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
