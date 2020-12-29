@@ -1,19 +1,18 @@
 package ieiWarehousePopulator.persistence.queryStrategy;
 
-import ieiWarehousePopulator.domain.Article;
-import ieiWarehousePopulator.domain.Book;
-import ieiWarehousePopulator.domain.Copy;
-import ieiWarehousePopulator.domain.Magazine;
+import ieiWarehousePopulator.domain.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BooksRetrieval implements QueryStrategy{
     @Override
     public List<Book> retrieveQueryResults(ResultSet queryResultSet) throws SQLException {
-        List<Book> retrievedBooks = new ArrayList<>();
+        Map<Integer, Book> identifiedBooks = new HashMap<>();
 
         while (queryResultSet.next()) {
             // Each parameter 'i' passed to the getObject() method indicates
@@ -23,17 +22,26 @@ public class BooksRetrieval implements QueryStrategy{
             String url = (String) queryResultSet.getObject(3);
             String publisher = (String) queryResultSet.getObject((4));
 
-            // TODO: Retrieve the list of the book's authors.
+            Integer publicationId = (Integer) queryResultSet.getObject(5);
+
+            String authorName = (String) queryResultSet.getObject(6);
+            String authorSurnames = (String) queryResultSet.getObject(7);
 
             Book book = resolveRelationships(title,
                     year,
                     url,
                     publisher);
+            Person author = getAuthor(authorName, authorSurnames);
+            if (identifiedBooks.containsKey(publicationId)) {
+                book = identifiedBooks.get(publicationId);
+            }
 
-            retrievedBooks.add(book);
+            book.addAuthor(author);
+
+            identifiedBooks.put(publicationId, book);
         }
 
-        return retrievedBooks;
+         return new ArrayList<>(identifiedBooks.values());
     }
 
     private Book resolveRelationships(String title,
@@ -43,5 +51,13 @@ public class BooksRetrieval implements QueryStrategy{
         Book book  = new Book(title, year, url, publisher);
 
         return book;
+    }
+    private Person getAuthor(String authorName, String authorSurnames) {
+        Person author = null;
+
+        if (authorName != null || authorSurnames != null)
+            author = new Person(authorName, authorSurnames);
+
+        return author;
     }
 }
