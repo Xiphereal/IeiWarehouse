@@ -21,6 +21,10 @@ public class SeleniumScraper {
         openDrawerMenu();
 
         openAdvancedSearch();
+
+        enterAdvancedSearchOptions();
+
+        performAdvancedSearch();
     }
 
     @NotNull
@@ -49,5 +53,22 @@ public class SeleniumScraper {
     private void waitUntilClickable(WebElement webElement) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
+    }
+
+    // TODO: Parameterize the search options.
+    private void enterAdvancedSearchOptions() {
+        WebElement authorTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_sau\"]"));
+        authorTextBox.sendKeys("\"" + "Author Name" + "\"");
+
+        WebElement startYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_ylo\"]"));
+        startYearTextBox.sendKeys("2013");
+
+        WebElement endYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_yhi\"]"));
+        endYearTextBox.sendKeys("2015");
+    }
+
+    private void performAdvancedSearch() {
+        WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"gs_asd_psb\"]"));
+        searchButton.click();
     }
 }
