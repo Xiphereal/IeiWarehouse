@@ -8,21 +8,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class SeleniumScraper {
     private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
 
-    public static void scrap() {
-        ChromeDriver chromeDriver = openChromeInstance();
+    private ChromeDriver chromeDriver;
 
-        openDrawerMenu(chromeDriver);
+    public void scrap() {
+        chromeDriver = openChromeInstance();
 
-        openAdvancedSearch(chromeDriver);
-    }
+        openDrawerMenu();
 
-    private static void openAdvancedSearch(ChromeDriver chromeDriver) {
-        WebElement advancedSearchMenuItem = chromeDriver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
-        advancedSearchMenuItem.click();
+        openAdvancedSearch();
     }
 
     @NotNull
-    private static ChromeDriver openChromeInstance() {
+    private ChromeDriver openChromeInstance() {
         System.setProperty("webdriver.chrome.driver", PROJECT_PATH + "src/main/resources/chromedriver_ver87.exe");
         ChromeDriver chromeDriver = new ChromeDriver();
         chromeDriver.get("https://scholar.google.com/");
@@ -30,8 +27,13 @@ public class SeleniumScraper {
         return chromeDriver;
     }
 
-    private static void openDrawerMenu(ChromeDriver chromeDriver) {
+    private void openDrawerMenu() {
         WebElement drawerMenuButton = chromeDriver.findElement(By.xpath("//*[@id=\"gs_hdr_mnu\"]"));
         drawerMenuButton.click();
+    }
+
+    private void openAdvancedSearch() {
+        WebElement advancedSearchMenuItem = chromeDriver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
+        advancedSearchMenuItem.click();
     }
 }
