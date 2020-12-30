@@ -36,4 +36,17 @@ public class SeleniumScraper {
         WebElement advancedSearchMenuItem = driver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
         advancedSearchMenuItem.click();
     }
+
+    private static void waitForWebElement(WebElement webElement) {
+        waitForWebElement(webElement, 0);
+    }
+
+    private static void waitForWebElement(WebElement webElement, long timeInMillis) {
+        try {
+            webElement.wait(timeInMillis);
+        } catch (InterruptedException e) {
+            System.err.println("A web element await has been interrupted during the Selenium data scraping: ");
+            e.printStackTrace();
+        }
+    }
 }
