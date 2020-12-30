@@ -8,10 +8,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class SeleniumScraper {
     private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
 
-    private ChromeDriver chromeDriver;
+    private ChromeDriver driver;
 
     public void scrap() {
-        chromeDriver = openChromeInstance();
+        driver = openChromeInstance();
 
         openDrawerMenu();
 
@@ -28,12 +28,12 @@ public class SeleniumScraper {
     }
 
     private void openDrawerMenu() {
-        WebElement drawerMenuButton = chromeDriver.findElement(By.xpath("//*[@id=\"gs_hdr_mnu\"]"));
+        WebElement drawerMenuButton = driver.findElement(By.xpath("//*[@id=\"gs_hdr_mnu\"]"));
         drawerMenuButton.click();
     }
 
     private void openAdvancedSearch() {
-        WebElement advancedSearchMenuItem = chromeDriver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
+        WebElement advancedSearchMenuItem = driver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
         advancedSearchMenuItem.click();
     }
 }
