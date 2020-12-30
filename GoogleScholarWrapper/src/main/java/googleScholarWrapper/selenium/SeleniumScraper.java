@@ -16,7 +16,7 @@ public class SeleniumScraper {
     private ChromeDriver driver;
 
     public void scrap() {
-        driver = openChromeInstance();
+        driver = openChromeInstanceWithGoogleScholar();
 
         openDrawerMenu();
 
@@ -24,7 +24,7 @@ public class SeleniumScraper {
     }
 
     @NotNull
-    private ChromeDriver openChromeInstance() {
+    private ChromeDriver openChromeInstanceWithGoogleScholar() {
         System.setProperty("webdriver.chrome.driver", PROJECT_PATH + "src/main/resources/chromedriver_ver87.exe");
 
         ChromeDriver chromeDriver = new ChromeDriver();
