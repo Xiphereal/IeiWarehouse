@@ -35,13 +35,9 @@ public class SeleniumScraper {
     private void openAdvancedSearch() {
         WebElement advancedSearchMenuItem = driver.findElement(By.xpath("//*[@id=\"gs_hp_drw_adv\"]"));
 
-        waitForWebElement(advancedSearchMenuItem);
+        waitForWebElement(advancedSearchMenuItem, 500);
 
         advancedSearchMenuItem.click();
-    }
-
-    private void waitForWebElement(WebElement webElement) {
-        waitForWebElement(webElement, 0);
     }
 
     private void waitForWebElement(WebElement webElement, long timeInMillis) {
