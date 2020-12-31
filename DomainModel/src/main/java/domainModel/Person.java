@@ -1,6 +1,6 @@
-package warehouse.domain;
+package domainModel;
 
-import warehouse.domain.utils.Tuple;
+import domainModel.utils.Tuple;
 import warehouse.persistence.MySQLConnection;
 
 import java.util.*;

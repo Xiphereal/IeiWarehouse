@@ -1,4 +1,4 @@
-package warehouse.domain;
+package domainModel;
 
 import warehouse.persistence.Persistable;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;

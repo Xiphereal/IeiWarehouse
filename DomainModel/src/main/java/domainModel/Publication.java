@@ -1,4 +1,4 @@
-package warehouse.domain;
+package domainModel;
 
 import java.util.HashSet;
 import java.util.List;
