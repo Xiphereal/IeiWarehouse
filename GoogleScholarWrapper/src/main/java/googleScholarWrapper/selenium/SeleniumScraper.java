@@ -1,5 +1,7 @@
 package googleScholarWrapper.selenium;
 
+import domainModel.Person;
+import domainModel.utils.YearRange;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -15,14 +17,14 @@ public class SeleniumScraper {
 
     private ChromeDriver driver;
 
-    public void scrap() {
+    public void scrap(YearRange yearRange, Person requestedAuthor) {
         driver = openChromeInstanceWithGoogleScholar();
 
         openDrawerMenu();
 
         openAdvancedSearch();
 
-        enterAdvancedSearchOptions();
+        enterAdvancedSearchOptions(yearRange, requestedAuthor);
 
         performAdvancedSearch();
     }
@@ -55,16 +57,15 @@ public class SeleniumScraper {
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 
-    // TODO: Parameterize the search options.
-    private void enterAdvancedSearchOptions() {
+    private void enterAdvancedSearchOptions(YearRange yearRange, Person requestedAuthor) {
         WebElement authorTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_sau\"]"));
-        authorTextBox.sendKeys("\"" + "Author Name" + "\"");
+        authorTextBox.sendKeys("\"" + requestedAuthor.getFullName() + "\"");
 
         WebElement startYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_ylo\"]"));
-        startYearTextBox.sendKeys("2013");
+        startYearTextBox.sendKeys(yearRange.getStartYear().toString());
 
         WebElement endYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_yhi\"]"));
-        endYearTextBox.sendKeys("2015");
+        endYearTextBox.sendKeys(yearRange.getEndYear().toString());
     }
 
     private void performAdvancedSearch() {
