@@ -58,8 +58,16 @@ public class SeleniumScraper {
     }
 
     private void enterAdvancedSearchOptions(YearRange yearRange, Person requestedAuthor) {
-        WebElement authorTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_sau\"]"));
-        authorTextBox.sendKeys("\"" + requestedAuthor.getFullName() + "\"");
+        if (requestedAuthor != null) {
+            WebElement authorTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_sau\"]"));
+            authorTextBox.sendKeys("\"" + requestedAuthor.getFullName() + "\"");
+        }
+
+        // If no year range has been specified, the default values for the
+        // start and end year are 1000 and 2999 respectively.
+        if (yearRange == null) {
+            yearRange = new YearRange();
+        }
 
         WebElement startYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_ylo\"]"));
         startYearTextBox.sendKeys(yearRange.getStartYear().toString());
