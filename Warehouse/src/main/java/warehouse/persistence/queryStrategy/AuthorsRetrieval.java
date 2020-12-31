@@ -1,6 +1,6 @@
 package warehouse.persistence.queryStrategy;
 
-import warehouse.domain.utils.Tuple;
+import domainModel.utils.Tuple;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

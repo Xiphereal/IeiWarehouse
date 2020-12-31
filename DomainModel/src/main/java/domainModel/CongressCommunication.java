@@ -1,9 +1,6 @@
 package domainModel;
 
-import warehouse.persistence.Persistable;
-import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
-
-public class CongressCommunication extends Publication implements Persistable {
+public class CongressCommunication extends Publication {
     private String congress;
     private String edition;
     private String place;
@@ -24,11 +21,6 @@ public class CongressCommunication extends Publication implements Persistable {
         this.place = place;
         this.initialPage = initialPage;
         this.finalPage = finalPage;
-    }
-
-    @Override
-    public void persist() {
-        CongressCommunicationDAO.persist(this);
     }
 
     public String getCongress() {
