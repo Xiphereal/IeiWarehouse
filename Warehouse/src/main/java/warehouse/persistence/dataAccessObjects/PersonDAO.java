@@ -1,8 +1,13 @@
 package warehouse.persistence.dataAccessObjects;
 
+import domainModel.Person;
+import domainModel.utils.Tuple;
 import warehouse.persistence.MySQLConnection;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class PersonDAO {
 

@@ -1,14 +1,14 @@
 package warehouse.extractors;
 
+import domainModel.Article;
+import domainModel.Copy;
+import domainModel.Magazine;
+import domainModel.Person;
+import domainModel.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import warehouse.domain.Article;
-import warehouse.domain.Copy;
-import warehouse.domain.Magazine;
-import warehouse.domain.Person;
-import warehouse.domain.utils.Tuple;
 import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.restService.utils.YearRange;

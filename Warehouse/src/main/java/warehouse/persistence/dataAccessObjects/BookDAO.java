@@ -1,7 +1,7 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.Book;
-import warehouse.domain.Person;
+import domainModel.Book;
+import domainModel.Person;
 import warehouse.persistence.MySQLConnection;
 import warehouse.restService.utils.YearRange;
 

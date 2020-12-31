@@ -1,5 +1,6 @@
 package warehouse.persistence.dataAccessObjects;
 
+import domainModel.Copy;
 import warehouse.persistence.MySQLConnection;
 
 import java.util.Optional;

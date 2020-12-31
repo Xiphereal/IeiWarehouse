@@ -1,11 +1,11 @@
 package warehouse.extractors;
 
+import domainModel.*;
+import domainModel.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import warehouse.domain.*;
-import warehouse.domain.utils.Tuple;
 import warehouse.restService.utils.YearRange;
 
 import java.io.FileReader;

@@ -1,7 +1,7 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.CongressCommunication;
-import warehouse.domain.Person;
+import domainModel.CongressCommunication;
+import domainModel.Person;
 import warehouse.persistence.MySQLConnection;
 import warehouse.restService.utils.YearRange;
 
