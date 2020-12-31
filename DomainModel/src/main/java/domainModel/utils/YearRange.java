@@ -4,6 +4,11 @@ public class YearRange {
     private final Long startYear;
     private final Long endYear;
 
+    public YearRange() {
+        this.startYear = 1000L;
+        this.endYear = 2999L;
+    }
+
     public YearRange(Long startYear, Long endYear) {
         this.startYear = startYear;
         this.endYear = endYear;
