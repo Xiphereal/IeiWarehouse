@@ -1,9 +1,9 @@
 package warehouse.persistence.queryStrategy;
 
-import warehouse.domain.Article;
-import warehouse.domain.Copy;
-import warehouse.domain.Magazine;
-import warehouse.domain.Person;
+import domainModel.Article;
+import domainModel.Copy;
+import domainModel.Magazine;
+import domainModel.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.Publication;
+import domainModel.Publication;
 import warehouse.persistence.MySQLConnection;
 
 import java.util.Optional;

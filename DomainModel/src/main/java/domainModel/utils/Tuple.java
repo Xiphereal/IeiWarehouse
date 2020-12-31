@@ -1,4 +1,4 @@
-package warehouse.domain.utils;
+package domainModel.utils;
 
 public class Tuple<T, K> {
     private T firstElement;

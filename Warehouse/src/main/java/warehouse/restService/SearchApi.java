@@ -1,12 +1,12 @@
 package warehouse.restService;
 
+import domainModel.Article;
+import domainModel.Book;
+import domainModel.CongressCommunication;
+import domainModel.Person;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import warehouse.domain.Article;
-import warehouse.domain.Book;
-import warehouse.domain.CongressCommunication;
-import warehouse.domain.Person;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;

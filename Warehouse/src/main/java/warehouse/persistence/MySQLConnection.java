@@ -1,9 +1,9 @@
 package warehouse.persistence;
 
-import warehouse.domain.Article;
-import warehouse.domain.Book;
-import warehouse.domain.CongressCommunication;
-import warehouse.domain.utils.Tuple;
+import domainModel.Article;
+import domainModel.Book;
+import domainModel.CongressCommunication;
+import domainModel.utils.Tuple;
 import warehouse.persistence.queryStrategy.*;
 
 import java.sql.*;

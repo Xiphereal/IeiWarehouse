@@ -1,11 +1,14 @@
 package warehouse.extractors;
 
+import domainModel.*;
+import domainModel.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import warehouse.domain.*;
-import warehouse.domain.utils.Tuple;
+import warehouse.persistence.dataAccessObjects.ArticleDAO;
+import warehouse.persistence.dataAccessObjects.BookDAO;
+import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 import warehouse.restService.utils.YearRange;
 
 import java.io.FileReader;
@@ -52,7 +55,7 @@ public class GoogleScholarExtractor {
 
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
 
-            congressCommunication.persist();
+            CongressCommunicationDAO.persist(congressCommunication);
 
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
@@ -81,7 +84,7 @@ public class GoogleScholarExtractor {
 
             resolveEntitiesRelationshipsBook(book, authors);
 
-            book.persist();
+            BookDAO.persist(book);
 
             //TODO: Check if this magazine already exists, if it does add this publication to the magazine.
             // Also check if that copy already exists, if it does Add the article to the copy
@@ -118,7 +121,7 @@ public class GoogleScholarExtractor {
 
             resolveEntitiesRelationships(article, person, copy, magazine);
 
-            article.persist();
+            ArticleDAO.persist(article);
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);

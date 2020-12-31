@@ -1,8 +1,8 @@
 package warehouse.restService.requestResponses;
 
-import warehouse.domain.Article;
-import warehouse.domain.Book;
-import warehouse.domain.CongressCommunication;
+import domainModel.Article;
+import domainModel.Book;
+import domainModel.CongressCommunication;
 
 import java.util.List;
 
