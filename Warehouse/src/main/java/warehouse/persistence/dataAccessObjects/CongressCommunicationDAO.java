@@ -40,7 +40,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
             insertNewCongressCommunicationIntoDatabase(congressCommunication);
 
             retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication);
-            Person.persistAuthors(congressCommunication.getAuthors(), retrievedPublicationId);
+            PersonDAO.persistAuthors(congressCommunication.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the Congress Communication already exists in database.
         }

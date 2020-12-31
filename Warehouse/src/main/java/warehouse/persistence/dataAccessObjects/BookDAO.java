@@ -39,7 +39,7 @@ public class BookDAO extends PublicationDAO {
             insertNewBookIntoDatabase(book);
 
             retrievedPublicationId = retrievePublicationDatabaseId(book);
-            Person.persistAuthors(book.getAuthors(), retrievedPublicationId);
+            PersonDAO.persistAuthors(book.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the book already exists in database.
         }

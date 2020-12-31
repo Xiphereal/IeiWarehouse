@@ -11,7 +11,7 @@ public class CopyDAO {
             return null;
         }
 
-        Integer retrievedCopyId = retrieveCopyDatabaseId();
+        Integer retrievedCopyId = retrieveCopyDatabaseId(copy);
 
         if (!doesCopyAlreadyExistInDatabase(retrievedCopyId)) {
             insertNewCopyIntoDatabase(copy, retrievedMagazineId);

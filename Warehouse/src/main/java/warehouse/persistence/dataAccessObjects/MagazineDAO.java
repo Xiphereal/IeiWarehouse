@@ -33,7 +33,7 @@ public class MagazineDAO {
             // TODO: Notify that the Magazine already exists in database.
         }
 
-        Integer retrievedCopyId = copyPublishedBy.persistCopy(retrievedMagazineId);
+        Integer retrievedCopyId = CopyDAO.persist(copyPublishedBy, retrievedMagazineId);
 
         return retrievedCopyId;
     }
@@ -42,13 +42,13 @@ public class MagazineDAO {
      * If the Article doesn't have a related Magazine, the Magazine instance is created with all its fields to null.
      */
     private static boolean doesArticleHaveMagazine(Magazine magazine) {
-        return magazine.name != null;
+        return magazine.getName() != null;
     }
 
     private static Integer retrieveMagazineDatabaseId(Magazine magazine) {
         String retrieveMagazineIdSqlQuery =
                 "SELECT id FROM revista " +
-                        "WHERE nombre = " + "\"" + magazine.name + "\"" + ";";
+                        "WHERE nombre = " + "\"" + magazine.getName() + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
@@ -59,7 +59,7 @@ public class MagazineDAO {
     private static void insertNewMagazineIntoDatabase(Magazine magazine) {
         String addMagazineSqlUpdate =
                 "INSERT INTO revista (nombre) " +
-                        "VALUES (" + "\"" + magazine.name + "\"" + ");";
+                        "VALUES (" + "\"" + magazine.getName() + "\"" + ");";
 
         MySQLConnection.performUpdate(addMagazineSqlUpdate);
     }
