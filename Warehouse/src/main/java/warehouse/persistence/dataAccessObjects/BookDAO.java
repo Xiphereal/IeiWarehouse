@@ -1,7 +1,7 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.Book;
-import warehouse.domain.Person;
+import domainModel.Book;
+import domainModel.Person;
 import warehouse.persistence.MySQLConnection;
 import warehouse.restService.utils.YearRange;
 
@@ -39,7 +39,7 @@ public class BookDAO extends PublicationDAO {
             insertNewBookIntoDatabase(book);
 
             retrievedPublicationId = retrievePublicationDatabaseId(book);
-            Person.persistAuthors(book.getAuthors(), retrievedPublicationId);
+            PersonDAO.persistAuthors(book.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the book already exists in database.
         }

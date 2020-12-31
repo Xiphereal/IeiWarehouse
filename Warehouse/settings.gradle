@@ -1,2 +1,3 @@
-rootProject.name = 'IEI'
+rootProject.name = 'Warehouse'
 
+includeBuild '../DomainModel'

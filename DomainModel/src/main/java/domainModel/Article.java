@@ -1,9 +1,6 @@
-package warehouse.domain;
+package domainModel;
 
-import warehouse.persistence.Persistable;
-import warehouse.persistence.dataAccessObjects.ArticleDAO;
-
-public class Article extends Publication implements Persistable {
+public class Article extends Publication {
     private Integer initialPage;
     private Integer finalPage;
     private Copy copyPublishedBy;
@@ -16,11 +13,6 @@ public class Article extends Publication implements Persistable {
         super(title, year, url);
         this.initialPage = initialPage;
         this.finalPage = finalPage;
-    }
-
-    @Override
-    public void persist() {
-        ArticleDAO.persist(this);
     }
 
     public Integer getInitialPage() {

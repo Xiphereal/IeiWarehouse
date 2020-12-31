@@ -1,15 +1,12 @@
-package warehouse.domain;
+package warehouse.persistence.dataAccessObjects;
 
+import domainModel.Copy;
+import domainModel.Magazine;
 import warehouse.persistence.MySQLConnection;
 
 import java.util.Optional;
 
-public class Magazine {
-    private String name;
-
-    public Magazine(String name) {
-        this.name = name;
-    }
+public class MagazineDAO {
 
     /**
      * @param copyPublishedBy The specific copy for in which the article has been published in. Since the current
@@ -22,21 +19,21 @@ public class Magazine {
      */
     // TODO: Encapsulate the logic for persistence to the correspondent DAO class,
     //  substituting it with a call to that class.
-    public Integer persistMagazineAndRelatedCopy(Copy copyPublishedBy) {
-        if (!doesArticleHaveMagazine()) {
+    public static Integer persistMagazineAndRelatedCopy(Magazine magazine, Copy copyPublishedBy) {
+        if (!doesArticleHaveMagazine(magazine)) {
             return null;
         }
 
-        Integer retrievedMagazineId = retrieveMagazineDatabaseId();
+        Integer retrievedMagazineId = retrieveMagazineDatabaseId(magazine);
 
         if (!doesMagazineAlreadyExistInDatabase(retrievedMagazineId)) {
-            insertNewMagazineIntoDatabase();
-            retrievedMagazineId = retrieveMagazineDatabaseId();
+            insertNewMagazineIntoDatabase(magazine);
+            retrievedMagazineId = retrieveMagazineDatabaseId(magazine);
         } else {
             // TODO: Notify that the Magazine already exists in database.
         }
 
-        Integer retrievedCopyId = copyPublishedBy.persistCopy(retrievedMagazineId);
+        Integer retrievedCopyId = CopyDAO.persist(copyPublishedBy, retrievedMagazineId);
 
         return retrievedCopyId;
     }
@@ -44,14 +41,14 @@ public class Magazine {
     /**
      * If the Article doesn't have a related Magazine, the Magazine instance is created with all its fields to null.
      */
-    private boolean doesArticleHaveMagazine() {
-        return this.name != null;
+    private static boolean doesArticleHaveMagazine(Magazine magazine) {
+        return magazine.getName() != null;
     }
 
-    private Integer retrieveMagazineDatabaseId() {
+    private static Integer retrieveMagazineDatabaseId(Magazine magazine) {
         String retrieveMagazineIdSqlQuery =
                 "SELECT id FROM revista " +
-                        "WHERE nombre = " + "\"" + this.name + "\"" + ";";
+                        "WHERE nombre = " + "\"" + magazine.getName() + "\"" + ";";
 
         Optional<Integer> retrievedMagazineId =
                 MySQLConnection.performQueryToRetrieveIds(retrieveMagazineIdSqlQuery).stream().findFirst();
@@ -59,30 +56,15 @@ public class Magazine {
         return retrievedMagazineId.orElse(null);
     }
 
-    private void insertNewMagazineIntoDatabase() {
+    private static void insertNewMagazineIntoDatabase(Magazine magazine) {
         String addMagazineSqlUpdate =
                 "INSERT INTO revista (nombre) " +
-                        "VALUES (" + "\"" + this.name + "\"" + ");";
+                        "VALUES (" + "\"" + magazine.getName() + "\"" + ");";
 
         MySQLConnection.performUpdate(addMagazineSqlUpdate);
     }
 
     private static boolean doesMagazineAlreadyExistInDatabase(Integer retrievedMagazineId) {
         return retrievedMagazineId != null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Magazine{" +
-                "name='" + name + '\'' +
-                '}';
     }
 }

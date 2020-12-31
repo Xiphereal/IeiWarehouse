@@ -1,12 +1,15 @@
 package warehouse.extractors;
 
+import domainModel.*;
+import domainModel.utils.Tuple;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import warehouse.domain.*;
-import warehouse.domain.utils.Tuple;
 import warehouse.extractors.utils.RomanToDecimalConverter;
+import warehouse.persistence.dataAccessObjects.ArticleDAO;
+import warehouse.persistence.dataAccessObjects.BookDAO;
+import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 import warehouse.restService.utils.YearRange;
 
 import java.io.FileReader;
@@ -58,7 +61,7 @@ public class IeeeExtractor {
 
                 resolveEntitiesRelationshipsArticle(article, person, copy, magazine);
 
-                article.persist();
+                ArticleDAO.persist(article);
 
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
@@ -70,7 +73,7 @@ public class IeeeExtractor {
 
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
 
-                congressCommunication.persist();
+                CongressCommunicationDAO.persist(congressCommunication);
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
@@ -81,7 +84,7 @@ public class IeeeExtractor {
 
                 resolveEntitiesRelationshipsBook(book, person);
 
-                book.persist();
+                BookDAO.persist(book);
 
             }
         } catch (ClassCastException e) {

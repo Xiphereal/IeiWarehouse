@@ -1,7 +1,7 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.Article;
-import warehouse.domain.Person;
+import domainModel.Article;
+import domainModel.Person;
 import warehouse.persistence.MySQLConnection;
 import warehouse.restService.utils.YearRange;
 
@@ -39,9 +39,9 @@ public class ArticleDAO {
         Integer retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article);
 
         if (retrievedPublicationId == null) {
-            Integer retrievedCopyId = article.getCopyPublishedBy()
-                    .getMagazinePublishBy()
-                    .persistMagazineAndRelatedCopy(article.getCopyPublishedBy());
+            Integer retrievedCopyId =
+                    MagazineDAO.persistMagazineAndRelatedCopy(article.getCopyPublishedBy()
+                            .getMagazinePublishBy(), article.getCopyPublishedBy());
 
             if (!doesArticleHaveCopy(retrievedCopyId))
                 return;
@@ -51,7 +51,7 @@ public class ArticleDAO {
 
             retrievedPublicationId = PublicationDAO.retrievePublicationDatabaseId(article);
 
-            Person.persistAuthors(article.getAuthors(), retrievedPublicationId);
+            PersonDAO.persistAuthors(article.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the magazine already exists in database.
         }

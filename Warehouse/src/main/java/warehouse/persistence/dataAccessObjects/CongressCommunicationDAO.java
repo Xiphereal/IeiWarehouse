@@ -1,7 +1,7 @@
 package warehouse.persistence.dataAccessObjects;
 
-import warehouse.domain.CongressCommunication;
-import warehouse.domain.Person;
+import domainModel.CongressCommunication;
+import domainModel.Person;
 import warehouse.persistence.MySQLConnection;
 import warehouse.restService.utils.YearRange;
 
@@ -40,7 +40,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
             insertNewCongressCommunicationIntoDatabase(congressCommunication);
 
             retrievedPublicationId = retrievePublicationDatabaseId(congressCommunication);
-            Person.persistAuthors(congressCommunication.getAuthors(), retrievedPublicationId);
+            PersonDAO.persistAuthors(congressCommunication.getAuthors(), retrievedPublicationId);
         } else {
             // TODO: Notify that the Congress Communication already exists in database.
         }

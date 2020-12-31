@@ -1,7 +1,7 @@
 package warehouse.persistence.queryStrategy;
 
-import warehouse.domain.CongressCommunication;
-import warehouse.domain.Person;
+import domainModel.CongressCommunication;
+import domainModel.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
