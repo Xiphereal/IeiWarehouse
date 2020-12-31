@@ -1,7 +1,7 @@
 package warehouse.persistence.queryStrategy;
 
-import warehouse.domain.Book;
-import warehouse.domain.Person;
+import domainModel.Book;
+import domainModel.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
