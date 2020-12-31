@@ -1,4 +1,4 @@
-package warehouse.restService.utils;
+package domainModel.utils;
 
 public class YearRange {
     private final Long startYear;

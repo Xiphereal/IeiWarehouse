@@ -2,8 +2,8 @@ package warehouse.persistence.dataAccessObjects;
 
 import domainModel.Article;
 import domainModel.Person;
+import domainModel.utils.YearRange;
 import warehouse.persistence.MySQLConnection;
-import warehouse.restService.utils.YearRange;
 
 import java.util.List;
 

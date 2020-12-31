@@ -2,6 +2,7 @@ package warehouse.extractors;
 
 import domainModel.*;
 import domainModel.utils.Tuple;
+import domainModel.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,7 +11,6 @@ import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
-import warehouse.restService.utils.YearRange;
 
 import java.io.FileReader;
 import java.io.IOException;
