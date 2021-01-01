@@ -91,12 +91,20 @@ public class SeleniumScraper {
     }
 
     private void scrapCitationsAsBibtex() {
-        for (int resultsPageIndex = 1; resultsPageIndex <= NUMBER_OF_RESULTS_PAGES_TO_SCRAP; resultsPageIndex++) {
+        scrapResultsInCurrentResultPage();
+
+        // If there is more than one number of result pages requested, the consequent
+        // pages will be also scrapped. If not, the scrapping is already done.
+        if (NUMBER_OF_RESULTS_PAGES_TO_SCRAP <= 1)
+            return;
+
+        for (int nextResultsPageIndex = 2;
+             nextResultsPageIndex <= NUMBER_OF_RESULTS_PAGES_TO_SCRAP;
+             nextResultsPageIndex++) {
             scrapResultsInCurrentResultPage();
 
-            // Go to next result page.
-            WebElement nextResultsPage = getSearchResultsPages().get(resultsPageIndex);
-            nextResultsPage.click();
+            WebElement nextResultsPageButton = getSearchResultsPages().get(nextResultsPageIndex);
+            nextResultsPageButton.click();
         }
     }
 
