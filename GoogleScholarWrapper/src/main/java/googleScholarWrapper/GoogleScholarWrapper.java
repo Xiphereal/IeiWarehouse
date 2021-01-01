@@ -27,5 +27,9 @@ public class GoogleScholarWrapper {
             // Terminates the program normally.
             System.exit(0);
         }
+        // Terminates the program normally.
+        // It seems that Selenium Web Driver keeps the main execution thread running
+        // even when finishing normally.
+        System.exit(0);
     }
 }
