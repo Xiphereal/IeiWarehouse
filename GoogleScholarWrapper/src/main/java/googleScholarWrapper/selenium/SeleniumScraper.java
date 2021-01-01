@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SeleniumScraper {
@@ -18,7 +19,13 @@ public class SeleniumScraper {
 
     private ChromeDriver driver;
 
-    public void scrap(YearRange yearRange, Person requestedAuthor) {
+    private final List<String> searchResultsInBibtex;
+
+    public SeleniumScraper() {
+        searchResultsInBibtex = new ArrayList<>();
+    }
+
+    public List<String> scrap(YearRange yearRange, Person requestedAuthor) {
         driver = openChromeInstanceWithGoogleScholar();
 
         openDrawerMenu();
@@ -38,9 +45,9 @@ public class SeleniumScraper {
         bibtexLink.click();
 
         WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
-        System.out.println(
-                publicationCitationInBibtex.getText()
-        );
+        searchResultsInBibtex.add(publicationCitationInBibtex.getText());
+
+        return searchResultsInBibtex;
     }
 
     private void waitForMillis(long timeInMillis) {
