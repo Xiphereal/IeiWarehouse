@@ -4,6 +4,7 @@ import domainModel.Article;
 import domainModel.Book;
 import domainModel.CongressCommunication;
 import domainModel.Person;
+import domainModel.utils.YearRange;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,6 @@ import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 import warehouse.restService.requestResponses.RequestResponse;
 import warehouse.restService.requestResponses.RequestResultResponse;
 import warehouse.restService.requestResponses.RequestStatusResponse;
-import warehouse.restService.utils.YearRange;
 
 import java.util.ArrayList;
 import java.util.List;

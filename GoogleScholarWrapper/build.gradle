@@ -10,8 +10,13 @@ repositories {
 }
 
 dependencies {
+    // Modules dependencies
+    implementation group: 'org.example', name: 'DomainModel', version: '1.0-SNAPSHOT'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-6'
 }
 
 test {

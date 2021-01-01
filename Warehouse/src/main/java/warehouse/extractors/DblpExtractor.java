@@ -5,6 +5,7 @@ import domainModel.Copy;
 import domainModel.Magazine;
 import domainModel.Person;
 import domainModel.utils.Tuple;
+import domainModel.utils.YearRange;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -12,7 +13,6 @@ import org.json.simple.parser.ParseException;
 import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
-import warehouse.restService.utils.YearRange;
 
 import java.io.FileReader;
 import java.io.IOException;

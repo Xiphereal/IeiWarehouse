@@ -2,7 +2,9 @@ package domainModel;
 
 import domainModel.utils.Tuple;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Person {
     private String name;
@@ -86,5 +88,9 @@ public class Person {
 
         return Objects.equals(name, person.name) &&
                 Objects.equals(surnames, person.surnames);
+    }
+
+    public String getFullName() {
+        return this.name + " " + this.surnames;
     }
 }
