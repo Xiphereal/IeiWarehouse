@@ -19,10 +19,10 @@ public class SeleniumScraper {
 
     private ChromeDriver driver;
 
-    private final List<String> searchResultsInBibtex;
+    private final List<String> searchResultsAsBibtex;
 
     public SeleniumScraper() {
-        searchResultsInBibtex = new ArrayList<>();
+        searchResultsAsBibtex = new ArrayList<>();
     }
 
     public List<String> retrieveCitationsAsBibtex(YearRange yearRange, Person requestedAuthor) {
@@ -35,7 +35,7 @@ public class SeleniumScraper {
 
         scrapCitationsAsBibtex();
 
-        return searchResultsInBibtex;
+        return searchResultsAsBibtex;
     }
 
     @NotNull
@@ -98,7 +98,7 @@ public class SeleniumScraper {
             bibtexLink.click();
 
             WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
-            searchResultsInBibtex.add(publicationCitationInBibtex.getText());
+            searchResultsAsBibtex.add(publicationCitationInBibtex.getText());
         }
     }
 
