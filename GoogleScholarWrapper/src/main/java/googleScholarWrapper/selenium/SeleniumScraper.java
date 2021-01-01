@@ -100,14 +100,16 @@ public class SeleniumScraper {
         }
     }
 
+    /**
+     * Even though the desired and (presumably) move efficient behaviour would be
+     * to just iterate through the only-once-retrieved search results, it seems
+     * impossible since a WebElement is a reference to a DOM element and the DOM
+     * is not the same when the page is exited.
+     * If there's a better a approach, don't hesitate to replace the current with it.
+     */
     private void scrapResultsInCurrentResultPage() {
         List<WebElement> searchResults = getSearchResults();
 
-        // Even though the desired and (presumably) move efficient behaviour would be
-        // to just iterate through the only-once-retrieved search results, it seems
-        // impossible since a WebElement is a reference to a DOM element and the DOM
-        // is not the same when the page is exited.
-        // If there's a better a approach, don't hesitate to replace the current with it.
         for (int i = 0; i < searchResults.size(); i++) {
             WebElement result = searchResults.get(i);
             WebElement quoteButton = result.findElement(By.xpath(".//a[@class='gs_or_cit gs_nph']"));
