@@ -13,7 +13,7 @@ public class GoogleScholarWrapper {
         SeleniumScraper seleniumScraper = new SeleniumScraper();
 
         try {
-            seleniumScraper.scrap(fakeYearRange, null);
+            seleniumScraper.retrieveCitationsAsBibtex(fakeYearRange, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

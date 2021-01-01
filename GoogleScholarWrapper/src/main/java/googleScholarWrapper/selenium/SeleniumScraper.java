@@ -25,7 +25,7 @@ public class SeleniumScraper {
         searchResultsInBibtex = new ArrayList<>();
     }
 
-    public List<String> scrap(YearRange yearRange, Person requestedAuthor) {
+    public List<String> retrieveCitationsAsBibtex(YearRange yearRange, Person requestedAuthor) {
         driver = openChromeInstanceWithGoogleScholar();
 
         openDrawerMenu();
