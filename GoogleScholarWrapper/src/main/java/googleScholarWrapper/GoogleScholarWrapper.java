@@ -3,6 +3,8 @@ package googleScholarWrapper;
 import domainModel.utils.YearRange;
 import googleScholarWrapper.selenium.SeleniumScraper;
 
+import java.util.List;
+
 public class GoogleScholarWrapper {
 
     public static void main(String[] args) {
@@ -13,7 +15,12 @@ public class GoogleScholarWrapper {
         SeleniumScraper seleniumScraper = new SeleniumScraper();
 
         try {
-            seleniumScraper.retrieveCitationsAsBibtex(fakeYearRange, null);
+            List<String> citationsAsBibtex =
+                    seleniumScraper.retrieveCitationsAsBibtex(fakeYearRange, null);
+
+            for (String citation : citationsAsBibtex) {
+                System.out.println(citation);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
