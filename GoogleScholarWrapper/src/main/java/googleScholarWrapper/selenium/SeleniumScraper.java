@@ -20,6 +20,7 @@ public class SeleniumScraper {
      * Maximum time to wait before failing.
      */
     private static final int AWAIT_TIMEOUT_IN_MILLIS = 5000;
+    private static final int NUMBER_OF_RESULT_PAGES_TO_SCRAP = 2;
 
     private ChromeDriver driver;
 
@@ -90,6 +91,16 @@ public class SeleniumScraper {
     }
 
     private void scrapCitationsAsBibtex() {
+        for (int resultPageIndex = 1; resultPageIndex <= NUMBER_OF_RESULT_PAGES_TO_SCRAP; resultPageIndex++) {
+            scrapResultsInCurrentResultPage();
+
+            // Go to next result page.
+            WebElement resultPage = getSearchResultPages().get(resultPageIndex);
+            resultPage.click();
+        }
+    }
+
+    private void scrapResultsInCurrentResultPage() {
         List<WebElement> searchResults = getSearchResults();
 
         // Even though the desired and (presumably) move efficient behaviour would be
@@ -119,6 +130,10 @@ public class SeleniumScraper {
             // Reload the reference to the DOM elements: the search results.
             searchResults = getSearchResults();
         }
+    }
+
+    private List<WebElement> getSearchResultPages() {
+        return driver.findElements(By.xpath("//*[@id=\"gs_n\"]/center/table/tbody/tr/td"));
     }
 
     private List<WebElement> getSearchResults() {
