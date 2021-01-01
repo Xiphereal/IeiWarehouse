@@ -33,31 +33,9 @@ public class SeleniumScraper {
         enterAdvancedSearchOptions(yearRange, requestedAuthor);
         performAdvancedSearch();
 
-        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
-
-        WebElement quoteButton = searchResults.get(0)
-                .findElement(By.xpath("//a[@class='gs_or_cit gs_nph']"));
-        quoteButton.click();
-
-        waitForMillis(500);
-
-        WebElement bibtexLink = driver.findElement(By.xpath("//div[@id='gs_citi']/a[1]"));
-        bibtexLink.click();
-
-        WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
-        searchResultsInBibtex.add(publicationCitationInBibtex.getText());
+        scrapCitationsAsBibtex();
 
         return searchResultsInBibtex;
-    }
-
-    private void waitForMillis(long timeInMillis) {
-        try {
-            synchronized (driver) {
-                driver.wait(timeInMillis);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @NotNull
@@ -83,11 +61,6 @@ public class SeleniumScraper {
         advancedSearchMenuItem.click();
     }
 
-    private void waitUntilClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
-        wait.until(ExpectedConditions.elementToBeClickable(webElement));
-    }
-
     private void enterAdvancedSearchOptions(YearRange yearRange, Person requestedAuthor) {
         if (requestedAuthor != null) {
             WebElement authorTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_sau\"]"));
@@ -110,5 +83,37 @@ public class SeleniumScraper {
     private void performAdvancedSearch() {
         WebElement searchButton = driver.findElement(By.xpath("//*[@id=\"gs_asd_psb\"]"));
         searchButton.click();
+    }
+
+    private void scrapCitationsAsBibtex() {
+        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
+
+        for (WebElement result : searchResults) {
+            WebElement quoteButton = result.findElement(By.xpath("//a[@class='gs_or_cit gs_nph']"));
+            quoteButton.click();
+
+            waitForMillis(500);
+
+            WebElement bibtexLink = driver.findElement(By.xpath("//div[@id='gs_citi']/a[1]"));
+            bibtexLink.click();
+
+            WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
+            searchResultsInBibtex.add(publicationCitationInBibtex.getText());
+        }
+    }
+
+    private void waitForMillis(long timeInMillis) {
+        try {
+            synchronized (driver) {
+                driver.wait(timeInMillis);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void waitUntilClickable(WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
+        wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 }
