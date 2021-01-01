@@ -125,6 +125,7 @@ public class SeleniumScraper {
             driver.navigate().back();
 
             WebElement quoteDialogCancelButton = driver.findElement(By.xpath("//*[@id=\"gs_cit-x\"]"));
+            waitUntilClickable(quoteDialogCancelButton);
             quoteDialogCancelButton.click();
 
             // Reload the reference to the DOM elements: the search results.
