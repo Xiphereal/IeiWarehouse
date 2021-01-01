@@ -4,11 +4,17 @@ import domainModel.Person;
 import domainModel.utils.YearRange;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +44,17 @@ public class SeleniumScraper {
         enterAdvancedSearchOptions(yearRange, requestedAuthor);
         performAdvancedSearch();
 
-        scrapCitationsAsBibtex();
+        try {
+            scrapCitationsAsBibtex();
+        } catch (Exception e) {
+            System.err.println(System.lineSeparator() +
+                    "An error has occurred while scrapping citations from Google Scholar. " +
+                    "A screenshot has been saved to: " + PROJECT_PATH);
+
+            e.printStackTrace();
+
+            saveScreenshot();
+        }
 
         return searchResultsAsBibtex;
     }
@@ -150,6 +166,19 @@ public class SeleniumScraper {
     private List<WebElement> getSearchResults() {
         return driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
     }
+
+    private void saveScreenshot() {
+        File screenshot = driver.getScreenshotAs(OutputType.FILE);
+
+        try {
+            Files.copy(Paths.get(screenshot.getPath()),
+                    Paths.get(PROJECT_PATH + "selenium_error_screenshot.png"),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void waitForMillis(long timeInMillis) {
         try {
