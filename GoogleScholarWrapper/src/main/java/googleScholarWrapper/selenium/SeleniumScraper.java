@@ -15,7 +15,11 @@ import java.util.List;
 
 public class SeleniumScraper {
     private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
-    private static final int AWAIT_TIMEOUT_IN_MILLIS = 5000; // Maximum time to wait before failing.
+
+    /**
+     * Maximum time to wait before failing.
+     */
+    private static final int AWAIT_TIMEOUT_IN_MILLIS = 5000;
 
     private ChromeDriver driver;
 
