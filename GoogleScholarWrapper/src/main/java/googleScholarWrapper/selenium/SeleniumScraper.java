@@ -86,20 +86,39 @@ public class SeleniumScraper {
     }
 
     private void scrapCitationsAsBibtex() {
-        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
+        List<WebElement> searchResults = getSearchResults();
 
-        for (WebElement result : searchResults) {
-            WebElement quoteButton = result.findElement(By.xpath("//a[@class='gs_or_cit gs_nph']"));
+        // Even though the desired and (presumably) move efficient behaviour would be
+        // to just iterate through the only-once-retrieved search results, it seems
+        // impossible since a WebElement is a reference to a DOM element and the DOM
+        // is not the same when the page is exited.
+        // If there's a better a approach, don't hesitate to replace the current with it.
+        for (int i = 0; i < searchResults.size(); i++) {
+            WebElement result = searchResults.get(i);
+            WebElement quoteButton = result.findElement(By.xpath(".//a[@class='gs_or_cit gs_nph']"));
             quoteButton.click();
 
             waitForMillis(500);
 
             WebElement bibtexLink = driver.findElement(By.xpath("//div[@id='gs_citi']/a[1]"));
+            waitUntilClickable(bibtexLink);
             bibtexLink.click();
 
             WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
             searchResultsAsBibtex.add(publicationCitationInBibtex.getText());
+
+            driver.navigate().back();
+
+            WebElement quoteDialogCancelButton = driver.findElement(By.xpath("//*[@id=\"gs_cit-x\"]"));
+            quoteDialogCancelButton.click();
+
+            // Reload the reference to the DOM elements: the search results.
+            searchResults = getSearchResults();
         }
+    }
+
+    private List<WebElement> getSearchResults() {
+        return driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
     }
 
     private void waitForMillis(long timeInMillis) {
