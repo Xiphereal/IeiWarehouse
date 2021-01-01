@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 public class SeleniumScraper {
     private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
@@ -21,12 +22,35 @@ public class SeleniumScraper {
         driver = openChromeInstanceWithGoogleScholar();
 
         openDrawerMenu();
-
         openAdvancedSearch();
-
         enterAdvancedSearchOptions(yearRange, requestedAuthor);
-
         performAdvancedSearch();
+
+        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@id=\"gs_res_ccl_mid\"]/div"));
+
+        WebElement quoteButton = searchResults.get(0)
+                .findElement(By.xpath("//a[@class='gs_or_cit gs_nph']"));
+        quoteButton.click();
+
+        waitForMillis(500);
+
+        WebElement bibtexLink = driver.findElement(By.xpath("//div[@id='gs_citi']/a[1]"));
+        bibtexLink.click();
+
+        WebElement publicationCitationInBibtex = driver.findElement(By.xpath("/html/body/pre"));
+        System.out.println(
+                publicationCitationInBibtex.getText()
+        );
+    }
+
+    private void waitForMillis(long timeInMillis) {
+        try {
+            synchronized (driver) {
+                driver.wait(timeInMillis);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @NotNull
