@@ -94,7 +94,7 @@ public class MainView extends AppLayout {
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         logoLayout.add(new Image("images/logo.png", "Frontend logo"));
-        logoLayout.add(new H1("Frontend"));
+        logoLayout.add(new H1("Proyecto IEI"));
 
         layout.add(logoLayout, menu);
 
