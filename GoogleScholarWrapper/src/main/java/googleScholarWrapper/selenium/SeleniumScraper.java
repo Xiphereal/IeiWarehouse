@@ -54,6 +54,8 @@ public class SeleniumScraper {
             e.printStackTrace();
 
             saveScreenshot();
+        } finally {
+            driver.quit();
         }
 
         return searchResultsAsBibtex;
