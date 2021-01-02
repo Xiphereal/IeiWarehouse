@@ -19,7 +19,6 @@ public class JsonToXmlConverter {
         while ((line = br.readLine()) != null) {
             dataFromXML.append(line);
         }
-
         JSONObject jsonObject = XML.toJSONObject(dataFromXML.toString());
         return jsonObject;
     }
