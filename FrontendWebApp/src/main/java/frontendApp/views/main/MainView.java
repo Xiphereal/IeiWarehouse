@@ -39,6 +39,7 @@ public class MainView extends AppLayout {
         addToNavbar(true, createHeaderContent());
 
         menu = createMenu();
+
         addToDrawer(createDrawerContent(menu));
     }
 
@@ -57,28 +58,13 @@ public class MainView extends AppLayout {
         return layout;
     }
 
-    private Component createDrawerContent(Tabs menu) {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        layout.getThemeList().set("spacing-s", true);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        HorizontalLayout logoLayout = new HorizontalLayout();
-        logoLayout.setId("logo");
-        logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "Frontend logo"));
-        logoLayout.add(new H1("Frontend"));
-        layout.add(logoLayout, menu);
-        return layout;
-    }
-
     private Tabs createMenu() {
         final Tabs tabs = new Tabs();
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
         tabs.setId("tabs");
         tabs.add(createMenuItems());
+
         return tabs;
     }
 
@@ -90,13 +76,35 @@ public class MainView extends AppLayout {
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
+
         ComponentUtil.setData(tab, Class.class, navigationTarget);
+
         return tab;
+    }
+
+    private Component createDrawerContent(Tabs menu) {
+        VerticalLayout layout = new VerticalLayout();
+        layout.setSizeFull();
+        layout.setPadding(false);
+        layout.setSpacing(false);
+        layout.getThemeList().set("spacing-s", true);
+        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
+
+        HorizontalLayout logoLayout = new HorizontalLayout();
+        logoLayout.setId("logo");
+        logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        logoLayout.add(new Image("images/logo.png", "Frontend logo"));
+        logoLayout.add(new H1("Frontend"));
+
+        layout.add(logoLayout, menu);
+
+        return layout;
     }
 
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
+
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
         viewTitle.setText(getCurrentPageTitle());
     }
