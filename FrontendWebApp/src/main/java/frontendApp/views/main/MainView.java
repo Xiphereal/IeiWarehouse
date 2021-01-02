@@ -1,7 +1,5 @@
-package com.example.views.main;
+package frontendApp.views.main;
 
-import com.example.views.búsqueda.BúsquedaView;
-import com.example.views.extraccióndedatos.ExtraccióndedatosView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -19,6 +17,8 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
+import frontendApp.views.dataExtraction.DataExtractionView;
+import frontendApp.views.search.SearchView;
 
 import java.util.Optional;
 
@@ -35,7 +35,9 @@ public class MainView extends AppLayout {
 
     public MainView() {
         setPrimarySection(Section.DRAWER);
+
         addToNavbar(true, createHeaderContent());
+
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
     }
@@ -48,9 +50,10 @@ public class MainView extends AppLayout {
         layout.setSpacing(false);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
         layout.add(new DrawerToggle());
+
         viewTitle = new H1();
         layout.add(viewTitle);
-        layout.add(new Image("images/user.svg", "Avatar"));
+
         return layout;
     }
 
@@ -80,8 +83,8 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Búsqueda", BúsquedaView.class),
-                createTab("Extracción de datos", ExtraccióndedatosView.class)};
+        return new Tab[]{createTab("Búsqueda", SearchView.class),
+                createTab("Extracción de datos", DataExtractionView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
