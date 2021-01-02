@@ -10,7 +10,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import frontendApp.views.main.MainView;
 
-@Route(value = "hello", layout = MainView.class)
+@Route(value = "search", layout = MainView.class)
 @PageTitle("Búsqueda")
 @CssImport("./styles/views/search/search-view.css")
 @RouteAlias(value = "", layout = MainView.class)

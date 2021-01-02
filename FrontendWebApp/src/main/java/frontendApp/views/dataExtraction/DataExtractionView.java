@@ -9,7 +9,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import frontendApp.views.main.MainView;
 
-@Route(value = "hello-world", layout = MainView.class)
+@Route(value = "data-extraction", layout = MainView.class)
 @PageTitle("Extracción de datos")
 @CssImport("./styles/views/dataExtraction/dataextraction-view.css")
 public class DataExtractionView extends HorizontalLayout {
