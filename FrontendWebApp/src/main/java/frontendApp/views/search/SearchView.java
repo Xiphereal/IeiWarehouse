@@ -12,7 +12,7 @@ import frontendApp.views.main.MainView;
 
 @Route(value = "hello", layout = MainView.class)
 @PageTitle("Búsqueda")
-@CssImport("./styles/views/search/seach-view.css")
+@CssImport("./styles/views/search/search-view.css")
 @RouteAlias(value = "", layout = MainView.class)
 public class SearchView extends HorizontalLayout {
 
@@ -20,7 +20,7 @@ public class SearchView extends HorizontalLayout {
     private Button sayHello;
 
     public SearchView() {
-        setId("seach-view");
+        setId("search-view");
         name = new TextField("Your name");
         sayHello = new Button("Say hello");
         add(name, sayHello);
