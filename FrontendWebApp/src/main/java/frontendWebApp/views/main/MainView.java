@@ -1,4 +1,4 @@
-package frontendApp.views.main;
+package frontendWebApp.views.main;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -17,8 +17,8 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
-import frontendApp.views.dataExtraction.DataExtractionView;
-import frontendApp.views.search.SearchView;
+import frontendWebApp.views.dataExtraction.DataExtractionView;
+import frontendWebApp.views.search.SearchView;
 
 import java.util.Optional;
 

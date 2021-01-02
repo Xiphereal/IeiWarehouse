@@ -1,4 +1,4 @@
-package frontendApp.views.search;
+package frontendWebApp.views.search;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -8,7 +8,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import frontendApp.views.main.MainView;
+import frontendWebApp.views.main.MainView;
 
 @Route(value = "search", layout = MainView.class)
 @PageTitle("Búsqueda")
