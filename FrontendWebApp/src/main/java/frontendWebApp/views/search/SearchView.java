@@ -2,6 +2,7 @@ package frontendWebApp.views.search;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -16,17 +17,33 @@ import frontendWebApp.views.main.MainView;
 @RouteAlias(value = "", layout = MainView.class)
 public class SearchView extends HorizontalLayout {
 
-    private TextField name;
-    private Button sayHello;
-
     public SearchView() {
         setId("search-view");
-        name = new TextField("Your name");
-        sayHello = new Button("Say hello");
-        add(name, sayHello);
-        setVerticalComponentAlignment(Alignment.END, name, sayHello);
-        sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
-        });
+
+        H1 pageTitle = new H1("Búsqueda bibliográfica IEI");
+
+        TextField author = new TextField("Autor");
+        TextField publicationTitle = new TextField("Título");
+        TextField startYear = new TextField("Desde año");
+        TextField endYear = new TextField("Hasta año");
+
+        Button searchButton = new Button("Buscar");
+
+        add(pageTitle,
+                author,
+                publicationTitle,
+                startYear,
+                endYear,
+                searchButton);
+
+        setVerticalComponentAlignment(Alignment.STRETCH,
+                pageTitle,
+                author,
+                publicationTitle,
+                startYear,
+                endYear,
+                searchButton);
+
+        searchButton.addClickListener(e -> Notification.show("Buscando referencias bibligráficas..."));
     }
 }
