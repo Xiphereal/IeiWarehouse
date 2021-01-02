@@ -20,7 +20,7 @@ public class SearchView extends HorizontalLayout {
     private Button sayHello;
 
     public SearchView() {
-        setId("búsqueda-view");
+        setId("seach-view");
         name = new TextField("Your name");
         sayHello = new Button("Say hello");
         add(name, sayHello);
@@ -29,5 +29,4 @@ public class SearchView extends HorizontalLayout {
             Notification.show("Hello " + name.getValue());
         });
     }
-
 }

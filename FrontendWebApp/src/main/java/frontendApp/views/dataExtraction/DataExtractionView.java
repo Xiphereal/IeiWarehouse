@@ -18,7 +18,7 @@ public class DataExtractionView extends HorizontalLayout {
     private Button sayHello;
 
     public DataExtractionView() {
-        setId("extraccióndedatos-view");
+        setId("dataextraction-view");
         name = new TextField("Your name");
         sayHello = new Button("Say hello");
         add(name, sayHello);
@@ -27,5 +27,4 @@ public class DataExtractionView extends HorizontalLayout {
             Notification.show("Hello " + name.getValue());
         });
     }
-
 }
