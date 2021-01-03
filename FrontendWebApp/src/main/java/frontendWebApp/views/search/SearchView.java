@@ -14,7 +14,6 @@ import com.vaadin.flow.router.RouteAlias;
 import domainModel.Article;
 import domainModel.Book;
 import domainModel.CongressCommunication;
-import domainModel.Publication;
 import frontendWebApp.views.main.MainView;
 
 import java.util.ArrayList;
@@ -70,29 +69,23 @@ public class SearchView extends HorizontalLayout {
     }
 
     private void addArticlesResultsDataGrid() {
-        List<Publication> articles = new ArrayList<>();
+        List<Article> articles = new ArrayList<>();
 
         articles.add(new Article("Third publication", 2017L, "https://url.com", 200, 230));
         articles.add(new Article("Fourth publication", 2012L, "https://url.com", 210, 230));
-        articles.add(new Book("Third aseas", 2017L, "https://url.com", "Editorial"));
-        articles.add(new Book("Third aseg", 2017L, "https://url.com", "Editorial"));
-        articles.add(new Book("Third publication", 2017L, "https://url.com", "Editorial"));
-        articles.add(
-                new CongressCommunication("Third publication",
-                        2017L,
-                        "https://url.com",
-                        "Congress",
-                        "Edition",
-                        "Place",
-                        120,
-                        150));
 
-        Grid<Publication> articlesGrid = new Grid<>(Publication.class);
-        articlesGrid.setItems(articles);
+        Grid<Article> articlesGrid = new Grid<>();
 
-//        articlesGrid.setColumns("title", "year", "url", "initialPage", "finalPage");
-        articlesGrid.getColumnByKey("title")
+        articlesGrid.addColumn(Article::getTitle).setHeader("Título").setKey("title").setSortable(true)
                 .setFooter("Total: " + articles.size() + " artículos");
+        articlesGrid.addColumn(Article::getYear).setHeader("Año").setKey("year").setSortable(true);
+        articlesGrid.addColumn(Article::getUrl).setHeader("URL").setKey("url").setSortable(true);
+        articlesGrid.addColumn(Article::getInitialPage).setHeader("Página de inicio").setKey("initialPage").setSortable(true);
+        articlesGrid.addColumn(Article::getFinalPage).setHeader("Página de fin").setKey("finalPage").setSortable(true);
+        articlesGrid.addColumn(Article::getCopyPublishedBy).setHeader("Ejemplar").setKey("copyPublishedBy").setSortable(true);
+        articlesGrid.addColumn(Article::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+
+        articlesGrid.setItems(articles);
 
         add(articlesGrid);
     }
@@ -109,12 +102,16 @@ public class SearchView extends HorizontalLayout {
         books.add(new Book("Third aseg", 2017L, "https://url.com", "Editorial"));
         books.add(new Book("asegsa publication", 2017L, "https://url.com", "Editorial"));
 
-        Grid<Book> booksGrid = new Grid<>(Book.class);
-        booksGrid.setItems(books);
+        Grid<Book> booksGrid = new Grid<>();
 
-//        booksGrid.setColumns("title", "year", "url", "initialPage", "finalPage");
-        booksGrid.getColumnByKey("title")
+        booksGrid.addColumn(Book::getTitle).setHeader("Título").setKey("title").setSortable(true)
                 .setFooter("Total: " + books.size() + " libros");
+        booksGrid.addColumn(Book::getYear).setHeader("Año").setKey("year").setSortable(true);
+        booksGrid.addColumn(Book::getUrl).setHeader("URL").setKey("url").setSortable(true);
+        booksGrid.addColumn(Book::getPublisher).setHeader("Editorial").setKey("publisher").setSortable(true);
+        booksGrid.addColumn(Book::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+
+        booksGrid.setItems(books);
 
         add(booksGrid);
     }
@@ -141,12 +138,29 @@ public class SearchView extends HorizontalLayout {
                         120,
                         150));
 
-        Grid<CongressCommunication> congressCommunicationsGrid = new Grid<>(CongressCommunication.class);
-        congressCommunicationsGrid.setItems(congressCommunications);
+        Grid<CongressCommunication> congressCommunicationsGrid = new Grid<>();
 
-//        congressCommunicationsGrid.setColumns("title", "year", "url", "initialPage", "finalPage");
-        congressCommunicationsGrid.getColumnByKey("title")
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getTitle).setHeader("Título").setKey("title").setSortable(true)
                 .setFooter("Total: " + congressCommunications.size() + " comunicaciones de congreso");
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getYear).setHeader("Año").setKey("year").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getUrl).setHeader("URL").setKey("url").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getCongress).setHeader("Congreso").setKey("congress").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getCongress).setHeader("Edición").setKey("edition").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getCongress).setHeader("Lugar").setKey("place").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getInitialPage).setHeader("Página de inicio").setKey("initialPage").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getFinalPage).setHeader("Página de fin").setKey("finalPage").setSortable(true);
+        congressCommunicationsGrid
+                .addColumn(CongressCommunication::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+
+        congressCommunicationsGrid.setItems(congressCommunications);
 
         add(congressCommunicationsGrid);
     }
