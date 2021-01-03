@@ -55,11 +55,11 @@ public class SearchView extends HorizontalLayout {
         startYear = new TextField("Desde año");
         endYear = new TextField("Hasta año");
 
-        Button searchButton = new Button("Buscar");
-        Button clearFiltersButton = new Button("Limpiar filtros");
-
         HorizontalLayout yearRangeLayout = new HorizontalLayout();
         yearRangeLayout.add(startYear, endYear);
+
+        Button searchButton = new Button("Buscar");
+        Button clearFiltersButton = new Button("Limpiar filtros");
 
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.add(searchButton, clearFiltersButton);
