@@ -93,7 +93,11 @@ public class Person {
                 Objects.equals(surnames, person.surnames);
     }
 
+    public void setFullName() {
+
+    }
+
     public String getFullName() {
-        return this.name + " " + this.surnames;
+        return "";
     }
 }

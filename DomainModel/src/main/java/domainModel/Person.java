@@ -93,4 +93,7 @@ public class Person {
     public String getFullName() {
         return this.name + " " + this.surnames;
     }
+
+    public void setFullName() {
+    }
 }
