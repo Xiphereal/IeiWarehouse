@@ -18,6 +18,8 @@ dependencies {
 
     compile group: 'org.json', name: 'json', version:'20201115'
 
+    implementation group: 'org.example', name: 'DomainModel', version: '1.0-SNAPSHOT'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
