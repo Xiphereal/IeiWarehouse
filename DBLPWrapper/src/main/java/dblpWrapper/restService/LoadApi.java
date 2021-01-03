@@ -37,7 +37,7 @@ public class LoadApi {
         return req;
     }
 
-    private RequestResultResponse getDataFromDblp(int startYear, int endYear) throws IOException {
+    private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
         //we filter the json file by year before we start creating the article list
         //It is faster to filter the json than to filter while creating the articles(already tested it)
         List<JSONObject> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);

@@ -13,7 +13,7 @@ import java.util.List;
 
 @SpringBootApplication
 public class DBLPWrapper {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
        //System.out.println(JsonToXmlConverter.convert().toString(3));
 
        SpringApplication.run(DBLPWrapper.class, args);
