@@ -17,14 +17,18 @@ import frontendWebApp.views.main.MainView;
 @CssImport("./styles/views/search/search-view.css")
 @RouteAlias(value = "", layout = MainView.class)
 public class SearchView extends HorizontalLayout {
-    private final TextField author;
-    private final TextField publicationTitle;
-    private final TextField startYear;
-    private final TextField endYear;
+    private TextField author;
+    private TextField publicationTitle;
+    private TextField startYear;
+    private TextField endYear;
 
     public SearchView() {
         setId("search-view");
 
+        addComponentsToView();
+    }
+
+    private void addComponentsToView() {
         H1 pageTitle = new H1("Búsqueda bibliográfica IEI");
 
         author = new TextField("Autor");
@@ -48,6 +52,7 @@ public class SearchView extends HorizontalLayout {
 
         add(verticalLayout);
 
+        // Add components listeners.
         searchButton.addClickListener(e -> Notification.show("Buscando referencias bibligráficas..."));
         clearFiltersButton.addClickListener(e -> clearAllFilters());
     }
