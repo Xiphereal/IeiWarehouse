@@ -11,6 +11,9 @@ public class Person {
     private String surnames;
     private String authoredPublication;
 
+    public Person() {
+    }
+
     public Person(String name, String surnames) {
         this.name = name;
         this.surnames = surnames;
