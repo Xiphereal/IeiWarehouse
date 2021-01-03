@@ -194,9 +194,9 @@ public class SearchView extends HorizontalLayout {
             List<Book> books = requestResult.getBooks();
             List<CongressCommunication> congressCommunications = requestResult.getCongressCommunications();
 
-            articlesGrid.setItems(new ArrayList<Article>());
-            booksGrid.setItems(new ArrayList<Book>());
-            congressCommunicationsGrid.setItems(new ArrayList<CongressCommunication>());
+            articlesGrid.setItems(new ArrayList<>());
+            booksGrid.setItems(new ArrayList<>());
+            congressCommunicationsGrid.setItems(new ArrayList<>());
 
             if (articles != null)
                 articlesGrid.setItems(articles);
@@ -210,6 +210,10 @@ public class SearchView extends HorizontalLayout {
             articlesGrid.getDataProvider().refreshAll();
             booksGrid.getDataProvider().refreshAll();
             congressCommunicationsGrid.getDataProvider().refreshAll();
+        } else {
+            Notification.show("Opss! Ha ocurrido un error al intentar recuperar los datos.",
+                    7,
+                    Notification.Position.BOTTOM_CENTER);
         }
     }
 
