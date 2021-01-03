@@ -4,6 +4,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -87,7 +88,8 @@ public class SearchView extends HorizontalLayout {
 
         articlesGrid.setItems(articles);
 
-        add(articlesGrid);
+        H3 articlesGridTitle = new H3("Artículos");
+        add(articlesGridTitle, articlesGrid);
     }
 
     private void addBooksResultsDataGrid() {
@@ -113,7 +115,8 @@ public class SearchView extends HorizontalLayout {
 
         booksGrid.setItems(books);
 
-        add(booksGrid);
+        H3 booksGridTitle = new H3("Libros");
+        add(booksGridTitle, booksGrid);
     }
 
     private void addCongressCommunicationResultsDataGrid() {
@@ -162,7 +165,8 @@ public class SearchView extends HorizontalLayout {
 
         congressCommunicationsGrid.setItems(congressCommunications);
 
-        add(congressCommunicationsGrid);
+        H3 congressCommunicationsGridTitle = new H3("Comunicaciones de congreso");
+        add(congressCommunicationsGridTitle, congressCommunicationsGrid);
     }
 
     private void clearAllFilters() {
