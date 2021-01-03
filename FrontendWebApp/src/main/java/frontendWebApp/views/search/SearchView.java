@@ -87,9 +87,9 @@ public class SearchView extends HorizontalLayout {
 
         VerticalLayout dataGridsLayout = new VerticalLayout();
 
-        addArticlesResultsDataGrid(dataGridsLayout);
-        addBooksResultsDataGrid(dataGridsLayout);
-        addCongressCommunicationResultsDataGrid(dataGridsLayout);
+        buildArticlesResultsDataGrid(dataGridsLayout);
+        buildBooksResultsDataGrid(dataGridsLayout);
+        buildCongressCommunicationResultsDataGrid(dataGridsLayout);
 
         splitLayout.addToSecondary(dataGridsLayout);
 
@@ -97,7 +97,7 @@ public class SearchView extends HorizontalLayout {
         add(splitLayout);
     }
 
-    private void addArticlesResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void buildArticlesResultsDataGrid(VerticalLayout dataGridsLayout) {
         articlesGrid = new Grid<>();
 
         articlesGrid.addColumn(Article::getTitle).setHeader("Título").setKey("title").setSortable(true)
@@ -119,7 +119,7 @@ public class SearchView extends HorizontalLayout {
         dataGridsLayout.add(articlesGridTitle, articlesGrid);
     }
 
-    private void addBooksResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void buildBooksResultsDataGrid(VerticalLayout dataGridsLayout) {
         booksGrid = new Grid<>();
 
         booksGrid.addColumn(Book::getTitle).setHeader("Título").setKey("title").setSortable(true)
@@ -137,7 +137,7 @@ public class SearchView extends HorizontalLayout {
         dataGridsLayout.add(booksGridTitle, booksGrid);
     }
 
-    private void addCongressCommunicationResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void buildCongressCommunicationResultsDataGrid(VerticalLayout dataGridsLayout) {
         congressCommunicationsGrid = new Grid<>();
 
         congressCommunicationsGrid
