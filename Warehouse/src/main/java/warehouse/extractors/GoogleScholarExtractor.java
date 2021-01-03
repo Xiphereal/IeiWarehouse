@@ -22,7 +22,7 @@ public class GoogleScholarExtractor {
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("src/main/resources/googleSchoolar/sample_array.json")) {
+        try (FileReader fileReader = new FileReader("Warehouse/src/main/resources/googleSchoolar/sample_array.json")) {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);

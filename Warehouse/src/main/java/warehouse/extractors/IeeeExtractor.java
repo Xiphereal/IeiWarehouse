@@ -23,7 +23,7 @@ public class IeeeExtractor {
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
+        try (FileReader fileReader = new FileReader("Warehouse/src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
