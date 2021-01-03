@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -25,6 +26,8 @@ import java.util.List;
 @CssImport("./styles/views/search/search-view.css")
 @RouteAlias(value = "", layout = MainView.class)
 public class SearchView extends HorizontalLayout {
+    private final SplitLayout splitLayout = new SplitLayout();
+
     private TextField author;
     private TextField publicationTitle;
     private TextField startYear;
@@ -60,16 +63,29 @@ public class SearchView extends HorizontalLayout {
 
         add(verticalLayout);
 
-        addArticlesResultsDataGrid();
-        addBooksResultsDataGrid();
-        addCongressCommunicationResultsDataGrid();
+        distributeElementsInSplitLayout(verticalLayout);
 
         // Add components listeners.
         searchButton.addClickListener(e -> Notification.show("Buscando referencias bibligráficas..."));
         clearFiltersButton.addClickListener(e -> clearAllFilters());
     }
 
-    private void addArticlesResultsDataGrid() {
+    private void distributeElementsInSplitLayout(VerticalLayout verticalLayout) {
+        splitLayout.addToPrimary(verticalLayout);
+
+        VerticalLayout dataGridsLayout = new VerticalLayout();
+
+        addArticlesResultsDataGrid(dataGridsLayout);
+        addBooksResultsDataGrid(dataGridsLayout);
+        addCongressCommunicationResultsDataGrid(dataGridsLayout);
+
+        splitLayout.addToSecondary(dataGridsLayout);
+
+        splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+        add(splitLayout);
+    }
+
+    private void addArticlesResultsDataGrid(VerticalLayout dataGridsLayout) {
         List<Article> articles = new ArrayList<>();
 
         articles.add(new Article("Third publication", 2017L, "https://url.com", 200, 230));
@@ -95,10 +111,10 @@ public class SearchView extends HorizontalLayout {
         articlesGrid.setItems(articles);
 
         H3 articlesGridTitle = new H3("Artículos");
-        add(articlesGridTitle, articlesGrid);
+        dataGridsLayout.add(articlesGridTitle, articlesGrid);
     }
 
-    private void addBooksResultsDataGrid() {
+    private void addBooksResultsDataGrid(VerticalLayout dataGridsLayout) {
         List<Book> books = new ArrayList<>();
 
         books.add(new Book("Third publication", 2017L, "https://url.com", "Editorial"));
@@ -126,10 +142,10 @@ public class SearchView extends HorizontalLayout {
         booksGrid.setItems(books);
 
         H3 booksGridTitle = new H3("Libros");
-        add(booksGridTitle, booksGrid);
+        dataGridsLayout.add(booksGridTitle, booksGrid);
     }
 
-    private void addCongressCommunicationResultsDataGrid() {
+    private void addCongressCommunicationResultsDataGrid(VerticalLayout dataGridsLayout) {
         List<CongressCommunication> congressCommunications = new ArrayList<>();
 
         congressCommunications.add(
@@ -184,7 +200,7 @@ public class SearchView extends HorizontalLayout {
         congressCommunicationsGrid.setItems(congressCommunications);
 
         H3 congressCommunicationsGridTitle = new H3("Comunicaciones de congreso");
-        add(congressCommunicationsGridTitle, congressCommunicationsGrid);
+        dataGridsLayout.add(congressCommunicationsGridTitle, congressCommunicationsGrid);
     }
 
     private void clearAllFilters() {
