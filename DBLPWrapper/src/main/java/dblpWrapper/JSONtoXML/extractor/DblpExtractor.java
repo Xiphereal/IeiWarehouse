@@ -8,11 +8,10 @@ import domainModel.Magazine;
 import domainModel.Person;
 import domainModel.utils.Tuple;
 import domainModel.utils.YearRange;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,25 +23,17 @@ import java.util.List;
  */
 public class DblpExtractor {
     public static List<Article> parsedArticles;
-    public static List<Article> extractArticles(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
-            JSONArray articles = getArticlesFromJson(fileReader);
-            parsedArticles = new ArrayList<>();
-            articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
-            return parsedArticles;
-        } catch (Exception e) {
-            System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
-            e.printStackTrace();
-            return null;
-        }
+    public static List<Article> extractArticles(YearRange yearRange, List<JSONObject> jsonObjectList) {
+        parsedArticles = new ArrayList<>();
+        jsonObjectList.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
+        return parsedArticles;
     }
 
-    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
-        JSONParser jsonParser = new JSONParser();
-        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
-
-        return (JSONArray) jsonObjectContainer.get("article");
+    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException {
+        //JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+        //JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
+        return null;
+       // return (JSONArray) jsonObjectContainer.get("article");
     }
 
     private static Article parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
@@ -107,59 +98,60 @@ public class DblpExtractor {
     private static String extractURL(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Object ee = jsonObject.get("ee");
+        try {
+            Object ee = jsonObject.get("ee");
 
-        if (ee == null) {
-            System.out.println(System.lineSeparator() +
-                    "'ee' attribute is missing in " + jsonObject + System.lineSeparator());
+            if (ee == null) {
+                System.out.println(System.lineSeparator() +
+                        "'ee' attribute is missing in " + jsonObject + System.lineSeparator());
 
-            return null;
-        }
-
-        if (ee instanceof String)
-            return (String) ee;
-
-        if (ee instanceof JSONArray) {
-            JSONArray castedEeAttribute = (JSONArray) ee;
-
-            if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedEeAttribute)) {
-                List<String> eeElements = SimpleJsonUtils
-                        .convertJsonArrayToStringCollection(castedEeAttribute);
-
-                for (String element : eeElements)
-                    if (element.contains("www.wikidata.org"))
-                        return element;
-            } else {
-                for (Object element : castedEeAttribute)
-                    if (element instanceof String)
-                        return (String) element;
+                return null;
             }
+
+            if (ee instanceof String)
+                return (String) ee;
+
+            if (ee instanceof JSONArray) {
+                JSONArray castedEeAttribute = (JSONArray) ee;
+
+                if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedEeAttribute)) {
+                    List<String> eeElements = SimpleJsonUtils
+                            .convertJsonArrayToStringCollection(castedEeAttribute);
+
+                    for (String element : eeElements)
+                        if (element.contains("www.wikidata.org"))
+                            return element;
+                } else {
+                    for (Object element : castedEeAttribute)
+                        if (element instanceof String)
+                            return (String) element;
+                }
+            }
+
+            if (ee instanceof JSONObject) {
+                JSONObject castedEeAttribute = (JSONObject) ee;
+
+                return (String) castedEeAttribute.get("content");
+            }
+        }catch (JSONException exception) {
+            System.out.println(System.lineSeparator() + "The data structure for attribute 'ee' is not considered. " +
+                    Article.class + " 'url' field will be set to null" + System.lineSeparator());
         }
-
-        if (ee instanceof JSONObject) {
-            JSONObject castedEeAttribute = (JSONObject) ee;
-
-            return (String) castedEeAttribute.get("content");
-        }
-
-        System.out.println(System.lineSeparator() + "The data structure for attribute 'ee' is not considered. " +
-                Article.class + " 'url' field will be set to null" + System.lineSeparator());
-
         return null;
     }
 
     private static Tuple<Integer, Integer> extractPages(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Object pages = jsonObject.get("pages");
-
-        if (pages == null) {
+        Object pages;
+        try {
+             pages = jsonObject.get("pages");
+        }catch(JSONException e) {
             System.out.println(System.lineSeparator() +
                     "'pages' attribute is missing in " + jsonObject + System.lineSeparator());
 
             return new Tuple<>();
         }
-
         int initialPage = 0;
         int finalPage = 0;
 
@@ -212,34 +204,38 @@ public class DblpExtractor {
     private static List<Person> extractAuthors(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Object authors = jsonObject.get("author");
+        try {
+            Object authors = jsonObject.get("author");
 
-        if (authors == null) {
-            System.out.println(System.lineSeparator() +
-                    "'author' attribute is missing in " + jsonObject + System.lineSeparator());
+            if (authors == null) {
+                System.out.println(System.lineSeparator() +
+                        "'author' attribute is missing in " + jsonObject + System.lineSeparator());
 
-            return null;
-        }
-
-        if (authors instanceof JSONArray) {
-            JSONArray castedAuthorAttribute = (JSONArray) authors;
-
-            if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedAuthorAttribute)) {
-                List<String> authorElements = SimpleJsonUtils
-                        .convertJsonArrayToStringCollection(castedAuthorAttribute);
-
-                List<Person> parsedAuthors = new ArrayList<>();
-
-                for (String element : authorElements)
-                    parsedAuthors.add(Person.extractPersonAttributes(element));
-
-                return parsedAuthors;
+                return null;
             }
+
+            if (authors instanceof JSONArray) {
+                JSONArray castedAuthorAttribute = (JSONArray) authors;
+
+                if (SimpleJsonUtils.areAllArrayElementsOfTypeString(castedAuthorAttribute)) {
+                    List<String> authorElements = new ArrayList<String>();
+                    for (int i = 0; i < ((JSONArray) authors).length(); i++) {
+                        authorElements.add((String) ((JSONArray) authors).get(i));
+                    }
+
+                    List<Person> parsedAuthors = new ArrayList<>();
+
+                    for (String element : authorElements)
+                        parsedAuthors.add(Person.extractPersonAttributes(element));
+
+                    return parsedAuthors;
+                }
+            }
+        }catch(JSONException exception) {
+
+            System.out.println(System.lineSeparator() + "The data structure for attribute 'author' is not considered. " +
+                    "The author collection will be set to null" + System.lineSeparator());
         }
-
-        System.out.println(System.lineSeparator() + "The data structure for attribute 'author' is not considered. " +
-                "The author collection will be set to null" + System.lineSeparator());
-
         return null;
     }
 
@@ -259,19 +255,22 @@ public class DblpExtractor {
     private static Integer extractVolume(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Object volume = jsonObject.get("volume");
+        try {
+            Object volume = jsonObject.get("volume");
 
-        if (volume instanceof Long) {
-            return ((Long) volume).intValue();
+            if (volume instanceof Long) {
+                return ((Long) volume).intValue();
+            }
+
+            if (volume instanceof String) {
+                String castedVolume = (String) volume;
+
+                if (isANumber(castedVolume))
+                    return Integer.valueOf(castedVolume);
+            }
+        }catch(JSONException exception) {
+            return null;
         }
-
-        if (volume instanceof String) {
-            String castedVolume = (String) volume;
-
-            if (isANumber(castedVolume))
-                return Integer.valueOf(castedVolume);
-        }
-
         return null;
     }
 
@@ -288,19 +287,22 @@ public class DblpExtractor {
     private static Integer extractNumber(JSONObject jsonObject) {
         // The variable in which the data is extracted to, must be of type Object so that we can use
         // 'instanceof' to determine its type.
-        Object number = jsonObject.get("number");
+        try {
+            Object number = jsonObject.get("number");
 
-        if (number instanceof Long) {
-            return ((Long) number).intValue();
+            if (number instanceof Long) {
+                return ((Long) number).intValue();
+            }
+
+            if (number instanceof String) {
+                String castedNumber = (String) number;
+
+                if (isANumber(castedNumber))
+                    return Integer.valueOf(castedNumber);
+            }
+        }catch (JSONException exception) {
+            return null;
         }
-
-        if (number instanceof String) {
-            String castedNumber = (String) number;
-
-            if (isANumber(castedNumber))
-                return Integer.valueOf(castedNumber);
-        }
-
         return null;
     }
 

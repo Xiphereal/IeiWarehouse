@@ -10,7 +10,7 @@ import java.util.List;
 public class RequestResultResponse implements RequestResponse{
     private List<Article> articles;
 
-    public RequestResultResponse(List<Article> articles, List<Book> books, List<CongressCommunication> congressCommunications) {
+    public RequestResultResponse(List<Article> articles) {
         this.articles = articles;
     }
 
