@@ -94,6 +94,9 @@ public class Person {
         return this.name + " " + this.surnames;
     }
 
+    /**
+     * This setter is empty as a workaround to satisfy the Jackson JSON serializer.
+     */
     public void setFullName() {
     }
 }
