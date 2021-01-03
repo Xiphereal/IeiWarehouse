@@ -78,13 +78,19 @@ public class SearchView extends HorizontalLayout {
         Grid<Article> articlesGrid = new Grid<>();
 
         articlesGrid.addColumn(Article::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + articles.size() + " artículos");
-        articlesGrid.addColumn(Article::getYear).setHeader("Año").setKey("year").setSortable(true);
-        articlesGrid.addColumn(Article::getUrl).setHeader("URL").setKey("url").setSortable(true);
-        articlesGrid.addColumn(Article::getInitialPage).setHeader("Página de inicio").setKey("initialPage").setSortable(true);
-        articlesGrid.addColumn(Article::getFinalPage).setHeader("Página de fin").setKey("finalPage").setSortable(true);
-        articlesGrid.addColumn(Article::getCopyPublishedBy).setHeader("Ejemplar").setKey("copyPublishedBy").setSortable(true);
-        articlesGrid.addColumn(Article::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+                .setFooter("Total: " + articles.size() + " artículos").setResizable(true);
+        articlesGrid.addColumn(Article::getYear).setHeader("Año").setKey("year")
+                .setSortable(true).setResizable(true);
+        articlesGrid.addColumn(Article::getUrl).setHeader("URL").setKey("url")
+                .setSortable(true).setResizable(true);
+        articlesGrid.addColumn(Article::getInitialPage).setHeader("Página de inicio").setKey("initialPage")
+                .setSortable(true).setResizable(true);
+        articlesGrid.addColumn(Article::getFinalPage).setHeader("Página de fin").setKey("finalPage")
+                .setSortable(true).setResizable(true);
+        articlesGrid.addColumn(Article::getCopyPublishedBy).setHeader("Ejemplar").setKey("copyPublishedBy")
+                .setSortable(true).setResizable(true);
+        articlesGrid.addColumn(Article::getAuthors).setHeader("Autores").setKey("authors")
+                .setSortable(true).setResizable(true);
 
         articlesGrid.setItems(articles);
 
@@ -107,11 +113,15 @@ public class SearchView extends HorizontalLayout {
         Grid<Book> booksGrid = new Grid<>();
 
         booksGrid.addColumn(Book::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + books.size() + " libros");
-        booksGrid.addColumn(Book::getYear).setHeader("Año").setKey("year").setSortable(true);
-        booksGrid.addColumn(Book::getUrl).setHeader("URL").setKey("url").setSortable(true);
-        booksGrid.addColumn(Book::getPublisher).setHeader("Editorial").setKey("publisher").setSortable(true);
-        booksGrid.addColumn(Book::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+                .setFooter("Total: " + books.size() + " libros").setResizable(true);
+        booksGrid.addColumn(Book::getYear).setHeader("Año").setKey("year")
+                .setSortable(true).setResizable(true);
+        booksGrid.addColumn(Book::getUrl).setHeader("URL").setKey("url")
+                .setSortable(true).setResizable(true);
+        booksGrid.addColumn(Book::getPublisher).setHeader("Editorial").setKey("publisher")
+                .setSortable(true).setResizable(true);
+        booksGrid.addColumn(Book::getAuthors).setHeader("Autores").setKey("authors")
+                .setSortable(true).setResizable(true);
 
         booksGrid.setItems(books);
 
@@ -145,23 +155,31 @@ public class SearchView extends HorizontalLayout {
 
         congressCommunicationsGrid
                 .addColumn(CongressCommunication::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + congressCommunications.size() + " comunicaciones de congreso");
+                .setFooter("Total: " + congressCommunications.size() + " comunicaciones de congreso").setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getYear).setHeader("Año").setKey("year").setSortable(true);
+                .addColumn(CongressCommunication::getYear).setHeader("Año").setKey("year")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getUrl).setHeader("URL").setKey("url").setSortable(true);
+                .addColumn(CongressCommunication::getUrl).setHeader("URL").setKey("url")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getCongress).setHeader("Congreso").setKey("congress").setSortable(true);
+                .addColumn(CongressCommunication::getCongress).setHeader("Congreso").setKey("congress")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getCongress).setHeader("Edición").setKey("edition").setSortable(true);
+                .addColumn(CongressCommunication::getCongress).setHeader("Edición").setKey("edition")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getCongress).setHeader("Lugar").setKey("place").setSortable(true);
+                .addColumn(CongressCommunication::getCongress).setHeader("Lugar").setKey("place")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getInitialPage).setHeader("Página de inicio").setKey("initialPage").setSortable(true);
+                .addColumn(CongressCommunication::getInitialPage).setHeader("Página de inicio").setKey("initialPage")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getFinalPage).setHeader("Página de fin").setKey("finalPage").setSortable(true);
+                .addColumn(CongressCommunication::getFinalPage).setHeader("Página de fin").setKey("finalPage")
+                .setSortable(true).setResizable(true);
         congressCommunicationsGrid
-                .addColumn(CongressCommunication::getAuthors).setHeader("Autores").setKey("authors").setSortable(true);
+                .addColumn(CongressCommunication::getAuthors).setHeader("Autores").setKey("authors")
+                .setSortable(true).setResizable(true);
 
         congressCommunicationsGrid.setItems(congressCommunications);
 
