@@ -241,7 +241,7 @@ public class SearchView extends HorizontalLayout {
             congressCommunicationsGrid.getDataProvider().refreshAll();
         } else {
             Notification.show("Opss! Ha ocurrido un error al intentar recuperar los datos.",
-                    7,
+                    7000,
                     Notification.Position.BOTTOM_CENTER);
         }
     }
