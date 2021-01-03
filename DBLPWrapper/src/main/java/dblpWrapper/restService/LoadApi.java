@@ -41,7 +41,7 @@ public class LoadApi {
         //we filter the json file by year before we start creating the article list
         //It is faster to filter the json than to filter while creating the articles(already tested it)
         List<JSONObject> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
-        List<Article> articles = DblpExtractor.extractArticles(new YearRange((long) 1920,(long) 2000), filteredList);
+        List<Article> articles = DblpExtractor.extractArticles(new YearRange((long) startYear,(long) endYear), filteredList);
         return new RequestResultResponse(articles);
     }
 
