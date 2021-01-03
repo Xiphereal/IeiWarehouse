@@ -2,6 +2,8 @@ package frontendWebApp.views.search;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
@@ -23,7 +25,9 @@ import utils.HttpService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Route(value = "search", layout = MainView.class)
 @PageTitle("Búsqueda")
@@ -50,13 +54,19 @@ public class SearchView extends HorizontalLayout {
     private void addComponentsToView() {
         H1 pageTitle = new H1("Búsqueda bibliográfica IEI");
 
-        author = new TextField("Autor");
-        publicationTitle = new TextField("Título");
         startYear = new TextField("Desde año");
         endYear = new TextField("Hasta año");
 
         HorizontalLayout yearRangeLayout = new HorizontalLayout();
         yearRangeLayout.add(startYear, endYear);
+
+        author = new TextField("Autor");
+        publicationTitle = new TextField("Título");
+
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.add(pageTitle, author, publicationTitle, yearRangeLayout);
+
+        addPublicationsCheckboxOptionsTo(verticalLayout);
 
         Button searchButton = new Button("Buscar");
         Button clearFiltersButton = new Button("Limpiar filtros");
@@ -64,8 +74,7 @@ public class SearchView extends HorizontalLayout {
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.add(searchButton, clearFiltersButton);
 
-        VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(pageTitle, author, publicationTitle, yearRangeLayout, buttonsLayout);
+        verticalLayout.add(buttonsLayout);
         verticalLayout.setAlignItems(Alignment.CENTER);
         verticalLayout.setAlignSelf(Alignment.CENTER);
 
@@ -80,6 +89,26 @@ public class SearchView extends HorizontalLayout {
             requestPublicationsToDataWarehouse();
         });
         clearFiltersButton.addClickListener(e -> clearAllFilters());
+    }
+
+    private void addPublicationsCheckboxOptionsTo(VerticalLayout verticalLayout) {
+        final String articlesOptionName = "Artículos";
+        final String booksOptionName = "Libros";
+        final String congressCommunicationOptionName = "Comunicaciones de congreso";
+
+        CheckboxGroup<String> extractorsOptions = new CheckboxGroup<>();
+        extractorsOptions.setLabel("Tipos de publicaciones a recuperar");
+        extractorsOptions.setItems(articlesOptionName, booksOptionName, congressCommunicationOptionName);
+
+        Set<String> values = new HashSet<>();
+        values.add(articlesOptionName);
+        values.add(booksOptionName);
+        values.add(congressCommunicationOptionName);
+        extractorsOptions.setValue(values);
+
+        extractorsOptions.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+
+        verticalLayout.add(extractorsOptions);
     }
 
     private void distributeElementsInSplitLayout(VerticalLayout verticalLayout) {
