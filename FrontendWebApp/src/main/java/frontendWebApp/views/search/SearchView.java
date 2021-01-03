@@ -1,5 +1,6 @@
 package frontendWebApp.views.search;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -16,8 +17,11 @@ import com.vaadin.flow.router.RouteAlias;
 import domainModel.Article;
 import domainModel.Book;
 import domainModel.CongressCommunication;
+import frontendWebApp.RequestResultResponse;
 import frontendWebApp.views.main.MainView;
+import utils.HttpService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,10 @@ public class SearchView extends HorizontalLayout {
     private TextField publicationTitle;
     private TextField startYear;
     private TextField endYear;
+
+    private Grid<Article> articlesGrid;
+    private Grid<Book> booksGrid;
+    private Grid<CongressCommunication> congressCommunicationsGrid;
 
     public SearchView() {
         setId("search-view");
@@ -66,7 +74,11 @@ public class SearchView extends HorizontalLayout {
         distributeElementsInSplitLayout(verticalLayout);
 
         // Add components listeners.
-        searchButton.addClickListener(e -> Notification.show("Buscando referencias bibligráficas..."));
+        searchButton.addClickListener(e -> {
+            Notification.show("Buscando referencias bibliográficas...");
+
+            requestPublicationsToDataWarehouse();
+        });
         clearFiltersButton.addClickListener(e -> clearAllFilters());
     }
 
@@ -86,15 +98,10 @@ public class SearchView extends HorizontalLayout {
     }
 
     private void addArticlesResultsDataGrid(VerticalLayout dataGridsLayout) {
-        List<Article> articles = new ArrayList<>();
-
-        articles.add(new Article("Third publication", 2017L, "https://url.com", 200, 230));
-        articles.add(new Article("Fourth publication", 2012L, "https://url.com", 210, 230));
-
-        Grid<Article> articlesGrid = new Grid<>();
+        articlesGrid = new Grid<>();
 
         articlesGrid.addColumn(Article::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + articles.size() + " artículos").setResizable(true);
+                .setFooter("Total: " + 0 + " artículos").setResizable(true);
         articlesGrid.addColumn(Article::getYear).setHeader("Año").setKey("year")
                 .setSortable(true).setResizable(true);
         articlesGrid.addColumn(Article::getUrl).setHeader("URL").setKey("url")
@@ -108,28 +115,15 @@ public class SearchView extends HorizontalLayout {
         articlesGrid.addColumn(Article::getAuthors).setHeader("Autores").setKey("authors")
                 .setSortable(true).setResizable(true);
 
-        articlesGrid.setItems(articles);
-
         H3 articlesGridTitle = new H3("Artículos");
         dataGridsLayout.add(articlesGridTitle, articlesGrid);
     }
 
     private void addBooksResultsDataGrid(VerticalLayout dataGridsLayout) {
-        List<Book> books = new ArrayList<>();
-
-        books.add(new Book("Third publication", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("gasg publication", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("Third publication", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("Third aseas", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("Third aseg", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("Third publication", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("Third aseg", 2017L, "https://url.com", "Editorial"));
-        books.add(new Book("asegsa publication", 2017L, "https://url.com", "Editorial"));
-
-        Grid<Book> booksGrid = new Grid<>();
+        booksGrid = new Grid<>();
 
         booksGrid.addColumn(Book::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + books.size() + " libros").setResizable(true);
+                .setFooter("Total: " + 0 + " libros").setResizable(true);
         booksGrid.addColumn(Book::getYear).setHeader("Año").setKey("year")
                 .setSortable(true).setResizable(true);
         booksGrid.addColumn(Book::getUrl).setHeader("URL").setKey("url")
@@ -139,39 +133,16 @@ public class SearchView extends HorizontalLayout {
         booksGrid.addColumn(Book::getAuthors).setHeader("Autores").setKey("authors")
                 .setSortable(true).setResizable(true);
 
-        booksGrid.setItems(books);
-
         H3 booksGridTitle = new H3("Libros");
         dataGridsLayout.add(booksGridTitle, booksGrid);
     }
 
     private void addCongressCommunicationResultsDataGrid(VerticalLayout dataGridsLayout) {
-        List<CongressCommunication> congressCommunications = new ArrayList<>();
-
-        congressCommunications.add(
-                new CongressCommunication("Third publication",
-                        2017L,
-                        "https://url.com",
-                        "Congress",
-                        "Edition",
-                        "Place",
-                        120,
-                        150));
-        congressCommunications.add(
-                new CongressCommunication("Third publication",
-                        2017L,
-                        "https://url.com",
-                        "Congress",
-                        "Edition",
-                        "Place",
-                        120,
-                        150));
-
-        Grid<CongressCommunication> congressCommunicationsGrid = new Grid<>();
+        congressCommunicationsGrid = new Grid<>();
 
         congressCommunicationsGrid
                 .addColumn(CongressCommunication::getTitle).setHeader("Título").setKey("title").setSortable(true)
-                .setFooter("Total: " + congressCommunications.size() + " comunicaciones de congreso").setResizable(true);
+                .setFooter("Total: " + 0 + " comunicaciones de congreso").setResizable(true);
         congressCommunicationsGrid
                 .addColumn(CongressCommunication::getYear).setHeader("Año").setKey("year")
                 .setSortable(true).setResizable(true);
@@ -197,10 +168,49 @@ public class SearchView extends HorizontalLayout {
                 .addColumn(CongressCommunication::getAuthors).setHeader("Autores").setKey("authors")
                 .setSortable(true).setResizable(true);
 
-        congressCommunicationsGrid.setItems(congressCommunications);
-
         H3 congressCommunicationsGridTitle = new H3("Comunicaciones de congreso");
         dataGridsLayout.add(congressCommunicationsGridTitle, congressCommunicationsGrid);
+    }
+
+    private void requestPublicationsToDataWarehouse() {
+        String dataWarehouseLocation = "localhost:8081";
+        String jsonResponse = HttpService.executeGet("http://" + dataWarehouseLocation + "/getData");
+
+        if (jsonResponse == null)
+            System.err.println("An error has occurred while establishing the connection to the " +
+                    "data Warehouse. The JSON response is null.");
+
+        RequestResultResponse requestResult = null;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            requestResult = objectMapper.readValue(jsonResponse, RequestResultResponse.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (requestResult != null) {
+            List<Article> articles = requestResult.getArticles();
+            List<Book> books = requestResult.getBooks();
+            List<CongressCommunication> congressCommunications = requestResult.getCongressCommunications();
+
+            articlesGrid.setItems(new ArrayList<Article>());
+            booksGrid.setItems(new ArrayList<Book>());
+            congressCommunicationsGrid.setItems(new ArrayList<CongressCommunication>());
+
+            if (articles != null)
+                articlesGrid.setItems(articles);
+
+            if (books != null)
+                booksGrid.setItems(books);
+
+            if (congressCommunications != null)
+                congressCommunicationsGrid.setItems(congressCommunications);
+
+            articlesGrid.getDataProvider().refreshAll();
+            booksGrid.getDataProvider().refreshAll();
+            congressCommunicationsGrid.getDataProvider().refreshAll();
+        }
     }
 
     private void clearAllFilters() {
