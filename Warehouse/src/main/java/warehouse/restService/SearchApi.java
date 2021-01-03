@@ -32,7 +32,7 @@ public class SearchApi {
 
     /**
      * A typical URL request could be:
-     * "http://localhost:8080/extractData?startYear=2015&endYear=2018&extractFromDBLP=false&extractFromGoogleScholar=false"
+     * "http://localhost:8080/getData?startYear=2015&endYear=2018"
      */
     @GetMapping("/getData")
     public RequestResponse getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
