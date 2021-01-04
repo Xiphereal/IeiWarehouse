@@ -45,6 +45,10 @@ public class SearchView extends HorizontalLayout {
     private Grid<Book> booksGrid;
     private Grid<CongressCommunication> congressCommunicationsGrid;
 
+    private boolean searchArticles = true;
+    private boolean searchBooks = true;
+    private boolean searchCongressCommunications = true;
+
     public SearchView() {
         setId("search-view");
 
@@ -107,6 +111,14 @@ public class SearchView extends HorizontalLayout {
         extractorsOptions.setValue(values);
 
         extractorsOptions.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+
+        extractorsOptions.addSelectionListener(selection -> {
+            Set<String> selectedOptionsNames = selection.getValue();
+
+            searchArticles = selectedOptionsNames.contains(articlesOptionName);
+            searchBooks = selectedOptionsNames.contains(booksOptionName);
+            searchCongressCommunications = selectedOptionsNames.contains(congressCommunicationOptionName);
+        });
 
         verticalLayout.add(extractorsOptions);
     }
@@ -202,8 +214,9 @@ public class SearchView extends HorizontalLayout {
     }
 
     private void requestPublicationsToDataWarehouse() {
+        String request = buildRequest();
         String dataWarehouseLocation = "localhost:8081";
-        String jsonResponse = HttpService.executeGet("http://" + dataWarehouseLocation + "/getData");
+        String jsonResponse = HttpService.executeGet("http://" + dataWarehouseLocation + request);
 
         if (jsonResponse == null)
             System.err.println("An error has occurred while establishing the connection to the " +
@@ -244,6 +257,72 @@ public class SearchView extends HorizontalLayout {
                     7000,
                     Notification.Position.BOTTOM_CENTER);
         }
+    }
+
+    private String buildRequest() {
+        String request = "/getData";
+
+        // Use for checking whether to add '?' as first parameter, or '&' for chaining the consequent.
+        boolean firstParameter = true;
+
+        if (!author.isEmpty()) {
+            firstParameter = false;
+            request += "?author=" + author.getValue();
+        }
+
+        if (!startYear.isEmpty()) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "startYear=" + startYear.getValue();
+        }
+
+        if (!endYear.isEmpty()) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "endYear=" + endYear.getValue();
+        }
+
+        if (!searchArticles) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "searchArticles=false";
+        }
+
+        if (!searchBooks) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "searchBooks=false";
+        }
+
+        if (!searchCongressCommunications) {
+            if (firstParameter)
+                request += '?';
+            else
+                request += '&';
+
+            request += "searchCongressCommunications=false";
+        }
+
+        // Debug.
+        Notification.show("DEBUG: The REST URI was " + request, 10000, Notification.Position.TOP_END);
+
+        return request;
     }
 
     private void clearAllFilters() {
