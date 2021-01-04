@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import frontendWebApp.RequestResultResponse;
+import frontendWebApp.RequestStatusResponse;
 import frontendWebApp.views.main.MainView;
 import utils.HttpService;
 
@@ -113,22 +113,22 @@ public class DataExtractionView extends HorizontalLayout {
             System.err.println("An error has occurred while establishing the connection to the " +
                     "data Warehouse. The JSON response is null.");
 
-        // TODO: Replace the response with a another that allows to query if the request has
-        //  been successful or not.
-        RequestResultResponse requestResult = null;
+        RequestStatusResponse requestResult = null;
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            requestResult = objectMapper.readValue(jsonResponse, RequestResultResponse.class);
+            requestResult = objectMapper.readValue(jsonResponse, RequestStatusResponse.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (requestResult != null) {
-            // TODO: Retrieve the response from the Warehouse and determine whether it has
-            //  been successful or not.
+            if (requestResult.getMessage().contains("OK"))
+                Notification.show("Extrayendo referencias bibliográficas a la Warehouse. " +
+                        "Los resultados estarán listos en la Warehouse en unos minutos.");
+            else
+                Notification.show(requestResult.getMessage());
 
-            Notification.show("Extrayendo referencias bibliográficas a la Warehouse...");
         } else {
             Notification.show("Opss! Ha ocurrido un error al intentar conectar con la Warehouse.");
         }
