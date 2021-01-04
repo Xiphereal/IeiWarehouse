@@ -34,32 +34,17 @@ public class DataExtractionView extends HorizontalLayout {
     }
 
     private void addComponentsToView() {
-        H1 pageTitle = new H1("Extracción de referencias bibliográficas IEI");
-
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(pageTitle);
+        verticalLayout.setAlignItems(Alignment.CENTER);
+        verticalLayout.setAlignSelf(Alignment.CENTER);
+
+        verticalLayout.add(new H1("Extracción de referencias bibliográficas IEI"));
 
         addExtractorsCheckboxOptionsTo(verticalLayout);
 
-        startYear = new TextField("Desde año");
-        endYear = new TextField("Hasta año");
+        addYearRangeTextFieldsTo(verticalLayout);
 
-        HorizontalLayout yearRangeLayout = new HorizontalLayout();
-        yearRangeLayout.add(startYear, endYear);
-
-        Button loadButton = new Button("Cargar");
-        loadButton.addClickListener(e -> Notification.show("Extrayendo referencias bibliográficas a la Warehouse..."));
-
-        Button clearFiltersButton = new Button("Limpiar filtros");
-        clearFiltersButton.addClickListener(e -> clearAllFilters());
-
-        HorizontalLayout buttonsLayout = new HorizontalLayout();
-        buttonsLayout.add(loadButton, clearFiltersButton);
-
-        verticalLayout.add(yearRangeLayout, buttonsLayout);
-
-        verticalLayout.setAlignItems(Alignment.CENTER);
-        verticalLayout.setAlignSelf(Alignment.CENTER);
+        addButtonsTo(verticalLayout);
 
         add(verticalLayout);
     }
@@ -90,6 +75,29 @@ public class DataExtractionView extends HorizontalLayout {
         });
 
         verticalLayout.add(extractorsOptions);
+    }
+
+    private void addYearRangeTextFieldsTo(VerticalLayout verticalLayout) {
+        startYear = new TextField("Desde año");
+        endYear = new TextField("Hasta año");
+
+        HorizontalLayout yearRangeLayout = new HorizontalLayout();
+        yearRangeLayout.add(startYear, endYear);
+
+        verticalLayout.add(yearRangeLayout);
+    }
+
+    private void addButtonsTo(VerticalLayout verticalLayout) {
+        Button loadButton = new Button("Cargar");
+        loadButton.addClickListener(e -> Notification.show("Extrayendo referencias bibliográficas a la Warehouse..."));
+
+        Button clearFiltersButton = new Button("Limpiar filtros");
+        clearFiltersButton.addClickListener(e -> clearAllFilters());
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.add(loadButton, clearFiltersButton);
+
+        verticalLayout.add(buttonsLayout);
     }
 
     private void clearAllFilters() {
