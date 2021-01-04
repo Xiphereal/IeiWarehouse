@@ -87,11 +87,7 @@ public class SearchView extends HorizontalLayout {
         distributeElementsInSplitLayout(verticalLayout);
 
         // Add components listeners.
-        searchButton.addClickListener(e -> {
-            Notification.show("Buscando referencias bibliográficas...");
-
-            requestPublicationsToDataWarehouse();
-        });
+        searchButton.addClickListener(e -> requestPublicationsToDataWarehouse());
         clearFiltersButton.addClickListener(e -> clearAllFilters());
     }
 
@@ -252,10 +248,10 @@ public class SearchView extends HorizontalLayout {
             articlesGrid.getDataProvider().refreshAll();
             booksGrid.getDataProvider().refreshAll();
             congressCommunicationsGrid.getDataProvider().refreshAll();
+
+            Notification.show("Buscando referencias bibliográficas...");
         } else {
-            Notification.show("Opss! Ha ocurrido un error al intentar recuperar los datos.",
-                    7000,
-                    Notification.Position.BOTTOM_CENTER);
+            Notification.show("Opss! Ha ocurrido un error al intentar recuperar los datos.");
         }
     }
 
