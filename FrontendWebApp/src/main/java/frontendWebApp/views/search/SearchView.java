@@ -96,19 +96,19 @@ public class SearchView extends HorizontalLayout {
         final String booksOptionName = "Libros";
         final String congressCommunicationOptionName = "Comunicaciones de congreso";
 
-        CheckboxGroup<String> extractorsOptions = new CheckboxGroup<>();
-        extractorsOptions.setLabel("Tipos de publicaciones a recuperar");
-        extractorsOptions.setItems(articlesOptionName, booksOptionName, congressCommunicationOptionName);
+        CheckboxGroup<String> publicationsOptions = new CheckboxGroup<>();
+        publicationsOptions.setLabel("Tipos de publicaciones a recuperar");
+        publicationsOptions.setItems(articlesOptionName, booksOptionName, congressCommunicationOptionName);
 
         Set<String> values = new HashSet<>();
         values.add(articlesOptionName);
         values.add(booksOptionName);
         values.add(congressCommunicationOptionName);
-        extractorsOptions.setValue(values);
+        publicationsOptions.setValue(values);
 
-        extractorsOptions.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+        publicationsOptions.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
-        extractorsOptions.addSelectionListener(selection -> {
+        publicationsOptions.addSelectionListener(selection -> {
             Set<String> selectedOptionsNames = selection.getValue();
 
             searchArticles = selectedOptionsNames.contains(articlesOptionName);
@@ -116,7 +116,7 @@ public class SearchView extends HorizontalLayout {
             searchCongressCommunications = selectedOptionsNames.contains(congressCommunicationOptionName);
         });
 
-        verticalLayout.add(extractorsOptions);
+        verticalLayout.add(publicationsOptions);
     }
 
     private void distributeElementsInSplitLayout(VerticalLayout verticalLayout) {
