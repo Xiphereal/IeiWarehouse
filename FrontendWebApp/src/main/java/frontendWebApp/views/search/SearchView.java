@@ -56,39 +56,38 @@ public class SearchView extends HorizontalLayout {
     }
 
     private void addComponentsToView() {
-        H1 pageTitle = new H1("Búsqueda bibliográfica IEI");
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.setAlignItems(Alignment.CENTER);
+        verticalLayout.setAlignSelf(Alignment.CENTER);
 
+        verticalLayout.add(new H1("Búsqueda bibliográfica IEI"));
+
+        addAuthorTextFieldTo(verticalLayout);
+
+        addYearRangeTextFieldsTo(verticalLayout);
+
+        addPublicationsCheckboxOptionsTo(verticalLayout);
+
+        addButtonsTo(verticalLayout);
+
+        add(verticalLayout);
+
+        distributeElementsInSplitLayout(verticalLayout);
+    }
+
+    private void addAuthorTextFieldTo(VerticalLayout verticalLayout) {
+        author = new TextField("Autor");
+        verticalLayout.add(author);
+    }
+
+    private void addYearRangeTextFieldsTo(VerticalLayout verticalLayout) {
         startYear = new TextField("Desde año");
         endYear = new TextField("Hasta año");
 
         HorizontalLayout yearRangeLayout = new HorizontalLayout();
         yearRangeLayout.add(startYear, endYear);
 
-        author = new TextField("Autor");
-        publicationTitle = new TextField("Título");
-
-        VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(pageTitle, author, publicationTitle, yearRangeLayout);
-
-        addPublicationsCheckboxOptionsTo(verticalLayout);
-
-        Button searchButton = new Button("Buscar");
-        Button clearFiltersButton = new Button("Limpiar filtros");
-
-        HorizontalLayout buttonsLayout = new HorizontalLayout();
-        buttonsLayout.add(searchButton, clearFiltersButton);
-
-        verticalLayout.add(buttonsLayout);
-        verticalLayout.setAlignItems(Alignment.CENTER);
-        verticalLayout.setAlignSelf(Alignment.CENTER);
-
-        add(verticalLayout);
-
-        distributeElementsInSplitLayout(verticalLayout);
-
-        // Add components listeners.
-        searchButton.addClickListener(e -> requestPublicationsToDataWarehouse());
-        clearFiltersButton.addClickListener(e -> clearAllFilters());
+        verticalLayout.add(yearRangeLayout);
     }
 
     private void addPublicationsCheckboxOptionsTo(VerticalLayout verticalLayout) {
@@ -119,22 +118,36 @@ public class SearchView extends HorizontalLayout {
         verticalLayout.add(publicationsOptions);
     }
 
+    private void addButtonsTo(VerticalLayout verticalLayout) {
+        Button searchButton = new Button("Buscar");
+        searchButton.addClickListener(e -> requestPublicationsToDataWarehouse());
+
+        Button clearFiltersButton = new Button("Limpiar filtros");
+        clearFiltersButton.addClickListener(e -> clearAllFilters());
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.add(searchButton, clearFiltersButton);
+
+        verticalLayout.add(buttonsLayout);
+    }
+
     private void distributeElementsInSplitLayout(VerticalLayout verticalLayout) {
         splitLayout.addToPrimary(verticalLayout);
 
         VerticalLayout dataGridsLayout = new VerticalLayout();
 
-        buildArticlesResultsDataGrid(dataGridsLayout);
-        buildBooksResultsDataGrid(dataGridsLayout);
-        buildCongressCommunicationResultsDataGrid(dataGridsLayout);
+        addArticlesResultsDataGridTo(dataGridsLayout);
+        addBooksResultsDataGridTo(dataGridsLayout);
+        addCongressCommunicationResultsDataGridTo(dataGridsLayout);
 
         splitLayout.addToSecondary(dataGridsLayout);
 
         splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+
         add(splitLayout);
     }
 
-    private void buildArticlesResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void addArticlesResultsDataGridTo(VerticalLayout dataGridsLayout) {
         articlesGrid = new Grid<>();
 
         articlesGrid.addColumn(Article::getTitle).setHeader("Título").setKey("title").setSortable(true)
@@ -156,7 +169,7 @@ public class SearchView extends HorizontalLayout {
         dataGridsLayout.add(articlesGridTitle, articlesGrid);
     }
 
-    private void buildBooksResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void addBooksResultsDataGridTo(VerticalLayout dataGridsLayout) {
         booksGrid = new Grid<>();
 
         booksGrid.addColumn(Book::getTitle).setHeader("Título").setKey("title").setSortable(true)
@@ -174,7 +187,7 @@ public class SearchView extends HorizontalLayout {
         dataGridsLayout.add(booksGridTitle, booksGrid);
     }
 
-    private void buildCongressCommunicationResultsDataGrid(VerticalLayout dataGridsLayout) {
+    private void addCongressCommunicationResultsDataGridTo(VerticalLayout dataGridsLayout) {
         congressCommunicationsGrid = new Grid<>();
 
         congressCommunicationsGrid
