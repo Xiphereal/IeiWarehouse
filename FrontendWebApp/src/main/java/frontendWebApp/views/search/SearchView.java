@@ -37,7 +37,6 @@ public class SearchView extends HorizontalLayout {
     private final SplitLayout splitLayout = new SplitLayout();
 
     private TextField author;
-    private TextField publicationTitle;
     private TextField startYear;
     private TextField endYear;
 
@@ -336,7 +335,6 @@ public class SearchView extends HorizontalLayout {
 
     private void clearAllFilters() {
         author.clear();
-        publicationTitle.clear();
         startYear.clear();
         endYear.clear();
     }
