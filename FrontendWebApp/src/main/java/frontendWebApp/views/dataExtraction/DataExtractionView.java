@@ -1,5 +1,6 @@
 package frontendWebApp.views.dataExtraction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
@@ -11,8 +12,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import frontendWebApp.RequestResultResponse;
 import frontendWebApp.views.main.MainView;
+import utils.HttpService;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,7 +93,7 @@ public class DataExtractionView extends HorizontalLayout {
 
     private void addButtonsTo(VerticalLayout verticalLayout) {
         Button loadButton = new Button("Cargar");
-        loadButton.addClickListener(e -> Notification.show("Extrayendo referencias bibliográficas a la Warehouse..."));
+        loadButton.addClickListener(e -> commandDataExtractionToWarehouse());
 
         Button clearFiltersButton = new Button("Limpiar filtros");
         clearFiltersButton.addClickListener(e -> clearAllFilters());
@@ -98,6 +102,92 @@ public class DataExtractionView extends HorizontalLayout {
         buttonsLayout.add(loadButton, clearFiltersButton);
 
         verticalLayout.add(buttonsLayout);
+    }
+
+    private void commandDataExtractionToWarehouse() {
+        String request = buildRequest();
+        String dataWarehouseLocation = "localhost:8081";
+        String jsonResponse = HttpService.executeGet("http://" + dataWarehouseLocation + request);
+
+        if (jsonResponse == null)
+            System.err.println("An error has occurred while establishing the connection to the " +
+                    "data Warehouse. The JSON response is null.");
+
+        // TODO: Replace the response with a another that allows to query if the request has
+        //  been successful or not.
+        RequestResultResponse requestResult = null;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            requestResult = objectMapper.readValue(jsonResponse, RequestResultResponse.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (requestResult != null) {
+            // TODO: Retrieve the response from the Warehouse and determine whether it has
+            //  been successful or not.
+
+            Notification.show("Extrayendo referencias bibliográficas a la Warehouse...");
+        } else {
+            Notification.show("Opss! Ha ocurrido un error al intentar conectar con la Warehouse.");
+        }
+    }
+
+    private String buildRequest() {
+        String request = "/extractData";
+
+        // Use for checking whether to add '?' as first parameter, or '&' for chaining the consequent.
+        boolean firstParameter = true;
+
+        if (!extractFromDblp) {
+            firstParameter = false;
+            request += "?extractFromDBLP=false";
+        }
+
+        if (!extractFromIeee) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "extractFromIEEE=false";
+        }
+
+        if (!extractFromGoogleScholar) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "extractFromGoogleScholar=false";
+        }
+
+        if (!startYear.isEmpty()) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "startYear=" + startYear.getValue();
+        }
+
+        if (!endYear.isEmpty()) {
+            if (firstParameter)
+                request += '?';
+            else
+                request += '&';
+
+            request += "endYear=" + endYear.getValue();
+        }
+
+        // Debug.
+        Notification.show("DEBUG: The REST URI was " + request, 10000, Notification.Position.TOP_END);
+
+        return request;
     }
 
     private void clearAllFilters() {
