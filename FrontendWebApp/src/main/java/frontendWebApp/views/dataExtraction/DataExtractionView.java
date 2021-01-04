@@ -27,9 +27,9 @@ public class DataExtractionView extends HorizontalLayout {
     private TextField startYear;
     private TextField endYear;
 
-    private boolean extractFromDblp;
-    private boolean extractFromIeee;
-    private boolean extractFromGoogleScholar;
+    private boolean extractFromDblp = true;
+    private boolean extractFromIeee = true;
+    private boolean extractFromGoogleScholar = true;
 
     public DataExtractionView() {
         setId("dataextraction-view");
