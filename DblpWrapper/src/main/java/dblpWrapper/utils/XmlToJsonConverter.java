@@ -26,8 +26,8 @@ public class XmlToJsonConverter {
         } catch (IOException ioException) {
             System.out.println("ERROR: IOException");
         }
-        JSONObject jsonObject = XML.toJSONObject(dataFromXML.toString());
-        return jsonObject;
+
+        return XML.toJSONObject(dataFromXML.toString());
     }
 
     public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd) {
