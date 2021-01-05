@@ -16,8 +16,7 @@ public class RestApi {
     @GetMapping("/extract")
     public RequestResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") String endYear) throws IOException {
-        RequestResultResponse req = getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear));
-        return req;
+        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear));
     }
 
     private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
