@@ -1,12 +1,6 @@
 package googleScholarWrapper.restService;
 
-import domainModel.Book;
-import domainModel.utils.YearRange;
 import googleScholarWrapper.bibtexToJson.BibtexToJsonParser;
-import googleScholarWrapper.restService.requestResponses.RequestResponse;
-import googleScholarWrapper.restService.requestResponses.RequestStatusResponse;
-import googleScholarWrapper.selenium.SeleniumScraper;
-import org.json.JSONArray;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+
 @RestController
 public class GoogleSchoolarExtractorApi {
     private final AtomicLong requestId = new AtomicLong();
@@ -26,8 +20,8 @@ public class GoogleSchoolarExtractorApi {
             "The years must use format startYear:yyyy and endYear:yyyy";
 
     @GetMapping("/extract")
-    public Map<String,Object> getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                       @RequestParam(value = "endYear", defaultValue = "2999") String endYear) throws IOException {
+    public Map<String, Object> getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
+                                       @RequestParam(value = "endYear", defaultValue = "2999") String endYear) throws IOException {
         /*
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
         if (!isYearRangeValid)

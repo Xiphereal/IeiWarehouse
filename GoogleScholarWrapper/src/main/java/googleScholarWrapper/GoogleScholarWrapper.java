@@ -1,13 +1,11 @@
 package googleScholarWrapper;
 
 import domainModel.utils.YearRange;
-import googleScholarWrapper.bibtexToJson.BibtexToJsonParser;
-import googleScholarWrapper.selenium.SeleniumScraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
-import java.util.List;
+
 @SpringBootApplication
 public class GoogleScholarWrapper {
 
