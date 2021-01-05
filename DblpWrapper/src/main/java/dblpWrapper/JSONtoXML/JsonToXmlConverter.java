@@ -34,7 +34,6 @@ public class JsonToXmlConverter {
         JSONObject convertedFilie = JsonToXmlConverter.xmlFileToJsonObject();
         JSONObject globalObject = convertedFilie.getJSONObject("dblp");
         JSONArray articles = globalObject.getJSONArray("article");
-        //System.out.println(globalObject.toString(2));
 
         YearRange yearRange = new YearRange((long) yearStart, (long) yearEnd);
 
