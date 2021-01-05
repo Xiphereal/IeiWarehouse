@@ -1,36 +1,38 @@
 package googleScholarWrapper.bibtexToJson;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import domainModel.Book;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class BibtexToJsonParser {
     //TODO: change return in order to fit the specification
-    public static List<JSONArray> toJson(List<String> bibtex) throws IOException {
+    public static JSONObject toJson(List<String> bibtex) throws IOException {
         List<String> json = new ArrayList<>();
 
         JSONArray books = new JSONArray();
         JSONArray articles = new JSONArray();
-        JSONArray communicationCongresses = new JSONArray();
+        JSONArray inproceedings = new JSONArray();
+        JSONArray incollection  = new JSONArray();
         for (int i = 0; i < bibtex.size(); i++) {
             String bibObject = bibtex.get(i);
 
             if (bibObject.startsWith("book")) {
                 JSONObject publication = new JSONObject();
-                // conver to book
+                // atributes
                 String title = "";
                 String authors = "";
                 String volume = "";
-                Long year = 0L;
+                String year = "";
                 String url = "";
                 String publisher = "";
                 List<String> fields = Arrays.asList(bibObject.split("\n"));
-                //title
+
                 for (String field : fields) {
                     field = field.trim();
                     if (field.startsWith("title=")) {
@@ -38,7 +40,7 @@ public class BibtexToJsonParser {
                         publication.put("title", title);
                     }
                     if (field.startsWith("year=")) {
-                        year = Long.parseLong(beautify(field.substring(6, field.length())));
+                        year = beautify(field.substring(6, field.length()));
                         publication.put("year", year);
                     }
                     //this is useless since we dont have url in bibtex
@@ -60,54 +62,143 @@ public class BibtexToJsonParser {
                         publication.put("volume", volume);
                     }
                 }
-
                 books.put(publication);
             }
             if (bibObject.startsWith("article")) {
-                String publication = "{";
-                // conver to book
+                JSONObject publication = new JSONObject();
+                // atributes
                 String title = "";
                 String authors = "";
+                String journal = "";
                 String volume = "";
-                Long year = 0L;
+                String number = "";
+                String pages = "";
+                String year = "";
                 String url = "";
                 String publisher = "";
+
                 List<String> fields = Arrays.asList(bibObject.split("\n"));
-                //title
+
                 for (String field : fields) {
+                    field = field.trim();
                     field = field.trim();
                     if (field.startsWith("title=")) {
                         title = beautify(field.substring(7, field.length()));
-                        publication = publication + "\"title\"" + ":" + "\"" + title + "\"" + ",";
-                    }
-                    if (field.startsWith("year=")) {
-                        year = Long.parseLong(beautify(field.substring(6, field.length())));
-                        publication = publication + "\"year\":" + "\"" + year + "\"" + ",";
-                    }
-                    if (field.startsWith("url=")) {
-                        url = beautify(field.substring(5, field.length()));
-                        publication = publication + "\"url\":" + "\"" + year + "\"" + ",";
-                    }
-                    if (field.startsWith("publisher=")) {
-                        publisher = beautify(field.substring(11, field.length()));
-                        publication = publication + "\"publisher\":" + "\"" + publisher + "\"" + ",";
+                        publication.put("title", title);
                     }
                     if (field.startsWith("author=")) {
-                        authors = beautify(field.substring(9, field.length()));
-                        publication = publication + "\"author\":" + "\"" + authors + "\"" + ",";
+                        authors = beautify(field.substring(8, field.length()));
+                        publication.put("authors", authors);
+                    }
+                    if (field.startsWith("journal=")) {
+                        journal = beautify(field.substring(9, field.length()));
+                        publication.put("journal", journal);
                     }
                     if (field.startsWith("volume=")) {
                         volume = beautify(field.substring(8, field.length()));
-                        publication = publication + "\"volume\":" + "\"" + volume + "\"" + ",";
+                        publication.put("volume", volume);
+                    }
+                    if (field.startsWith("number=")) {
+                        number = beautify(field.substring(8, field.length()));
+                        publication.put("number", number);
+                    }
+                    if (field.startsWith("pages=")) {
+                        pages = beautify(field.substring(7, field.length()));
+                        publication.put("pages", pages);
+                    }
+                    if (field.startsWith("year=")) {
+                        year = beautify(field.substring(6, field.length()));
+                        publication.put("year", year);
+                    }
+                    //TODO: delete this, useless since we dont have url in bibtex
+                    if (field.startsWith("url=")) {
+                        url = beautify(field.substring(5, field.length()));
+                        publication.put("url", url);
+                    }
+                    if (field.startsWith("publisher=")) {
+                        publisher = beautify(field.substring(11, field.length()));
+                        publication.put("publisher", publisher);
+                    }
+
+                }
+                articles.put(publication);
+            }
+            if (bibObject.startsWith("inproceedings")) {
+                JSONObject publication = new JSONObject();
+                //atributes
+                String title = "";
+                String authors = "";
+                String booktitle = "";
+
+                List<String> fields = Arrays.asList(bibObject.split("\n"));
+
+                for (String field : fields) {
+                    field = field.trim();
+                    field = field.trim();
+                    if (field.startsWith("title=")) {
+                        title = beautify(field.substring(7, field.length()));
+                        publication.put("title", title);
+                    }
+                    if (field.startsWith("author=")) {
+                        authors = beautify(field.substring(7, field.length()));
+                        publication.put("author", authors);
+                    }
+                    if (field.startsWith("booktitle=")) {
+                        booktitle = beautify(field.substring(7, field.length()));
+                        publication.put("booktitle", booktitle);
                     }
                 }
-                publication = publication.substring(0, publication.length() - 1) + "},";
-                books = books + publication;
+                inproceedings.put(publication);
+            }
+            if (bibObject.startsWith("incollection")) {
+                JSONObject publication = new JSONObject();
+                //atributes
+                String title = "";
+                String authors = "";
+                String booktitle = "";
+                String pages = "";
+                String year = "";
+                String publisher = "";
+
+                List<String> fields = Arrays.asList(bibObject.split("\n"));
+
+                for (String field : fields) {
+                    field = field.trim();
+                    field = field.trim();
+                    if (field.startsWith("title=")) {
+                        title = beautify(field.substring(7, field.length()));
+                        publication.put("title", title);
+                    }
+                    if (field.startsWith("author=")) {
+                        authors = beautify(field.substring(7, field.length()));
+                        publication.put("author", authors);
+                    }
+                    if (field.startsWith("booktitle=")) {
+                        booktitle = beautify(field.substring(7, field.length()));
+                        publication.put("booktitle", booktitle);
+                    }
+                    if (field.startsWith("pages=")) {
+                        pages = beautify(field.substring(7, field.length()));
+                        publication.put("pages", pages);
+                    }
+                    if (field.startsWith("year=")) {
+                        year = beautify(field.substring(6, field.length()));
+                        publication.put("year", year);
+                    }
+                    if (field.startsWith("publisher=")) {
+                        publisher = beautify(field.substring(11, field.length()));
+                        publication.put("publisher", publisher);
+                    }
+                }
+                incollection.put(publication);
             }
         }
-        books = books.substring(0, books.length() - 1) + "]";
-        json.add(books);
-        return json;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("books",books);
+        jsonObject.put("articles", articles);
+        jsonObject.put("inproceedings", inproceedings);
+        jsonObject.put("incollection", incollection);
+        return jsonObject;
     }
 
     private static String beautify(String text) {
