@@ -48,27 +48,27 @@ public class BibtexToJsonParser {
                 field = field.trim();
                 field = field.trim();
                 if (field.startsWith("title=")) {
-                    title = beautify(field.substring(7, field.length()));
+                    title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
                 if (field.startsWith("author=")) {
-                    authors = beautify(field.substring(7, field.length()));
+                    authors = beautify(field.substring(7));
                     publication.put("author", authors);
                 }
                 if (field.startsWith("booktitle=")) {
-                    booktitle = beautify(field.substring(7, field.length()));
+                    booktitle = beautify(field.substring(7));
                     publication.put("booktitle", booktitle);
                 }
                 if (field.startsWith("pages=")) {
-                    pages = beautify(field.substring(7, field.length()));
+                    pages = beautify(field.substring(7));
                     publication.put("pages", pages);
                 }
                 if (field.startsWith("year=")) {
-                    year = beautify(field.substring(6, field.length()));
+                    year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
                 if (field.startsWith("publisher=")) {
-                    publisher = beautify(field.substring(11, field.length()));
+                    publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
             }
@@ -91,15 +91,15 @@ public class BibtexToJsonParser {
                 field = field.trim();
                 field = field.trim();
                 if (field.startsWith("title=")) {
-                    title = beautify(field.substring(7, field.length()));
+                    title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
                 if (field.startsWith("author=")) {
-                    authors = beautify(field.substring(7, field.length()));
+                    authors = beautify(field.substring(7));
                     publication.put("author", authors);
                 }
                 if (field.startsWith("booktitle=")) {
-                    booktitle = beautify(field.substring(7, field.length()));
+                    booktitle = beautify(field.substring(7));
                     publication.put("booktitle", booktitle);
                 }
             }
@@ -128,40 +128,40 @@ public class BibtexToJsonParser {
                 field = field.trim();
                 field = field.trim();
                 if (field.startsWith("title=")) {
-                    title = beautify(field.substring(7, field.length()));
+                    title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
                 if (field.startsWith("author=")) {
-                    authors = beautify(field.substring(8, field.length()));
+                    authors = beautify(field.substring(8));
                     publication.put("authors", authors);
                 }
                 if (field.startsWith("journal=")) {
-                    journal = beautify(field.substring(9, field.length()));
+                    journal = beautify(field.substring(9));
                     publication.put("journal", journal);
                 }
                 if (field.startsWith("volume=")) {
-                    volume = beautify(field.substring(8, field.length()));
+                    volume = beautify(field.substring(8));
                     publication.put("volume", volume);
                 }
                 if (field.startsWith("number=")) {
-                    number = beautify(field.substring(8, field.length()));
+                    number = beautify(field.substring(8));
                     publication.put("number", number);
                 }
                 if (field.startsWith("pages=")) {
-                    pages = beautify(field.substring(7, field.length()));
+                    pages = beautify(field.substring(7));
                     publication.put("pages", pages);
                 }
                 if (field.startsWith("year=")) {
-                    year = beautify(field.substring(6, field.length()));
+                    year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
                 //TODO: delete this, useless since we dont have url in bibtex
                 if (field.startsWith("url=")) {
-                    url = beautify(field.substring(5, field.length()));
+                    url = beautify(field.substring(5));
                     publication.put("url", url);
                 }
                 if (field.startsWith("publisher=")) {
-                    publisher = beautify(field.substring(11, field.length()));
+                    publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
 
@@ -186,29 +186,29 @@ public class BibtexToJsonParser {
             for (String field : fields) {
                 field = field.trim();
                 if (field.startsWith("title=")) {
-                    title = beautify(field.substring(7, field.length()));
+                    title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
                 if (field.startsWith("year=")) {
-                    year = beautify(field.substring(6, field.length()));
+                    year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
                 //this is useless since we dont have url in bibtex
                 //TODO: delete this
                 if (field.startsWith("url=")) {
-                    url = beautify(field.substring(5, field.length()));
+                    url = beautify(field.substring(5));
                     publication.put("url", url);
                 }
                 if (field.startsWith("publisher=")) {
-                    publisher = beautify(field.substring(11, field.length()));
+                    publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
                 if (field.startsWith("author=")) {
-                    authors = beautify(field.substring(9, field.length()));
+                    authors = beautify(field.substring(9));
                     publication.put("authors", authors);
                 }
                 if (field.startsWith("volume=")) {
-                    volume = beautify(field.substring(8, field.length()));
+                    volume = beautify(field.substring(field.length(), 8));
                     publication.put("volume", volume);
                 }
             }
