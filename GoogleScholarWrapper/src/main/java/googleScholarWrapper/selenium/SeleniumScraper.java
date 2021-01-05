@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeleniumScraper {
-    private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
+    private static final String PROJECT_PATH = System.getProperty("user.dir") + "/";
 
     /**
      * Maximum time to wait before failing.
@@ -193,7 +193,7 @@ public class SeleniumScraper {
     }
 
     private void waitUntilClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
+        WebDriverWait wait = new WebDriverWait(driver, AWAIT_TIMEOUT_IN_MILLIS);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 }
