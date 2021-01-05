@@ -3,14 +3,12 @@ package googleScholarWrapper.bibtexToJson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BibtexToJsonParser {
     //TODO: change return in order to fit the specification
-    public static JSONObject toJson(List<String> bibtex) throws IOException {
+    public static JSONObject toJson(List<String> bibtex) {
         JSONArray books = new JSONArray();
         JSONArray articles = new JSONArray();
         JSONArray inproceedings = new JSONArray();
