@@ -19,8 +19,9 @@ public class RestApi {
     }
 
     private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
-        //we filter the json file by year before we start creating the article list
-        //It is faster to filter the json than to filter while creating the articles(already tested it)
+        // We filter the JSON file by year before we start creating the Publication list.
+        // It is faster to filter the JSON than to filter while extracting the Articles in the
+        // Warehouse.
         List<Map<String, Object>> filteredList = JsonToXmlConverter.parseXmlToJson(startYear, endYear);
 
         return new RequestResultResponse(filteredList);
