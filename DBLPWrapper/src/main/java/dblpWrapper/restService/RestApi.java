@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-public class LoadApi {
+public class RestApi {
     private final AtomicLong requestId = new AtomicLong();
 
     private static final String ERROR_MESSAGE = "ERROR: The given years for the extraction are invalid." +
@@ -33,7 +33,7 @@ public class LoadApi {
     private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
         //we filter the json file by year before we start creating the article list
         //It is faster to filter the json than to filter while creating the articles(already tested it)
-        List<Map<String,Object>> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
+        List<Map<String, Object>> filteredList = JsonToXmlConverter.parseXmlToJson(startYear, endYear);
 
         return new RequestResultResponse(filteredList);
     }
