@@ -1,6 +1,6 @@
 package dblpWrapper.restService;
 
-import dblpWrapper.JSONtoXML.JsonToXmlConverter;
+import dblpWrapper.utils.XmlToJsonConverter;
 import dblpWrapper.restService.requestResponses.RequestResponse;
 import dblpWrapper.restService.requestResponses.RequestResultResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class RestApi {
         // We filter the JSON file by year before we start creating the Publication list.
         // It is faster to filter the JSON than to filter while extracting the Articles in the
         // Warehouse.
-        List<Map<String, Object>> filteredList = JsonToXmlConverter.parseXmlToJson(startYear, endYear);
+        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear);
 
         return new RequestResultResponse(filteredList);
     }
