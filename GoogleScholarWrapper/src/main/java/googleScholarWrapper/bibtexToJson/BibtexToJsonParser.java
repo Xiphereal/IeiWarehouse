@@ -11,15 +11,13 @@ import java.util.List;
 public class BibtexToJsonParser {
     //TODO: change return in order to fit the specification
     public static JSONObject toJson(List<String> bibtex) throws IOException {
-        List<String> json = new ArrayList<>();
-
         JSONArray books = new JSONArray();
         JSONArray articles = new JSONArray();
         JSONArray inproceedings = new JSONArray();
         JSONArray incollection = new JSONArray();
         for (int i = 0; i < bibtex.size(); i++) {
             String bibObject = bibtex.get(i);
-
+            //this methods check the kind of publication that the bibtex is and add it to the corresponding jsonArray
             books = bookParser(books, bibObject);
             articles = articleParser(articles, bibObject);
             inproceedings = inproceedingsParser(inproceedings, bibObject);
