@@ -13,15 +13,16 @@ import java.util.Map;
 public class RestApi {
     @GetMapping("/extract")
     public RequestResultResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                                             @RequestParam(value = "endYear", defaultValue = "2999") String endYear) {
-        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear));
+                                             @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
+                                             @RequestParam(value = "maxArticles", defaultValue = "5000") String maxArticles) {
+        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxArticles));
     }
 
-    private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
+    private RequestResultResponse getDataFromDblp(int startYear, int endYear, int maxArticles) {
         // We filter the JSON file by year before we start creating the Publication list.
         // It is faster to filter the JSON than to filter while extracting the Articles in the
         // Warehouse.
-        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear);
+        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
 
         return new RequestResultResponse(filteredList);
     }

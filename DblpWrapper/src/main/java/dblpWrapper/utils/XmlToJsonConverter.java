@@ -13,7 +13,7 @@ import java.util.Map;
 public class XmlToJsonConverter {
     private static final String PATH_TO_XML = "DblpWrapper/src/main/resources/DBLP-SOLO_ARTICLE-1.XML";
 
-    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd) {
+    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd, int maxArticles) {
         JSONObject convertedFile = getJsonFromXmlFile();
         JSONObject root = convertedFile.getJSONObject("dblp");
         JSONArray articles = root.getJSONArray("article");
@@ -22,7 +22,7 @@ public class XmlToJsonConverter {
 
         List<Map<String, Object>> filteredArticles = new ArrayList<>();
 
-        for (int i = 0; i < articles.length(); i++) {
+        for (int i = 0; i < articles.length() && i < maxArticles; i++) {
             int year = articles.getJSONObject(i).getInt("year");
 
             if (yearRange.isGivenYearBetweenRange((long) year))
@@ -41,7 +41,6 @@ public class XmlToJsonConverter {
             String line = "";
             while ((line = br.readLine()) != null)
                 dataFromXml.append(line);
-
         } catch (IOException fileException) {
             fileException.printStackTrace();
         }
