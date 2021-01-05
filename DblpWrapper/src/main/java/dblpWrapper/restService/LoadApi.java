@@ -33,7 +33,7 @@ public class LoadApi {
     private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
         //we filter the json file by year before we start creating the article list
         //It is faster to filter the json than to filter while creating the articles(already tested it)
-        List<Map<String,Object>> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
+        List<Map<String, Object>> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
 
         return new RequestResultResponse(filteredList);
     }
