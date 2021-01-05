@@ -1,6 +1,8 @@
 package googleScholarWrapper.bibtexToJson;
 
 import domainModel.Book;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,14 +10,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BibtexToJsonParser {
-    public static List<String> toJson(List<String> bibtex) throws IOException {
-        String books = "\"books\": [";
+    //TODO: change return in order to fit the specification
+    public static List<JSONArray> toJson(List<String> bibtex) throws IOException {
         List<String> json = new ArrayList<>();
+
+        JSONArray books = new JSONArray();
+        JSONArray articles = new JSONArray();
+        JSONArray communicationCongresses = new JSONArray();
         for (int i = 0; i < bibtex.size(); i++) {
             String bibObject = bibtex.get(i);
 
             if (bibObject.startsWith("book")) {
-                String publication = "{";
+                JSONObject publication = new JSONObject();
                 // conver to book
                 String title = "";
                 String authors = "";
@@ -29,31 +35,33 @@ public class BibtexToJsonParser {
                     field = field.trim();
                     if (field.startsWith("title=")) {
                         title = beautify(field.substring(7, field.length()));
-                        publication = publication + "\"title\"" + ":" + "\"" + title + "\"" + ",";
+                        publication.put("title", title);
                     }
                     if (field.startsWith("year=")) {
                         year = Long.parseLong(beautify(field.substring(6, field.length())));
-                        publication = publication + "\"year\":" + "\"" + year + "\"" + ",";
+                        publication.put("year", year);
                     }
+                    //this is useless since we dont have url in bibtex
+                    //TODO: delete this
                     if (field.startsWith("url=")) {
                         url = beautify(field.substring(5, field.length()));
-                        publication = publication + "\"url\":" + "\"" + year + "\"" + ",";
+                        publication.put("url", url);
                     }
                     if (field.startsWith("publisher=")) {
                         publisher = beautify(field.substring(11, field.length()));
-                        publication = publication + "\"publisher\":" + "\"" + publisher + "\"" + ",";
+                        publication.put("publisher", publisher);
                     }
                     if (field.startsWith("author=")) {
                         authors = beautify(field.substring(9, field.length()));
-                        publication = publication + "\"author\":" + "\"" + authors + "\"" + ",";
+                        publication.put("authors", authors);
                     }
                     if (field.startsWith("volume=")) {
                         volume = beautify(field.substring(8, field.length()));
-                        publication = publication + "\"volume\":" + "\"" + volume + "\"" + ",";
+                        publication.put("volume", volume);
                     }
                 }
-                publication = publication.substring(0, publication.length()-1) + "},";
-                books = books + publication;
+
+                books.put(publication);
             }
             if (bibObject.startsWith("article")) {
                 String publication = "{";
@@ -93,11 +101,11 @@ public class BibtexToJsonParser {
                         publication = publication + "\"volume\":" + "\"" + volume + "\"" + ",";
                     }
                 }
-                publication = publication.substring(0, publication.length()-1) + "},";
+                publication = publication.substring(0, publication.length() - 1) + "},";
                 books = books + publication;
             }
         }
-        books = books.substring(0, books.length() -1) + "]";
+        books = books.substring(0, books.length() - 1) + "]";
         json.add(books);
         return json;
     }
