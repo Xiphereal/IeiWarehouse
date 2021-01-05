@@ -13,7 +13,7 @@ import java.util.Map;
 public class RestApi {
     @GetMapping("/extract")
     public RequestResultResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                                       @RequestParam(value = "endYear", defaultValue = "2999") String endYear) {
+                                             @RequestParam(value = "endYear", defaultValue = "2999") String endYear) {
         return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear));
     }
 
@@ -25,5 +25,4 @@ public class RestApi {
 
         return new RequestResultResponse(filteredList);
     }
-
 }
