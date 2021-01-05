@@ -1,7 +1,6 @@
 package dblpWrapper.restService;
 
 import dblpWrapper.utils.XmlToJsonConverter;
-import dblpWrapper.restService.requestResponses.RequestResponse;
 import dblpWrapper.restService.requestResponses.RequestResultResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +12,7 @@ import java.util.Map;
 @RestController
 public class RestApi {
     @GetMapping("/extract")
-    public RequestResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
+    public RequestResultResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") String endYear) {
         return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear));
     }
