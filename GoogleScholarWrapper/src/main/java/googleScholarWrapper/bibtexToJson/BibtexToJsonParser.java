@@ -35,12 +35,12 @@ public class BibtexToJsonParser {
         if (bibObject.startsWith("incollection")) {
             JSONObject publication = new JSONObject();
             //atributes
-            String title = "";
-            String authors = "";
-            String booktitle = "";
-            String pages = "";
-            String year = "";
-            String publisher = "";
+            String title;
+            String authors;
+            String booktitle;
+            String pages;
+            String year;
+            String publisher;
 
             List<String> fields = Arrays.asList(bibObject.split("\n"));
 
@@ -81,9 +81,9 @@ public class BibtexToJsonParser {
         if (bibObject.startsWith("inproceedings")) {
             JSONObject publication = new JSONObject();
             //atributes
-            String title = "";
-            String authors = "";
-            String booktitle = "";
+            String title;
+            String authors;
+            String booktitle;
 
             List<String> fields = Arrays.asList(bibObject.split("\n"));
 
@@ -112,15 +112,15 @@ public class BibtexToJsonParser {
         if (bibObject.startsWith("article")) {
             JSONObject publication = new JSONObject();
             // atributes
-            String title = "";
-            String authors = "";
-            String journal = "";
-            String volume = "";
-            String number = "";
-            String pages = "";
-            String year = "";
-            String url = "";
-            String publisher = "";
+            String title;
+            String authors;
+            String journal;
+            String volume;
+            String number;
+            String pages;
+            String year;
+            String url;
+            String publisher;
 
             List<String> fields = Arrays.asList(bibObject.split("\n"));
 
@@ -175,12 +175,12 @@ public class BibtexToJsonParser {
         if (bibObject.startsWith("book")) {
             JSONObject publication = new JSONObject();
             // atributes
-            String title = "";
-            String authors = "";
-            String volume = "";
-            String year = "";
-            String url = "";
-            String publisher = "";
+            String title;
+            String authors;
+            String volume;
+            String year;
+            String url;
+            String publisher;
             List<String> fields = Arrays.asList(bibObject.split("\n"));
 
             for (String field : fields) {
