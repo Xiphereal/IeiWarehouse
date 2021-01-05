@@ -1,6 +1,5 @@
 package dblpWrapper.JSONtoXML;
 
-import domainModel.Publication;
 import domainModel.utils.YearRange;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class JsonToXmlConverter {
     private static String PATH_TO_XML = "src/main/java/dblpWrapper/JSONtoXML/DBLP-SOLO_ARTICLE-1.XML";
 
-    public static JSONObject convert() {
+    public static JSONObject xmlFileToJsonObject() {
         StringBuilder dataFromXML = new StringBuilder();
         String line = "";
         try {
@@ -31,16 +30,18 @@ public class JsonToXmlConverter {
         return jsonObject;
     }
 
-    public static List<Map<String, Object>> filterByYear(int yearStart, int yearEnd) {
-        JSONObject convertedFilie = JsonToXmlConverter.convert();
+    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd) {
+        JSONObject convertedFilie = JsonToXmlConverter.xmlFileToJsonObject();
         JSONObject globalObject = convertedFilie.getJSONObject("dblp");
         JSONArray articles = globalObject.getJSONArray("article");
         //System.out.println(globalObject.toString(2));
 
+        YearRange yearRange = new YearRange((long) yearStart, (long) yearEnd);
+
         List<Map<String, Object>> validArticles = new ArrayList<>();
         for (int i = 0; i < articles.length(); i++) {
             int year = articles.getJSONObject(i).getInt("year");
-            if (year >= yearStart && year <= yearEnd) {
+            if (yearRange.isGivenYearBetweenRange((long) year)) {
                 validArticles.add(articles.getJSONObject(i).toMap());
             }
         }
