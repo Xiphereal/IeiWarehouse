@@ -8,9 +8,11 @@ public class RequestStatusResponse implements RequestResponse {
         this.requestId = requestId;
         this.message = message;
     }
+
     public long getRequestId() {
         return requestId;
     }
+
     public String getMessage() {
         return getMessage();
     }

@@ -1,6 +1,7 @@
 package dblpWrapper.JSONtoXML;
 
 import domainModel.Publication;
+import domainModel.utils.YearRange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -33,9 +34,9 @@ public class JsonToXmlConverter {
     public static List<Map<String, Object>> filterByYear(int yearStart, int yearEnd) {
         JSONObject convertedFilie = JsonToXmlConverter.convert();
         JSONObject globalObject = convertedFilie.getJSONObject("dblp");
+        JSONArray articles = globalObject.getJSONArray("article");
         //System.out.println(globalObject.toString(2));
 
-        JSONArray articles = globalObject.getJSONArray("article");
         List<Map<String, Object>> validArticles = new ArrayList<>();
         for (int i = 0; i < articles.length(); i++) {
             int year = articles.getJSONObject(i).getInt("year");

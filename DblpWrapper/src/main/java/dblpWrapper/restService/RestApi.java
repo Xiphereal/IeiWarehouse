@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-public class LoadApi {
+public class RestApi {
     private final AtomicLong requestId = new AtomicLong();
 
     private static final String ERROR_MESSAGE = "ERROR: The given years for the extraction are invalid." +
