@@ -22,11 +22,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class LoadApi {
     private final AtomicLong requestId = new AtomicLong();
 
-    private static final String ERROR_MESSAGE = "ERROR: The given parameters for the extraction are invalid. " +
-            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'" +
-            ", with startYear being less than endYear. " +
-            "The valid year range goes from 1000 to 2999.";
-
     private static final String OK_MESSAGE = "OK: The extraction has started as expected. " +
             "The results will be ready at the warehouse after a few minutes.";
 
@@ -41,13 +36,10 @@ public class LoadApi {
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
                                              @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar) {
 
-        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+        long startYearValue = YearRange.isYear(startYear) ? Long.parseLong(startYear) : 1000L;
+        long endYearValue = YearRange.isYear(endYear) ? Long.parseLong(endYear) : 2999L;
 
-        // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (!isYearRangeValid)
-            return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
-
-        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+        YearRange yearRange = new YearRange(startYearValue, endYearValue);
 
         runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange);
 

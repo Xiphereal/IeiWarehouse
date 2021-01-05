@@ -1,32 +1,20 @@
 package domainModel.utils;
 
 public class YearRange {
-    private final Long startYear;
-    private final Long endYear;
-
-    public YearRange() {
-        this.startYear = 1000L;
-        this.endYear = 2999L;
-    }
+    private Long startYear = 1000L;
+    private Long endYear = 2999L;
 
     public YearRange(Long startYear, Long endYear) {
+        // If the range is invalid in any way, the values will be the default ones.
+        if (!isRangeValid(startYear, endYear))
+            return;
+
         this.startYear = startYear;
         this.endYear = endYear;
     }
 
-    public static boolean isRangeValid(String startYear, String endYear) {
-        boolean isStartYearValid = startYear.isEmpty() || isYear(startYear);
-        boolean isEndYearValid = endYear.isEmpty() || isYear(endYear);
-
-        // If any of the input years are not valid, there's no need in
-        // continuing and throwing a NumberFormatException on
-        // Long.parseLong invocations.
-        if (!isStartYearValid || !isEndYearValid)
-            return false;
-
-        boolean isStartYearBeforeEndYear = Long.parseLong(startYear) <= Long.parseLong(endYear);
-
-        return isStartYearBeforeEndYear;
+    public static boolean isRangeValid(Long startYear, Long endYear) {
+        return startYear <= endYear;
     }
 
     public Long getStartYear() {
@@ -37,7 +25,7 @@ public class YearRange {
         return endYear;
     }
 
-    private static boolean isYear(String input) {
+    public static boolean isYear(String input) {
         // REGEX: Numbers from 1000 to 2999.
         return input.matches("^[12][0-9]{3}$");
     }

@@ -27,9 +27,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SearchApi {
     private final AtomicLong requestId = new AtomicLong();
 
-    private static final String ERROR_MESSAGE = "ERROR: The given parameters for the search are invalid. " +
-            "TODO: Continue defining the error message";
-
     /**
      * A typical URL request could be:
      * "http://localhost:8080/getData?startYear=2015&endYear=2018"
@@ -42,13 +39,10 @@ public class SearchApi {
                                    @RequestParam(value = "searchCongressCommunications", defaultValue = "true") boolean searchCongressCommunications,
                                    @RequestParam(value = "searchBooks", defaultValue = "true") boolean searchBooks) {
 
-        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+        long startYearValue = YearRange.isYear(startYear) ? Long.parseLong(startYear) : 1000L;
+        long endYearValue = YearRange.isYear(endYear) ? Long.parseLong(endYear) : 2999L;
 
-        // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (!isYearRangeValid)
-            return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
-
-        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+        YearRange yearRange = new YearRange(startYearValue, endYearValue);
 
         Person requestedAuthor = null;
 
