@@ -10,6 +10,7 @@ public class Person {
     private String name;
     private String surnames;
     private String authoredPublication;
+    private String fullName; // This is a workaround for preventing the Jackson deserializer to fail.
 
     public Person() {
     }
@@ -93,10 +94,15 @@ public class Person {
                 Objects.equals(surnames, person.surnames);
     }
 
+    /**
+     * This is a workaround for preventing the Jackson deserializer to fail.
+     */
     public void setFullName() {
-
     }
 
+    /**
+     * This is a workaround for preventing the Jackson deserializer to fail.
+     */
     public String getFullName() {
         return "";
     }
