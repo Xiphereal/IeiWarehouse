@@ -237,30 +237,4 @@ public class BibtexToJsonParser {
         aux = aux.replace("\\", "");
         return aux;
     }
-
-    /*
-    public static List<String> toJson(List<String> bibtex) throws IOException {
-        List<String> jsonList = new ArrayList<>();
-        for (int i = 0; i < bibtex.size(); i++) {
-            Reader reader = new StringReader(bibtex.get(i));
-
-            try {
-                LaTeXParser parser = new LaTeXParser();
-
-                List<LaTeXObject> laTeXObjects = parser.parse(reader);
-                LaTeXPrinter laTeXPrinter = new LaTeXPrinter();
-               // jsonList.add(new JSONPObject(laTeXObjects.get(i)));
-            } catch (ParseException exception) {
-                System.out.println("ERROR");
-            } finally {
-                reader.close();
-            }
-        }
-        return jsonList;
-    }
-
-    public static List<String> toJson(String bibtex) throws IOException {
-        return toJson(List.of(bibtex));
-    }
-*/
 }
