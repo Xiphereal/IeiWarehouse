@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class XmlToJsonConverter {
-    private static String PATH_TO_XML = "src/main/java/dblpWrapper/JSONtoXML/DBLP-SOLO_ARTICLE-1.XML";
+    private static String PATH_TO_XML = "src/main/resources/DBLP-SOLO_ARTICLE-1.XML";
 
     public static JSONObject xmlFileToJsonObject() {
         StringBuilder dataFromXML = new StringBuilder();
