@@ -42,10 +42,8 @@ public class XmlToJsonConverter {
             while ((line = br.readLine()) != null)
                 dataFromXml.append(line);
 
-        } catch (FileNotFoundException fileException) {
-            System.out.println("ERROR: File not found");
-        } catch (IOException ioException) {
-            System.out.println("ERROR: IOException");
+        } catch (IOException fileException) {
+            fileException.printStackTrace();
         }
 
         return XML.toJSONObject(dataFromXml.toString());
