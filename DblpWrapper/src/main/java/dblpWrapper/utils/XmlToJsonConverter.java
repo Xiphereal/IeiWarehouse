@@ -13,37 +13,41 @@ import java.util.Map;
 public class XmlToJsonConverter {
     private static final String PATH_TO_XML = "src/main/resources/DBLP-SOLO_ARTICLE-1.XML";
 
-    public static JSONObject xmlFileToJsonObject() {
-        StringBuilder dataFromXML = new StringBuilder();
-        String line = "";
+    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd) {
+        JSONObject convertedFile = getJsonFromXmlFile();
+        JSONObject root = convertedFile.getJSONObject("dblp");
+        JSONArray articles = root.getJSONArray("article");
+
+        YearRange yearRange = new YearRange((long) yearStart, (long) yearEnd);
+
+        List<Map<String, Object>> filteredArticles = new ArrayList<>();
+
+        for (int i = 0; i < articles.length(); i++) {
+            int year = articles.getJSONObject(i).getInt("year");
+
+            if (yearRange.isGivenYearBetweenRange((long) year))
+                filteredArticles.add(articles.getJSONObject(i).toMap());
+        }
+
+        return filteredArticles;
+    }
+
+    private static JSONObject getJsonFromXmlFile() {
+        StringBuilder dataFromXml = new StringBuilder();
+
         try {
             BufferedReader br = new BufferedReader(new FileReader(PATH_TO_XML));
-            while ((line = br.readLine()) != null) {
-                dataFromXML.append(line);
-            }
+
+            String line = "";
+            while ((line = br.readLine()) != null)
+                dataFromXml.append(line);
+
         } catch (FileNotFoundException fileException) {
             System.out.println("ERROR: File not found");
         } catch (IOException ioException) {
             System.out.println("ERROR: IOException");
         }
 
-        return XML.toJSONObject(dataFromXML.toString());
-    }
-
-    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd) {
-        JSONObject convertedFilie = XmlToJsonConverter.xmlFileToJsonObject();
-        JSONObject globalObject = convertedFilie.getJSONObject("dblp");
-        JSONArray articles = globalObject.getJSONArray("article");
-
-        YearRange yearRange = new YearRange((long) yearStart, (long) yearEnd);
-
-        List<Map<String, Object>> validArticles = new ArrayList<>();
-        for (int i = 0; i < articles.length(); i++) {
-            int year = articles.getJSONObject(i).getInt("year");
-            if (yearRange.isGivenYearBetweenRange((long) year)) {
-                validArticles.add(articles.getJSONObject(i).toMap());
-            }
-        }
-        return validArticles;
+        return XML.toJSONObject(dataFromXml.toString());
     }
 }
