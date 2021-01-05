@@ -1,22 +1,15 @@
 package dblpWrapper.restService;
 
-import dblpWrapper.DBLPWrapper;
 import dblpWrapper.JSONtoXML.JsonToXmlConverter;
-import dblpWrapper.JSONtoXML.extractor.DblpExtractor;
 import dblpWrapper.restService.requestResponses.RequestResponse;
 import dblpWrapper.restService.requestResponses.RequestResultResponse;
-import dblpWrapper.restService.requestResponses.RequestStatusResponse;
-import domainModel.Article;
-import domainModel.utils.YearRange;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.Wrapper;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -40,9 +33,9 @@ public class LoadApi {
     private RequestResultResponse getDataFromDblp(int startYear, int endYear) {
         //we filter the json file by year before we start creating the article list
         //It is faster to filter the json than to filter while creating the articles(already tested it)
-        List<JSONObject> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
-        List<Article> articles = DblpExtractor.extractArticles(new YearRange((long) startYear,(long) endYear), filteredList);
-        return new RequestResultResponse(articles);
+        List<Map<String,Object>> filteredList = JsonToXmlConverter.filterByYear(startYear, endYear);
+
+        return new RequestResultResponse(filteredList);
     }
 
 }

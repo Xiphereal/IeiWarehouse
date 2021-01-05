@@ -8,6 +8,7 @@ import org.json.XML;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JsonToXmlConverter {
     private static String PATH_TO_XML = "src/main/java/dblpWrapper/JSONtoXML/DBLP-SOLO_ARTICLE-1.XML";
@@ -29,17 +30,17 @@ public class JsonToXmlConverter {
         return jsonObject;
     }
 
-    public static List<JSONObject> filterByYear(int yearStart, int yearEnd) {
+    public static List<Map<String,Object>> filterByYear(int yearStart, int yearEnd) {
         JSONObject convertedFilie = JsonToXmlConverter.convert();
         JSONObject globalObject = convertedFilie.getJSONObject("dblp");
         //System.out.println(globalObject.toString(2));
 
         JSONArray articles = globalObject.getJSONArray("article");
-        List<JSONObject> validArticles = new ArrayList<>();
+        List<Map<String,Object>> validArticles = new ArrayList<>();
         for(int i = 0; i < articles.length(); i++) {
             int year = articles.getJSONObject(i).getInt("year");
             if(year >= yearStart && year <= yearEnd) {
-                validArticles.add(articles.getJSONObject(i));
+                validArticles.add(articles.getJSONObject(i).toMap());
             }
         }
         return validArticles;

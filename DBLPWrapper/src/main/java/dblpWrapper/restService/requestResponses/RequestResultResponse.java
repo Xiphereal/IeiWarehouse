@@ -6,18 +6,20 @@ import domainModel.CongressCommunication;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 public class RequestResultResponse implements RequestResponse{
-    private List<Article> articles;
+    private List<Map<String,Object>> jsonString;
 
-    public RequestResultResponse(List<Article> articles) {
-        this.articles = articles;
+    public RequestResultResponse(List<Map<String,Object>> jsonString) {
+        this.jsonString = jsonString;
     }
 
-    public List<Article> getArticles() {
-        return articles;
+    public List<Map<String,Object>> getJsonString() {
+        return jsonString;
     }
-    public void setArticles(List<Article> articles) {
-       this.articles = articles;
+
+    public void setJsonString(List<Map<String,Object>> jsonString) {
+        this.jsonString = jsonString;
     }
 }
