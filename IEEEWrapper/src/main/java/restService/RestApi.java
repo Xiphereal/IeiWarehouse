@@ -3,22 +3,24 @@ package restService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import restService.requestResponses.RequestResultResponse;
+import utils.HttpService;
 
 @RestController
 public class RestApi {
     @GetMapping("/extract")
-    public RequestResultResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                                             @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
-                                             @RequestParam(value = "maxPublications", defaultValue = "5") String maxPublications) {
+    public String extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
+                              @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
+                              @RequestParam(value = "maxPublications", defaultValue = "5") String maxPublications) {
         return getDataFromIEEE(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxPublications));
     }
 
-    private RequestResultResponse getDataFromIEEE(int startYear, int endYear, int maxArticles) {
-        // We filter the JSON file by year before we start creating the Publication list.
-        // It is faster to filter the JSON than to filter while extracting the Articles in the
-        // Warehouse.
-        //List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
-        return null;
+    private String getDataFromIEEE(int startYear, int endYear, int maxArticles) {
+        String ieeeQuery = "http://ieeexploreapi.ieee.org/api/v1/search/articles?apikey=efv84mzqq6ydx4dbd59jhdcn&format=json&max_records=" +
+                maxArticles + "&start_record=1&sort_order=asc&sort_field=article_number&start_year=" + startYear +
+                "&end_year=" + endYear;
+
+        String jsonRetrieved = HttpService.executeGet(ieeeQuery);
+
+        return jsonRetrieved;
     }
 }
