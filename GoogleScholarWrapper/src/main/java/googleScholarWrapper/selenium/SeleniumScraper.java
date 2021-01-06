@@ -93,7 +93,7 @@ public class SeleniumScraper {
         // If no year range has been specified, the default values for the
         // start and end year are 1000 and 2999 respectively.
         if (yearRange == null) {
-            yearRange = new YearRange();
+            yearRange = new YearRange(1000L, 2999L);
         }
 
         WebElement startYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_ylo\"]"));

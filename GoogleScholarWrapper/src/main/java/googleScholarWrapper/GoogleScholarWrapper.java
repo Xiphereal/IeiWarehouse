@@ -10,7 +10,7 @@ public class GoogleScholarWrapper {
     public static void main(String[] args) {
         // TODO: Replace the explicit call to scrap() here with the REST API
         //  request and its associated parameters.
-        YearRange fakeYearRange = new YearRange();
+        YearRange fakeYearRange = new YearRange(1000L, 2999L);
 
         SeleniumScraper seleniumScraper = new SeleniumScraper();
 
