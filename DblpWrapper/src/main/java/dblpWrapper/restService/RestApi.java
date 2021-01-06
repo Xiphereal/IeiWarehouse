@@ -14,8 +14,8 @@ public class RestApi {
     @GetMapping("/extract")
     public RequestResultResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                              @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
-                                             @RequestParam(value = "maxArticles", defaultValue = "5") String maxArticles) {
-        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxArticles));
+                                             @RequestParam(value = "maxPublications", defaultValue = "5") String maxPublications) {
+        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxPublications));
     }
 
     private RequestResultResponse getDataFromDblp(int startYear, int endYear, int maxArticles) {
