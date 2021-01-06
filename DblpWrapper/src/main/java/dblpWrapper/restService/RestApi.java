@@ -23,7 +23,6 @@ public class RestApi {
         // It is faster to filter the JSON than to filter while extracting the Articles in the
         // Warehouse.
         List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
-
         return new RequestResultResponse(filteredList);
     }
 }

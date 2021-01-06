@@ -30,7 +30,7 @@ public class DblpExtractor {
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try {
-            String json = HttpRequest.GET();
+            String json = HttpRequest.GET(URL);
             JSONArray articles = getArticlesFromJson(json);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
@@ -64,6 +64,7 @@ public class DblpExtractor {
             resolveEntitiesRelationships(article, authors, copy, magazine);
 
             ArticleDAO.persist(article);
+            System.out.println(article.toString());
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);
