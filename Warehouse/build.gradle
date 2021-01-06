@@ -16,7 +16,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // Modules dependencies
-    implementation group: 'org.example', name: 'DomainModel', version: '1.0-SNAPSHOT'
+    compile project(':DomainModel')
 
     // MySQL dependencies
     // Reference: https://stackoverflow.com/questions/54585376/how-do-i-add-the-jdbc-mysql-connector-in-my-gradle-build
