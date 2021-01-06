@@ -9,10 +9,10 @@ defaultTasks("clean", "build")
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         url 'http://maven.vaadin.com/vaadin-addons'
     }
@@ -45,6 +45,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.vaadin.artur/a-vaadin-helper
     compile group: 'org.vaadin.artur', name: 'a-vaadin-helper', version: '1.5.0'
+
+    // Modules dependencies
+    implementation group: 'org.example', name: 'DomainModel', version: '1.0-SNAPSHOT'
 }
 
 dependencyManagement {
