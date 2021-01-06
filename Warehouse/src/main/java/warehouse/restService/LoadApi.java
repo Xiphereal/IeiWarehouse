@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import warehouse.extractors.DblpExtractor;
 import warehouse.extractors.GoogleScholarExtractor;
 import warehouse.extractors.IeeeExtractor;
-import warehouse.restService.requestResponses.RequestStatusResponse;
+import domainModel.requestResponses.RequestStatusResponse;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;

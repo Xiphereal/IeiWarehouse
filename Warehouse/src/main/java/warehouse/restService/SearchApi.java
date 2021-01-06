@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
-import warehouse.restService.requestResponses.RequestResponse;
-import warehouse.restService.requestResponses.RequestResultResponse;
-import warehouse.restService.requestResponses.RequestStatusResponse;
+import domainModel.requestResponses.RequestResponse;
+import domainModel.requestResponses.RequestResultResponse;
 
 import java.util.ArrayList;
 import java.util.List;

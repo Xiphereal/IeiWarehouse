@@ -1,4 +1,4 @@
-package warehouse.restService.requestResponses;
+package domainModel.requestResponses;
 
 import domainModel.Article;
 import domainModel.Book;

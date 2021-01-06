@@ -1,4 +1,4 @@
-package warehouse.restService.requestResponses;
+package domainModel.requestResponses;
 
 public class RequestStatusResponse implements RequestResponse {
     private final long requestId;

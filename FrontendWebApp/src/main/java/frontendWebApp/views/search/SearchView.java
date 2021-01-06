@@ -19,7 +19,7 @@ import com.vaadin.flow.router.RouteAlias;
 import domainModel.Article;
 import domainModel.Book;
 import domainModel.CongressCommunication;
-import frontendWebApp.RequestResultResponse;
+import domainModel.requestResponses.RequestResultResponse;
 import frontendWebApp.views.main.MainView;
 import utils.HttpService;
 
