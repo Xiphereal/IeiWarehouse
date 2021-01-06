@@ -1,8 +1,11 @@
 package domainModel.requestResponses;
 
 public class RequestStatusResponse implements RequestResponse {
-    private final long requestId;
-    private final String message;
+    private long requestId;
+    private String message;
+
+    public RequestStatusResponse() {
+    }
 
     public RequestStatusResponse(long requestId, String message) {
         this.requestId = requestId;

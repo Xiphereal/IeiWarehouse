@@ -11,6 +11,9 @@ public class RequestResultResponse implements RequestResponse {
     private List<Book> books;
     private List<CongressCommunication> congressCommunications;
 
+    public RequestResultResponse() {
+    }
+
     public RequestResultResponse(List<Article> articles, List<Book> books, List<CongressCommunication> congressCommunications) {
         this.articles = articles;
         this.books = books;
