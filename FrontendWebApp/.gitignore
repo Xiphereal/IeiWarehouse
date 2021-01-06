@@ -16,3 +16,4 @@ drivers/
 error-screenshots/
 webpack.generated.js
 /webpack.config.js
+/pnpmfile.js
