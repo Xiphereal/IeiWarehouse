@@ -42,10 +42,10 @@ dependencies {
     }
 
     // https://mvnrepository.com/artifact/org.vaadin.artur/a-vaadin-helper
-    compile group: 'org.vaadin.artur', name: 'a-vaadin-helper', version: '1.5.0'
+    implementation group: 'org.vaadin.artur', name: 'a-vaadin-helper', version: '1.5.0'
 
     // Modules dependencies
-    compile project(':DomainModel')
+    implementation project(':DomainModel')
 }
 
 dependencyManagement {
@@ -60,4 +60,5 @@ test {
 
 vaadin {
     pnpmEnable = true
+    productionMode = true
 }
