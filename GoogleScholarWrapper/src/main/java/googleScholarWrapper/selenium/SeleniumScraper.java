@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeleniumScraper {
-    private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
+    private static final String SCREENSHOTS_FILE_PATH = System.getProperty("user.dir")
+            + "/IeiExtractorProject/Selenium/ErrorScreenshots";
 
     /**
      * Maximum time to wait before failing.
@@ -49,7 +50,7 @@ public class SeleniumScraper {
         } catch (Exception e) {
             System.err.println(System.lineSeparator() +
                     "An error has occurred while scrapping citations from Google Scholar. " +
-                    "A screenshot has been saved to: " + PROJECT_PATH);
+                    "A screenshot has been saved to: " + SCREENSHOTS_FILE_PATH);
 
             e.printStackTrace();
 
@@ -174,7 +175,7 @@ public class SeleniumScraper {
 
         try {
             Files.copy(Paths.get(screenshot.getPath()),
-                    Paths.get(PROJECT_PATH + "selenium_error_screenshot.png"),
+                    Paths.get(SCREENSHOTS_FILE_PATH + "selenium_error_screenshot.png"),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
