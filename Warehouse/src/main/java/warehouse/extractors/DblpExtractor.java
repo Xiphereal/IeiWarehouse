@@ -14,8 +14,8 @@ import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class DblpExtractor {
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("Warehouse/src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
+        try (InputStreamReader fileReader = new InputStreamReader(DblpExtractor.class.getResourceAsStream("/dblp/DBLP-SOLO_ARTICLE_SHORT.json"))) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
@@ -40,7 +40,7 @@ public class DblpExtractor {
         }
     }
 
-    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(InputStreamReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
         JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");

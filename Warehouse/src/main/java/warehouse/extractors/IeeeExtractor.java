@@ -12,8 +12,8 @@ import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class IeeeExtractor {
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("Warehouse/src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
+        try (InputStreamReader fileReader = new InputStreamReader(IeeeExtractor.class.getResourceAsStream("/ieee/ieeeXplore_2018-2020-short.json"))) {
 
             JSONArray articles = getArticlesFromJson(fileReader);
 
@@ -35,7 +35,7 @@ public class IeeeExtractor {
         }
     }
 
-    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(InputStreamReader fileReader) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
 

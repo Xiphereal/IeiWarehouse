@@ -11,8 +11,8 @@ import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class GoogleScholarExtractor {
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("Warehouse/src/main/resources/googleSchoolar/sample_array.json")) {
+        try (InputStreamReader fileReader = new InputStreamReader(GoogleScholarExtractor.class.getResourceAsStream("/googleSchoolar/sample_array.json"))) {
 
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
