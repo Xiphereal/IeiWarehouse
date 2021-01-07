@@ -63,7 +63,7 @@ public class SeleniumScraper {
 
     @NotNull
     private ChromeDriver openChromeInstanceWithGoogleScholar() {
-        System.setProperty("webdriver.chrome.driver", PROJECT_PATH + "src/main/resources/chromedriver_ver87.exe");
+        System.setProperty("webdriver.chrome.driver", getClass().getResource("/chromedriver_ver87.exe").getPath());
 
         ChromeDriver chromeDriver = new ChromeDriver();
         chromeDriver.get("https://scholar.google.com/");
