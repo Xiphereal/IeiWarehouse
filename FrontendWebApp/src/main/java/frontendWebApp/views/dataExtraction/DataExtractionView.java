@@ -184,9 +184,6 @@ public class DataExtractionView extends HorizontalLayout {
             request += "endYear=" + endYear.getValue();
         }
 
-        // Debug.
-        Notification.show("DEBUG: The REST URI was " + request, 10000, Notification.Position.TOP_END);
-
         return request;
     }
 

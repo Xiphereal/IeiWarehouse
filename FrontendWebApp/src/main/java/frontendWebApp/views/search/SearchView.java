@@ -327,9 +327,6 @@ public class SearchView extends HorizontalLayout {
             request += "searchCongressCommunications=false";
         }
 
-        // Debug.
-        Notification.show("DEBUG: The REST URI was " + request, 10000, Notification.Position.TOP_END);
-
         return request;
     }
 
