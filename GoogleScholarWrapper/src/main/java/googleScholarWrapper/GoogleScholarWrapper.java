@@ -9,13 +9,9 @@ import java.io.IOException;
 @SpringBootApplication
 public class GoogleScholarWrapper {
 
-    public static void main(String[] args) throws IOException {
-        //TODO:Add selenium scrapling and remove getting the objects from sample.bib
-        //SeleniumScraper seleniumScraper = new SeleniumScraper();
+    public static void main(String[] args) {
+        // TODO: Add selenium scrapling and remove getting the objects from sample.bib
 
-        //List<String> citationsAsBibtex =
-        //        seleniumScraper.retrieveCitationsAsBibtex(fakeYearRange, null);
-        //String sample =
         SpringApplication.run(GoogleScholarWrapper.class, args);
     }
 }
