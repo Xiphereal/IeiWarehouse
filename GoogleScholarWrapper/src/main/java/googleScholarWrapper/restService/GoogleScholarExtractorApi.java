@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-public class GoogleSchoolarExtractorApi {
+public class GoogleScholarExtractorApi {
     private final AtomicLong requestId = new AtomicLong();
 
     private static final String ERROR_MESSAGE = "ERROR: The given parameters for the search are invalid. " +
