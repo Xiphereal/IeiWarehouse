@@ -2,22 +2,16 @@ package googleScholarWrapper.restService;
 
 import domainModel.utils.YearRange;
 import googleScholarWrapper.bibtexToJson.BibtexToJsonParser;
-import googleScholarWrapper.restService.requestResponses.RequestStatusResponse;
 import googleScholarWrapper.selenium.SeleniumScraper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-public class GoogleScholarExtractorApi {
+public class RestApi {
 
     //TODO:Remove getting the string from file and add selenium scrapling
     @GetMapping("/extract")
