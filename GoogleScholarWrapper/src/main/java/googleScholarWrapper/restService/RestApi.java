@@ -14,23 +14,16 @@ import java.util.Map;
 public class RestApi {
 
     @GetMapping("/extract")
-    public Map<String, Object> extract(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                                       @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
+    public Map<String, Object> extract(@RequestParam(value = "startYear", defaultValue = "1000") int startYear,
+                                       @RequestParam(value = "endYear", defaultValue = "2999") int endYear,
                                        @RequestParam(value = "maxPublications", defaultValue = "10") int maxPublications) {
 
-        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
-
-        if (!isYearRangeValid)
-            return null;
-
-        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+        YearRange yearRange = new YearRange((long) startYear, (long) endYear);
 
         SeleniumScraper seleniumScraper = new SeleniumScraper();
         List<String> citationsAsBibtex =
                 seleniumScraper.retrieveCitationsAsBibtex(yearRange, null);
 
-        return BibtexToJsonParser.toJson(citationsAsBibtex,
-                new YearRange(Long.parseLong(startYear), Long.parseLong(endYear)),
-                maxPublications).toMap();
+        return BibtexToJsonParser.toJson(citationsAsBibtex, yearRange, maxPublications).toMap();
     }
 }
