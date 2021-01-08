@@ -29,7 +29,6 @@ public class RestApi {
         List<String> citationsAsBibtex =
                 seleniumScraper.retrieveCitationsAsBibtex(yearRange, null);
 
-        // When using selenium we wont need to split the string since we will get a List<String>
         return BibtexToJsonParser.toJson(citationsAsBibtex,
                 new YearRange(Long.parseLong(startYear), Long.parseLong(endYear)),
                 maxPublications).toMap();
