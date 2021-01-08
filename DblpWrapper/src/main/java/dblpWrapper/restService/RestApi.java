@@ -12,10 +12,10 @@ import java.util.Map;
 @RestController
 public class RestApi {
     @GetMapping("/extract")
-    public JsonMapResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
-                                       @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
+    public JsonMapResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") int startYear,
+                                       @RequestParam(value = "endYear", defaultValue = "2999") int endYear,
                                        @RequestParam(value = "maxPublications", defaultValue = "5") String maxPublications) {
-        return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxPublications));
+        return getDataFromDblp(startYear, endYear, Integer.parseInt(maxPublications));
     }
 
     private JsonMapResponse getDataFromDblp(int startYear, int endYear, int maxPublications) {
