@@ -1,5 +1,6 @@
 package googleScholarWrapper.bibtexToJson;
 
+import domainModel.utils.YearRange;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,18 +9,18 @@ import java.util.List;
 
 public class BibtexToJsonParser {
     //TODO: change return in order to fit the specification
-    public static JSONObject toJson(List<String> bibtex) {
+    public static JSONObject toJson(List<String> bibtex, YearRange yearRange, int maxPublications) {
         JSONArray books = new JSONArray();
         JSONArray articles = new JSONArray();
         JSONArray inproceedings = new JSONArray();
         JSONArray incollection = new JSONArray();
-        for (int i = 0; i < bibtex.size(); i++) {
+        for (int i = 0; i < bibtex.size() && i < maxPublications; i++) {
             String bibObject = bibtex.get(i);
             //this methods check the kind of publication that the bibtex is and add it to the corresponding jsonArray
-            books = bookParser(books, bibObject);
-            articles = articleParser(articles, bibObject);
-            inproceedings = inproceedingsParser(inproceedings, bibObject);
-            incollection = incollectionParse(incollection, bibObject);
+            books = bookParser(books, bibObject, yearRange);
+            articles = articleParser(articles, bibObject, yearRange);
+            inproceedings = inproceedingsParser(inproceedings, bibObject, yearRange);
+            incollection = incollectionParse(incollection, bibObject, yearRange);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("books", books);
@@ -29,7 +30,7 @@ public class BibtexToJsonParser {
         return jsonObject;
     }
 
-    private static JSONArray incollectionParse(JSONArray incollection, String bibObject) {
+    private static JSONArray incollectionParse(JSONArray incollection, String bibObject, YearRange yearRange) {
         if (bibObject.startsWith("incollection")) {
             JSONObject publication = new JSONObject();
             //atributes
@@ -37,7 +38,7 @@ public class BibtexToJsonParser {
             String authors;
             String booktitle;
             String pages;
-            String year;
+            String year = "";
             String publisher;
 
             List<String> fields = Arrays.asList(bibObject.split("\n"));
@@ -70,19 +71,20 @@ public class BibtexToJsonParser {
                     publication.put("publisher", publisher);
                 }
             }
-            incollection.put(publication);
+            if (year.compareTo("") != 0 && yearRange.isGivenYearBetweenRange(Long.parseLong(year)))
+                incollection.put(publication);
         }
         return incollection;
     }
 
-    private static JSONArray inproceedingsParser(JSONArray inproceedings, String bibObject) {
+    private static JSONArray inproceedingsParser(JSONArray inproceedings, String bibObject, YearRange yearRange) {
         if (bibObject.startsWith("inproceedings")) {
             JSONObject publication = new JSONObject();
             //atributes
             String title;
             String authors;
             String booktitle;
-
+            String year = "";
             List<String> fields = Arrays.asList(bibObject.split("\n"));
 
             for (String field : fields) {
@@ -100,13 +102,18 @@ public class BibtexToJsonParser {
                     booktitle = beautify(field.substring(7));
                     publication.put("booktitle", booktitle);
                 }
+                if (field.startsWith("year=")) {
+                    year = beautify(field.substring(6));
+                    publication.put("year", year);
+                }
             }
-            inproceedings.put(publication);
+            if (year.compareTo("") != 0 && yearRange.isGivenYearBetweenRange(Long.parseLong(year)))
+                inproceedings.put(publication);
         }
         return inproceedings;
     }
 
-    private static JSONArray articleParser(JSONArray articles, String bibObject) {
+    private static JSONArray articleParser(JSONArray articles, String bibObject, YearRange yearRange) {
         if (bibObject.startsWith("article")) {
             JSONObject publication = new JSONObject();
             // atributes
@@ -116,7 +123,7 @@ public class BibtexToJsonParser {
             String volume;
             String number;
             String pages;
-            String year;
+            String year = "";
             String url;
             String publisher;
 
@@ -164,19 +171,20 @@ public class BibtexToJsonParser {
                 }
 
             }
-            articles.put(publication);
+            if (year.compareTo("") != 0 && yearRange.isGivenYearBetweenRange(Long.parseLong(year)))
+                articles.put(publication);
         }
         return articles;
     }
 
-    private static JSONArray bookParser(JSONArray books, String bibObject) {
+    private static JSONArray bookParser(JSONArray books, String bibObject, YearRange yearRange) {
         if (bibObject.startsWith("book")) {
             JSONObject publication = new JSONObject();
             // atributes
             String title;
             String authors;
             String volume;
-            String year;
+            String year = "";
             String url;
             String publisher;
             List<String> fields = Arrays.asList(bibObject.split("\n"));
@@ -210,7 +218,8 @@ public class BibtexToJsonParser {
                     publication.put("volume", volume);
                 }
             }
-            books.put(publication);
+            if (year.compareTo("") != 0 && yearRange.isGivenYearBetweenRange(Long.parseLong(year)))
+                books.put(publication);
         }
         return books;
     }
