@@ -27,9 +27,17 @@ public class DblpExtractor {
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
-    public static void extractDataIntoWarehouse(YearRange yearRange) {
+    public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
         try {
-            String json = HttpRequest.GET(URL);
+            String url = URL;
+            if (yearRange.getStartYear() != null)
+                url = url + "?startYear=" + yearRange.getStartYear();
+            if (yearRange.getEndYear() != null)
+                url = url + "?endYear=" + yearRange.getEndYear();
+            if (maxPublications > 0)
+                url = url + "?maxPublications=" + maxPublications;
+
+            String json = HttpRequest.GET(url);
             JSONArray articles = getArticlesFromJson(json);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
