@@ -24,9 +24,6 @@ import java.util.List;
  */
 public class DblpExtractor {
     private static final String URL = "http://localhost:8080/extract";
-    // TODO: Revert the changes made for the year-filtered extractions and support the
-    //  performing of a REST API request to the wrapper for obtaining the already
-    //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
         try {
             String url = URL;
