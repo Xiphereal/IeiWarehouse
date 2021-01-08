@@ -13,8 +13,8 @@ import org.json.simple.parser.ParseException;
 import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
+import warehouse.restService.HttpRequest;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ import java.util.List;
  * See reference: https://howtodoinjava.com/java/library/json-simple-read-write-json-examples/
  */
 public class DblpExtractor {
-
+    private static final String URL = "http://localhost:8080/extract";
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("src/main/resources/dblp/DBLP-SOLO_ARTICLE_SHORT.json")) {
-
-            JSONArray articles = getArticlesFromJson(fileReader);
+        try {
+            String json = HttpRequest.GET(URL);
+            JSONArray articles = getArticlesFromJson(json);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
@@ -40,12 +40,12 @@ public class DblpExtractor {
         }
     }
 
-    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(String json) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
-        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
+        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
+        JSONArray fullJsonArray = (JSONArray) entireJsonFile.get("jsonString");
 
-        return (JSONArray) jsonObjectContainer.get("article");
+        return fullJsonArray;
     }
 
     private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
@@ -63,6 +63,7 @@ public class DblpExtractor {
             resolveEntitiesRelationships(article, authors, copy, magazine);
 
             ArticleDAO.persist(article);
+            System.out.println(article.toString());
 
         } catch (ClassCastException e) {
             System.err.println("An error has occurred while retrieving the JSONObject " + jsonObject);

@@ -67,6 +67,7 @@ public class LoadApi {
 
                     if (extractFromGoogleScholar)
                         GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+
                 }
         );
     }
