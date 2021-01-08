@@ -22,7 +22,7 @@ public class RestApi {
         // We filter the JSON file by year before we start creating the Publication list.
         // It is faster to filter the JSON than to filter while extracting the Articles in the
         // Warehouse.
-        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
-        return new JsonMapResponse(filteredList);
+        List<Map<String, Object>> filteredPublicationAsJson = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
+        return new JsonMapResponse(filteredPublicationAsJson);
     }
 }
