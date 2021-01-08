@@ -1,4 +1,4 @@
-package dblpWrapper.restService.requestResponses;
+package domainModel.requestResponses;
 
 import java.util.List;
 import java.util.Map;

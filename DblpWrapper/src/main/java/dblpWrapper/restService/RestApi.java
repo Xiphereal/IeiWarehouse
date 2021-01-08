@@ -1,7 +1,7 @@
 package dblpWrapper.restService;
 
 import dblpWrapper.utils.XmlToJsonConverter;
-import dblpWrapper.restService.requestResponses.JsonMapResponse;
+import domainModel.requestResponses.JsonMapResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
