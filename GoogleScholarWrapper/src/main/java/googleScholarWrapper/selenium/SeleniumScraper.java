@@ -26,7 +26,7 @@ public class SeleniumScraper {
     /**
      * Maximum time to wait before failing.
      */
-    private static final int AWAIT_TIMEOUT_IN_MILLIS = 5000;
+    private static final int AWAIT_TIMEOUT_IN_SECONDS = 5;
     private static final int NUMBER_OF_RESULTS_PAGES_TO_SCRAP = 2;
 
     private ChromeDriver driver;
@@ -194,7 +194,7 @@ public class SeleniumScraper {
     }
 
     private void waitUntilClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
+        WebDriverWait wait = new WebDriverWait(driver, AWAIT_TIMEOUT_IN_SECONDS);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 }

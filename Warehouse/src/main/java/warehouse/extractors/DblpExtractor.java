@@ -22,14 +22,13 @@ import java.util.List;
  * See reference: https://howtodoinjava.com/java/library/json-simple-read-write-json-examples/
  */
 public class DblpExtractor {
-    private static final String URL = "http://localhost:8082/extract";
+    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8082/extract";
 
-    // TODO: Revert the changes made for the year-filtered extractions and support the
-    //  performing of a REST API request to the wrapper for obtaining the already
-    //  filtered JSON file.
-    public static void extractDataIntoWarehouse(YearRange yearRange) {
+    public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
+        String requestToWrapper = buildRequestToWrapper(yearRange, maxPublications);
+
         try {
-            String retrievedJsonFromDatasource = HttpRequest.GET(URL);
+            String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
 
             JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
@@ -39,6 +38,34 @@ public class DblpExtractor {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }
+    }
+
+    private static String buildRequestToWrapper(YearRange yearRange, int maxPublications) {
+        String request = BASE_URL_REQUEST_TO_WRAPPER;
+        boolean firstParameter = true;
+
+        if (yearRange.getStartYear() != null) {
+            request += "?startYear=" + yearRange.getStartYear();
+            firstParameter = false;
+        }
+
+        if (yearRange.getEndYear() != null) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "endYear=" + yearRange.getEndYear();
+        }
+
+        if (maxPublications > 0) {
+            request += firstParameter ? '?' : '&';
+
+            request += "maxPublications=" + maxPublications;
+        }
+
+        return request;
     }
 
     private static JSONArray getArticlesFromJson(String json) throws ParseException {
@@ -52,10 +79,6 @@ public class DblpExtractor {
     private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-
-            // If the article is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(article.getYear()))
-                return;
 
             List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
