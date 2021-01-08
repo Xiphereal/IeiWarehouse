@@ -20,9 +20,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class GoogleScholarExtractorApi {
     private final AtomicLong requestId = new AtomicLong();
 
-    private static final String ERROR_MESSAGE = "ERROR: The given parameters for the search are invalid. " +
-            "The years must use format startYear:yyyy and endYear:yyyy";
-
     //TODO:Remove getting the string from file and add selenium scrapling
     @GetMapping("/extract")
     public Map<String, Object> getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
