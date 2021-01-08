@@ -11,6 +11,7 @@ import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
+import warehouse.restService.HttpRequest;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,14 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IeeeExtractor {
-
+    private static final String URL = "http://localhost:8080/extract";
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (FileReader fileReader = new FileReader("src/main/resources/ieee/ieeeXplore_2018-2020-short.json")) {
+        try {
+            String json = HttpRequest.GET(URL + "?startYear=" + yearRange.getStartYear() + "&endYear=" + yearRange.getEndYear());
+            JSONArray articles = getArticlesFromJson(json);
 
-            JSONArray articles = getArticlesFromJson(fileReader);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
@@ -35,9 +37,9 @@ public class IeeeExtractor {
         }
     }
 
-    private static JSONArray getArticlesFromJson(FileReader fileReader) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(String rawJson) throws ParseException {
         JSONParser jsonParser = new JSONParser();
-        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(rawJson);
 
         return (JSONArray) entireJsonFile.get("articles");
     }
