@@ -13,7 +13,6 @@ import java.util.Map;
 @RestController
 public class RestApi {
 
-    //TODO:Remove getting the string from file and add selenium scrapling
     @GetMapping("/extract")
     public Map<String, Object> extract(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
