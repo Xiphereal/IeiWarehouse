@@ -31,14 +31,19 @@ public class GoogleSchoolarExtractorApi {
 
         //String string = Files.readString(Path.of("D:\\IdeaProjects\\IeiWarehouse\\GoogleScholarWrapper\\src\\main\\resources\\sample.bib"));
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+
         if (!isYearRangeValid)
             return null;
+
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+
         SeleniumScraper seleniumScraper = new SeleniumScraper();
         List<String> citationsAsBibtex =
                 seleniumScraper.retrieveCitationsAsBibtex(yearRange, null);
 
-        //when using selenium we wont need to split the string since we will get a List<String>
-        return BibtexToJsonParser.toJson(citationsAsBibtex, new YearRange(Long.parseLong(startYear), Long.parseLong(endYear)),Integer.parseInt(maxPublications)).toMap();
+        // When using selenium we wont need to split the string since we will get a List<String>
+        return BibtexToJsonParser.toJson(citationsAsBibtex,
+                new YearRange(Long.parseLong(startYear), Long.parseLong(endYear)),
+                Integer.parseInt(maxPublications)).toMap();
     }
 }
