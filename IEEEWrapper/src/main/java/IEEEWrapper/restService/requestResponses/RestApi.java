@@ -15,7 +15,7 @@ public class RestApi {
     }
 
     private String getDataFromIEEE(int startYear, int endYear, int maxArticles) {
-        String ieeeQuery = "http://ieeexploreapi.ieee.org/api/v1/search/articles?apikey=efv84mzqq6ydx4dbd59jhdcn&format=json&max_records=" +
+        String ieeeQuery = "http://ieeexploreapi.ieee.org/api/v1/search/articles?apikey=5sgmwkb7768ztxdw2vcze5x3&format=json&max_records=" +
                 maxArticles + "&start_record=1&sort_order=asc&sort_field=article_number&start_year=" + startYear +
                 "&end_year=" + endYear;
 
