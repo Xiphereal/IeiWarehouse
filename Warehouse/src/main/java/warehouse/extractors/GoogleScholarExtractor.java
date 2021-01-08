@@ -12,13 +12,13 @@ import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 import warehouse.restService.HttpRequest;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleScholarExtractor {
     private static final String URL = "http://localhost:8080/extract";
+
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
@@ -26,11 +26,11 @@ public class GoogleScholarExtractor {
         try {
             //check if we have some parameters to add to the url
             String url = URL;
-            if(yearRange.getStartYear() != null)
+            if (yearRange.getStartYear() != null)
                 url = url + "?startYear=" + yearRange.getStartYear();
-            if(yearRange.getEndYear() != null)
-                url = url +  "?endYear=" + yearRange.getEndYear();
-            if(maxPublications > 0)
+            if (yearRange.getEndYear() != null)
+                url = url + "?endYear=" + yearRange.getEndYear();
+            if (maxPublications > 0)
                 url = url + "?maxPublications=" + maxPublications;
 
             String json = HttpRequest.GET(url);
