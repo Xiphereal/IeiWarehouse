@@ -15,10 +15,10 @@ public class RestApi {
     @GetMapping("/extract")
     public JsonMapResponse extractData(@RequestParam(value = "startYear", defaultValue = "1000") int startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") int endYear,
-                                       @RequestParam(value = "maxPublications", defaultValue = "5") String maxPublications) {
+                                       @RequestParam(value = "maxPublications", defaultValue = "5") int maxPublications) {
         YearRange yearRange = new YearRange((long) startYear, (long) endYear);
 
-        return getDataFromDblp(yearRange, Integer.parseInt(maxPublications));
+        return getDataFromDblp(yearRange, maxPublications);
     }
 
     private JsonMapResponse getDataFromDblp(YearRange yearRange, int maxPublications) {
