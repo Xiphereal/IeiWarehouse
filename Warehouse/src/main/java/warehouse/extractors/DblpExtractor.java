@@ -15,7 +15,6 @@ import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.restService.HttpRequest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +23,15 @@ import java.util.List;
  */
 public class DblpExtractor {
     private static final String URL = "http://localhost:8080/extract";
+
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try {
-            String json = HttpRequest.GET(URL);
+            String retrievedJsonFromDatasource = HttpRequest.GET(URL);
 
-            JSONArray articles = getArticlesFromJson(json);
+            JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
@@ -41,12 +41,12 @@ public class DblpExtractor {
         }
     }
 
-    private static JSONArray getArticlesFromJson(String json) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(String json) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
-        JSONArray fullJsonArray = (JSONArray) entireJsonFile.get("jsonString");
+        JSONArray jsonRootElement = (JSONArray) entireJsonFile.get("jsonString");
 
-        return fullJsonArray;
+        return jsonRootElement;
     }
 
     private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
