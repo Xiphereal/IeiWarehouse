@@ -5,13 +5,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class XmlToJsonConverter {
-    private static final String PATH_TO_XML = "D:\\IdeaProjects\\IeiWarehouse\\DBLPWrapper\\src\\main\\resources\\DBLP-SOLO_ARTICLE-1.XML";
 
     public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd, int maxArticles) {
         JSONObject convertedFile = getJsonFromXmlFile();
@@ -36,11 +37,20 @@ public class XmlToJsonConverter {
         StringBuilder dataFromXml = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(PATH_TO_XML));
+            // This .getResourceAsStream() over the class allows for always getting
+            // the reference to the given resource, despite being in development or
+            // .jar context.
+            InputStreamReader dataSourceReader =
+                    new InputStreamReader(XmlToJsonConverter.class
+                            .getResourceAsStream("/DBLP-SOLO_ARTICLE-1.XML"));
+
+            BufferedReader dataSourceReaderAsBufferedReader = new BufferedReader(dataSourceReader);
 
             String line = "";
-            while ((line = br.readLine()) != null)
+
+            while ((line = dataSourceReaderAsBufferedReader.readLine()) != null)
                 dataFromXml.append(line);
+
         } catch (IOException fileException) {
             fileException.printStackTrace();
         }
