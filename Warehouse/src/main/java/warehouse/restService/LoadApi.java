@@ -40,7 +40,7 @@ public class LoadApi {
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
                                              @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar,
-                                             @RequestParam(value = "maxPublications", defaultValue = "50000") String maxPublications) {
+                                             @RequestParam(value = "maxPublications", defaultValue = "5") int maxPublications) {
 
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
 
@@ -50,7 +50,7 @@ public class LoadApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange, Integer.parseInt(maxPublications));
+        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange, maxPublications);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }
@@ -62,7 +62,7 @@ public class LoadApi {
                                     int maxPublications) {
         CompletableFuture.runAsync(() -> {
                     if (extractFromDblp)
-                        DblpExtractor.extractDataIntoWarehouse(yearRange);
+                        DblpExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                     if (extractFromIeee)
                         IeeeExtractor.extractDataIntoWarehouse(yearRange);
