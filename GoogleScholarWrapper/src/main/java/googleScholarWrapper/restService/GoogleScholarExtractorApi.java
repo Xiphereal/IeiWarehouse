@@ -21,11 +21,10 @@ public class GoogleScholarExtractorApi {
 
     //TODO:Remove getting the string from file and add selenium scrapling
     @GetMapping("/extract")
-    public Map<String, Object> getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
+    public Map<String, Object> extract(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
-                                       @RequestParam(value = "maxPublications", defaultValue = "10") String maxPublications) throws IOException {
+                                       @RequestParam(value = "maxPublications", defaultValue = "10") String maxPublications) {
 
-        //String string = Files.readString(Path.of("D:\\IdeaProjects\\IeiWarehouse\\GoogleScholarWrapper\\src\\main\\resources\\sample.bib"));
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
 
         if (!isYearRangeValid)
