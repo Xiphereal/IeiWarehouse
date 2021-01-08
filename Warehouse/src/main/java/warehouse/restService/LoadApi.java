@@ -61,12 +61,13 @@ public class LoadApi {
         CompletableFuture.runAsync(() -> {
                     if (extractFromDblp)
                         DblpExtractor.extractDataIntoWarehouse(yearRange);
-
+/*
                     if (extractFromIeee)
                         IeeeExtractor.extractDataIntoWarehouse(yearRange);
 
                     if (extractFromGoogleScholar)
                         GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+ */
                 }
         );
     }

@@ -15,7 +15,6 @@ import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.restService.HttpRequest;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  * See reference: https://howtodoinjava.com/java/library/json-simple-read-write-json-examples/
  */
 public class DblpExtractor {
-    private static final String URL = "https://localhost:8083/extract";
+    private static final String URL = "http://localhost:8080/extract";
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
@@ -44,9 +43,9 @@ public class DblpExtractor {
     private static JSONArray getArticlesFromJson(String json) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
-        JSONObject jsonObjectContainer = (JSONObject) entireJsonFile.get("dblp");
+        JSONArray fullJsonArray = (JSONArray) entireJsonFile.get("jsonString");
 
-        return (JSONArray) jsonObjectContainer.get("article");
+        return fullJsonArray;
     }
 
     private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {

@@ -1,29 +1,24 @@
 package warehouse.restService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 
 public class HttpRequest {
-    public static String GET(String url) throws IOException {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
-        int responseCode = con.getResponseCode();
+    private static final HttpClient httpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
+    public static String GET(String url) throws IOException, InterruptedException {
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .GET().uri(URI.create(url))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .build();
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
+        HttpResponse<String> response = httpClient.send(request,HttpResponse.BodyHandlers.ofString());
 
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        // print result
-        return response.toString();
+        return response.body();
     }
 }

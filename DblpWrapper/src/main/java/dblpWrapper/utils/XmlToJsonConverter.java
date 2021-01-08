@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class XmlToJsonConverter {
-    private static final String PATH_TO_XML = "DblpWrapper/src/main/resources/DBLP-SOLO_ARTICLE-1.XML";
+    private static final String PATH_TO_XML = "D:\\IdeaProjects\\IeiWarehouse\\DBLPWrapper\\src\\main\\resources\\DBLP-SOLO_ARTICLE-1.XML";
 
     public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd, int maxArticles) {
         JSONObject convertedFile = getJsonFromXmlFile();
