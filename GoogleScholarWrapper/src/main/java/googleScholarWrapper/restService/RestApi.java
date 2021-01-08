@@ -16,7 +16,7 @@ public class RestApi {
     @GetMapping("/extract")
     public Map<String, Object> extract(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
                                        @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
-                                       @RequestParam(value = "maxPublications", defaultValue = "10") String maxPublications) {
+                                       @RequestParam(value = "maxPublications", defaultValue = "10") int maxPublications) {
 
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
 
@@ -32,6 +32,6 @@ public class RestApi {
         // When using selenium we wont need to split the string since we will get a List<String>
         return BibtexToJsonParser.toJson(citationsAsBibtex,
                 new YearRange(Long.parseLong(startYear), Long.parseLong(endYear)),
-                Integer.parseInt(maxPublications)).toMap();
+                maxPublications).toMap();
     }
 }
