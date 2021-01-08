@@ -52,10 +52,6 @@ public class DblpExtractor {
         try {
             Article article = extractArticleAttributes(jsonObject);
 
-            // If the article is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(article.getYear()))
-                return;
-
             List<Person> authors = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
             Magazine magazine = extractMagazineAttributes(jsonObject);
