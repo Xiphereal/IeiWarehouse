@@ -39,7 +39,8 @@ public class LoadApi {
                                              @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
-                                             @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar) {
+                                             @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar,
+                                             @RequestParam(value = "maxPublications", defaultValue = "5") int maxPublications) {
 
         boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
 
@@ -49,7 +50,7 @@ public class LoadApi {
 
         YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
 
-        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange);
+        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange, maxPublications);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }
@@ -57,10 +58,11 @@ public class LoadApi {
     private void runExtractorsAsync(boolean extractFromDblp,
                                     boolean extractFromIeee,
                                     boolean extractFromGoogleScholar,
-                                    YearRange yearRange) {
+                                    YearRange yearRange,
+                                    int maxPublications) {
         CompletableFuture.runAsync(() -> {
                     if (extractFromDblp)
-                        DblpExtractor.extractDataIntoWarehouse(yearRange);
+                        DblpExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                     if (extractFromIeee)
                         IeeeExtractor.extractDataIntoWarehouse(yearRange);

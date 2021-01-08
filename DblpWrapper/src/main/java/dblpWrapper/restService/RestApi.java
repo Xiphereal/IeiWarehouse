@@ -18,11 +18,11 @@ public class RestApi {
         return getDataFromDblp(Integer.parseInt(startYear), Integer.parseInt(endYear), Integer.parseInt(maxPublications));
     }
 
-    private RequestResultResponse getDataFromDblp(int startYear, int endYear, int maxArticles) {
+    private RequestResultResponse getDataFromDblp(int startYear, int endYear, int maxPublications) {
         // We filter the JSON file by year before we start creating the Publication list.
         // It is faster to filter the JSON than to filter while extracting the Articles in the
         // Warehouse.
-        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxArticles);
+        List<Map<String, Object>> filteredList = XmlToJsonConverter.parseXmlToJson(startYear, endYear, maxPublications);
         return new RequestResultResponse(filteredList);
     }
 }
