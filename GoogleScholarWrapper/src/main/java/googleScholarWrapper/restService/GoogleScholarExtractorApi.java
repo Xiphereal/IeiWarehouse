@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class GoogleScholarExtractorApi {
-    private final AtomicLong requestId = new AtomicLong();
 
     //TODO:Remove getting the string from file and add selenium scrapling
     @GetMapping("/extract")
