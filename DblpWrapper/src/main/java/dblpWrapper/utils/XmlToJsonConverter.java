@@ -14,12 +14,10 @@ import java.util.Map;
 
 public class XmlToJsonConverter {
 
-    public static List<Map<String, Object>> parseXmlToJson(int yearStart, int yearEnd, int maxArticles) {
+    public static List<Map<String, Object>> parseXmlToJson(YearRange yearRange, int maxArticles) {
         JSONObject convertedFile = getJsonFromXmlFile();
         JSONObject root = convertedFile.getJSONObject("dblp");
         JSONArray articles = root.getJSONArray("article");
-
-        YearRange yearRange = new YearRange((long) yearStart, (long) yearEnd);
 
         List<Map<String, Object>> filteredArticles = new ArrayList<>();
 
