@@ -38,14 +38,14 @@ public class GoogleScholarExtractor {
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
 
             JSONArray articles = getArticlesFromJson(entireJsonFile);
-            articles.forEach(article -> parseJsonArticle((JSONObject) article, yearRange));
+            articles.forEach(article -> parseJsonArticle((JSONObject) article));
 
             JSONArray books = getBooksFromJson(entireJsonFile);
-            books.forEach(book -> parseJsonBook((JSONObject) book, yearRange));
+            books.forEach(book -> parseJsonBook((JSONObject) book));
 
             JSONArray communicationCongress = getCommunicationCongress(entireJsonFile);
             communicationCongress.forEach(congress ->
-                    parseJsonCommunicationCongress((JSONObject) congress, yearRange));
+                    parseJsonCommunicationCongress((JSONObject) congress));
 
         } catch (Exception e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
@@ -53,15 +53,11 @@ public class GoogleScholarExtractor {
         }
     }
 
-    private static void parseJsonCommunicationCongress(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonCommunicationCongress(JSONObject jsonObject) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
 
-            // If the congress communication is from outside the requested range,
-            // there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(congressCommunication.getYear()))
-                return;
 
             resolveEntitiesRelationshipsCommunication(congressCommunication, authors);
 
@@ -83,14 +79,10 @@ public class GoogleScholarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonBook(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonBook(JSONObject jsonObject) {
         try {
             List<Person> authors = extractAuthors(jsonObject);
             Book book = extractBookAttributes(jsonObject);
-
-            // If the book is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(book.getYear()))
-                return;
 
             resolveEntitiesRelationshipsBook(book, authors);
 
@@ -117,13 +109,9 @@ public class GoogleScholarExtractor {
         return jsonObjectContainer;
     }
 
-    private static void parseJsonArticle(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonArticle(JSONObject jsonObject) {
         try {
             Article article = extractArticleAttributes(jsonObject);
-
-            // If the article is from outside the requested range, there's no need in continuing parsing.
-            if (!yearRange.isGivenYearBetweenRange(article.getYear()))
-                return;
 
             List<Person> person = extractAuthors(jsonObject);
             Copy copy = extractCopyAttributes(jsonObject);
