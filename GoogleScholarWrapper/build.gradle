@@ -1,4 +1,6 @@
 plugins {
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
 }
 
@@ -17,6 +19,18 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-6'
+
+    // https://mvnrepository.com/artifact/org.jbibtex/jbibtex
+    compile group: 'org.jbibtex', name: 'jbibtex', version: '1.0.18'
+
+    compile group: 'org.json', name: 'json', version:'20201115'
+
+    compile group: 'org.jetbrains', name: 'annotations', version: '15.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
 test {

@@ -68,7 +68,7 @@ public class LoadApi {
                         IeeeExtractor.extractDataIntoWarehouse(yearRange);
 
                     if (extractFromGoogleScholar)
-                        GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+                        GoogleScholarExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                 }
         );
