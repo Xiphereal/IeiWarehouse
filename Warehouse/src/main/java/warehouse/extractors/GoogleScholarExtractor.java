@@ -17,23 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleScholarExtractor {
-    private static final String URL = "http://localhost:8080/extract";
+    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8080/extract";
 
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
     //  filtered JSON file.
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
         try {
-            //check if we have some parameters to add to the url
-            String url = URL;
-            if (yearRange.getStartYear() != null)
-                url = url + "?startYear=" + yearRange.getStartYear();
-            if (yearRange.getEndYear() != null)
-                url = url + "?endYear=" + yearRange.getEndYear();
-            if (maxPublications > 0)
-                url = url + "?maxPublications=" + maxPublications;
+            String requestToWrapper = buildRequestToWrapper(yearRange, maxPublications);
 
-            String json = HttpRequest.GET(url);
+            String json = HttpRequest.GET(requestToWrapper);
             JSONParser jsonParser = new JSONParser();
             JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
 
@@ -51,6 +44,34 @@ public class GoogleScholarExtractor {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }
+    }
+
+    private static String buildRequestToWrapper(YearRange yearRange, int maxPublications) {
+        String request = BASE_URL_REQUEST_TO_WRAPPER;
+        boolean firstParameter = true;
+
+        if (yearRange.getStartYear() != null) {
+            request += "?startYear=" + yearRange.getStartYear();
+            firstParameter = false;
+        }
+
+        if (yearRange.getEndYear() != null) {
+            if (firstParameter) {
+                request += '?';
+                firstParameter = false;
+            } else
+                request += '&';
+
+            request += "endYear=" + yearRange.getEndYear();
+        }
+
+        if (maxPublications > 0) {
+            request += firstParameter ? '?' : '&';
+
+            request += "maxPublications=" + maxPublications;
+        }
+
+        return request;
     }
 
     private static void parseJsonCommunicationCongress(JSONObject jsonObject) {
