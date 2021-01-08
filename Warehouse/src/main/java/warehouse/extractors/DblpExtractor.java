@@ -22,7 +22,7 @@ import java.util.List;
  * See reference: https://howtodoinjava.com/java/library/json-simple-read-write-json-examples/
  */
 public class DblpExtractor {
-    private static final String URL = "http://localhost:8080/extract";
+    private static final String URL = "http://localhost:8082/extract";
 
     // TODO: Revert the changes made for the year-filtered extractions and support the
     //  performing of a REST API request to the wrapper for obtaining the already
