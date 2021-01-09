@@ -27,8 +27,7 @@ public class IeeeExtractor {
                 "&maxPublications=" + maxPublications;
 
         try {
-            String retrievedJsonFromDatasource =
-                    HttpRequest.GET(requestToWrapper);
+            String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
 
             JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
