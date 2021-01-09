@@ -13,6 +13,7 @@ import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
 import warehouse.restService.HttpRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class IeeeExtractor {
 
             articles.forEach(article -> parseJsonObject((JSONObject) article));
 
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ParseException e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
         }
