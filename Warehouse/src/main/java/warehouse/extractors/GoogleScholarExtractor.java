@@ -41,7 +41,7 @@ public class GoogleScholarExtractor {
             communicationCongress.forEach(congress ->
                     parseJsonCommunicationCongress((JSONObject) congress));
 
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ParseException e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }

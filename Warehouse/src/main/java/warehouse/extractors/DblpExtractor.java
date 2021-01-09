@@ -15,6 +15,7 @@ import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.restService.HttpRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class DblpExtractor {
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ParseException e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }
