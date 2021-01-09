@@ -1,11 +1,11 @@
-package IEEEWrapper;
+package ieeeWrapper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IEEEWrapper {
+public class IeeeWrapper {
     public static void main(String[] args) {
-        SpringApplication.run(IEEEWrapper.class, args);
+        SpringApplication.run(IeeeWrapper.class, args);
     }
 }

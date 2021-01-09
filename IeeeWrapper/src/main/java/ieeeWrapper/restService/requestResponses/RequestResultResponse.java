@@ -1,4 +1,4 @@
-package IEEEWrapper.restService.requestResponses;
+package ieeeWrapper.restService.requestResponses;
 
 import java.util.List;
 import java.util.Map;
