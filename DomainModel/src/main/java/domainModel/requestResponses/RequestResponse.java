@@ -1,4 +1,4 @@
-package warehouse.restService.requestResponses;
+package domainModel.requestResponses;
 
 /**
  * This empty interface allows for implementation of different POJOs

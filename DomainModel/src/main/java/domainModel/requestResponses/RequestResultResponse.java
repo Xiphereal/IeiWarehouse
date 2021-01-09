@@ -1,4 +1,4 @@
-package warehouse.restService.requestResponses;
+package domainModel.requestResponses;
 
 import domainModel.Article;
 import domainModel.Book;
@@ -10,6 +10,9 @@ public class RequestResultResponse implements RequestResponse {
     private List<Article> articles;
     private List<Book> books;
     private List<CongressCommunication> congressCommunications;
+
+    public RequestResultResponse() {
+    }
 
     public RequestResultResponse(List<Article> articles, List<Book> books, List<CongressCommunication> congressCommunications) {
         this.articles = articles;

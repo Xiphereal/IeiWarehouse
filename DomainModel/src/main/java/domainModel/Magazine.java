@@ -3,6 +3,10 @@ package domainModel;
 public class Magazine {
     private String name;
 
+    public Magazine() {
+
+    }
+
     public Magazine(String name) {
         this.name = name;
     }

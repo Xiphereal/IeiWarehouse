@@ -15,17 +15,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SeleniumScraper {
-    private static final String PROJECT_PATH = System.getProperty("user.dir") + "/GoogleScholarWrapper/";
+    private static final String SCREENSHOTS_FILE_PATH = System.getProperty("user.dir")
+            + "/IeiExtractorProject/Selenium/ErrorScreenshots";
 
     /**
      * Maximum time to wait before failing.
      */
-    private static final int AWAIT_TIMEOUT_IN_MILLIS = 5000;
+    private static final int AWAIT_TIMEOUT_IN_SECONDS = 5;
     private static final int NUMBER_OF_RESULTS_PAGES_TO_SCRAP = 2;
 
     private ChromeDriver driver;
@@ -49,7 +49,7 @@ public class SeleniumScraper {
         } catch (Exception e) {
             System.err.println(System.lineSeparator() +
                     "An error has occurred while scrapping citations from Google Scholar. " +
-                    "A screenshot has been saved to: " + PROJECT_PATH);
+                    "A screenshot has been saved to: " + SCREENSHOTS_FILE_PATH);
 
             e.printStackTrace();
 
@@ -63,7 +63,7 @@ public class SeleniumScraper {
 
     @NotNull
     private ChromeDriver openChromeInstanceWithGoogleScholar() {
-        System.setProperty("webdriver.chrome.driver", PROJECT_PATH + "src/main/resources/chromedriver_ver87.exe");
+        System.setProperty("webdriver.chrome.driver", getClass().getResource("/chromedriver_ver87.exe").getPath());
 
         ChromeDriver chromeDriver = new ChromeDriver();
         chromeDriver.get("https://scholar.google.com/");
@@ -93,7 +93,7 @@ public class SeleniumScraper {
         // If no year range has been specified, the default values for the
         // start and end year are 1000 and 2999 respectively.
         if (yearRange == null) {
-            yearRange = new YearRange();
+            yearRange = new YearRange(1000L, 2999L);
         }
 
         WebElement startYearTextBox = driver.findElement(By.xpath("//*[@id=\"gs_asd_ylo\"]"));
@@ -174,7 +174,7 @@ public class SeleniumScraper {
 
         try {
             Files.copy(Paths.get(screenshot.getPath()),
-                    Paths.get(PROJECT_PATH + "selenium_error_screenshot.png"),
+                    Paths.get(SCREENSHOTS_FILE_PATH + "selenium_error_screenshot.png"),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
@@ -193,7 +193,7 @@ public class SeleniumScraper {
     }
 
     private void waitUntilClickable(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(AWAIT_TIMEOUT_IN_MILLIS));
+        WebDriverWait wait = new WebDriverWait(driver, AWAIT_TIMEOUT_IN_SECONDS);
         wait.until(ExpectedConditions.elementToBeClickable(webElement));
     }
 }

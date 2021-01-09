@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import warehouse.extractors.DblpExtractor;
 import warehouse.extractors.GoogleScholarExtractor;
 import warehouse.extractors.IeeeExtractor;
-import warehouse.restService.requestResponses.RequestStatusResponse;
+import domainModel.requestResponses.RequestStatusResponse;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,11 +22,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class LoadApi {
     private final AtomicLong requestId = new AtomicLong();
 
-    private static final String ERROR_MESSAGE = "ERROR: The given parameters for the extraction are invalid. " +
-            "The expected parameters are 'startYear:yyyy' and 'endYear:yyyy'" +
-            ", with startYear being less than endYear. " +
-            "The valid year range goes from 1000 to 2999.";
-
     private static final String OK_MESSAGE = "OK: The extraction has started as expected. " +
             "The results will be ready at the warehouse after a few minutes.";
 
@@ -39,17 +34,15 @@ public class LoadApi {
                                              @RequestParam(value = "endYear", defaultValue = "2999") String endYear,
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
-                                             @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar) {
+                                             @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar,
+                                             @RequestParam(value = "maxPublications", defaultValue = "5") int maxPublications) {
 
-        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+        long startYearValue = YearRange.isYear(startYear) ? Long.parseLong(startYear) : 1000L;
+        long endYearValue = YearRange.isYear(endYear) ? Long.parseLong(endYear) : 2999L;
 
-        // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (!isYearRangeValid)
-            return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
+        YearRange yearRange = new YearRange(startYearValue, endYearValue);
 
-        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
-
-        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange);
+        runExtractorsAsync(extractFromDblp, extractFromIeee, extractFromGoogleScholar, yearRange, maxPublications);
 
         return new RequestStatusResponse(requestId.incrementAndGet(), OK_MESSAGE);
     }
@@ -57,16 +50,17 @@ public class LoadApi {
     private void runExtractorsAsync(boolean extractFromDblp,
                                     boolean extractFromIeee,
                                     boolean extractFromGoogleScholar,
-                                    YearRange yearRange) {
+                                    YearRange yearRange,
+                                    int maxPublications) {
         CompletableFuture.runAsync(() -> {
                     if (extractFromDblp)
-                        DblpExtractor.extractDataIntoWarehouse(yearRange);
+                        DblpExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                     if (extractFromIeee)
                         IeeeExtractor.extractDataIntoWarehouse(yearRange);
 
                     if (extractFromGoogleScholar)
-                        GoogleScholarExtractor.extractDataIntoWarehouse(yearRange);
+                        GoogleScholarExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                 }
         );

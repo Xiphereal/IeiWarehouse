@@ -10,6 +10,9 @@ public class Publication {
     private String url;
     private Set<Person> authors;
 
+    public Publication() {
+    }
+
     public Publication(String title, Long year, String url) {
         this.title = title;
         this.year = year;
