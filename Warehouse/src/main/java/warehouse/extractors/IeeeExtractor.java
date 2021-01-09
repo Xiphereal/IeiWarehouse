@@ -19,10 +19,15 @@ import java.util.List;
 public class IeeeExtractor {
     private static final String URL = "http://localhost:8083/extract";
 
-    public static void extractDataIntoWarehouse(YearRange yearRange) {
+    public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
+        String requestToWrapper = URL +
+                "?startYear=" + yearRange.getStartYear() +
+                "&endYear=" + yearRange.getEndYear() +
+                "&maxPublications=" + maxPublications;
+
         try {
             String retrievedJsonFromDatasource =
-                    HttpRequest.GET(URL + "?startYear=" + yearRange.getStartYear() + "&endYear=" + yearRange.getEndYear());
+                    HttpRequest.GET(requestToWrapper);
 
             JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
