@@ -16,7 +16,7 @@ public class CongressCommunicationDAO extends PublicationDAO {
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
-                        "LEFT JOIN comunicacioncongreso ON comunicacioncongreso.publicacion_id=publicacion.id " +
+                        "JOIN comunicacioncongreso ON comunicacioncongreso.publicacion_id=publicacion.id " +
                         "LEFT JOIN publicacion_has_persona ON publicacion.id=publicacion_has_persona.publicacion_id " +
                         "LEFT JOIN persona ON publicacion_has_persona.persona_id=persona.id " +
                         "WHERE anyo >= " + yearRange.getStartYear() + " " +

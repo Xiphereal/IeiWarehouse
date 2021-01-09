@@ -16,7 +16,6 @@ public class ArticlesRetrieval implements QueryStrategy {
     @Override
     public List<Article> retrieveQueryResults(ResultSet queryResultSet) throws SQLException {
         Map<Integer, Article> identifiedArticles = new HashMap<>();
-
         while (queryResultSet.next()) {
             // Each parameter 'i' passed to the getObject() method indicates
             // from which column to retrieve. Columns indexes are 1 based, not 0.
