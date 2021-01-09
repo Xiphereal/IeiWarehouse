@@ -11,6 +11,14 @@ public class Person {
     private String surnames;
     private String authoredPublication;
 
+    /**
+     * This unused field is a workaround to satisfy the Jackson JSON serializer.
+     */
+    private String fullName;
+
+    public Person() {
+    }
+
     public Person(String name, String surnames) {
         this.name = name;
         this.surnames = surnames;
@@ -92,5 +100,11 @@ public class Person {
 
     public String getFullName() {
         return this.name + " " + this.surnames;
+    }
+
+    /**
+     * This setter is empty as a workaround to satisfy the Jackson JSON serializer.
+     */
+    public void setFullName() {
     }
 }

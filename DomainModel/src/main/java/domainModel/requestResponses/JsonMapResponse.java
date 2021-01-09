@@ -1,12 +1,12 @@
-package dblpWrapper.restService.requestResponses;
+package domainModel.requestResponses;
 
 import java.util.List;
 import java.util.Map;
 
-public class RequestResultResponse {
+public class JsonMapResponse {
     private List<Map<String, Object>> jsonString;
 
-    public RequestResultResponse(List<Map<String, Object>> jsonString) {
+    public JsonMapResponse(List<Map<String, Object>> jsonString) {
         this.jsonString = jsonString;
     }
 

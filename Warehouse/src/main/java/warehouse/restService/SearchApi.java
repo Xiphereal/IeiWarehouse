@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
-import warehouse.restService.requestResponses.RequestResponse;
-import warehouse.restService.requestResponses.RequestResultResponse;
-import warehouse.restService.requestResponses.RequestStatusResponse;
+import domainModel.requestResponses.RequestResponse;
+import domainModel.requestResponses.RequestResultResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +26,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SearchApi {
     private final AtomicLong requestId = new AtomicLong();
 
-    private static final String ERROR_MESSAGE = "ERROR: The given parameters for the search are invalid. " +
-            "TODO: Continue defining the error message";
-
     /**
      * A typical URL request could be:
-     * "http://localhost:8080/extractData?startYear=2015&endYear=2018&extractFromDBLP=false&extractFromGoogleScholar=false"
+     * "http://localhost:8080/getData?startYear=2015&endYear=2018"
      */
     @GetMapping("/getData")
     public RequestResponse getData(@RequestParam(value = "startYear", defaultValue = "1000") String startYear,
@@ -42,13 +38,10 @@ public class SearchApi {
                                    @RequestParam(value = "searchCongressCommunications", defaultValue = "true") boolean searchCongressCommunications,
                                    @RequestParam(value = "searchBooks", defaultValue = "true") boolean searchBooks) {
 
-        boolean isYearRangeValid = YearRange.isRangeValid(startYear, endYear);
+        long startYearValue = YearRange.isYear(startYear) ? Long.parseLong(startYear) : 1000L;
+        long endYearValue = YearRange.isYear(endYear) ? Long.parseLong(endYear) : 2999L;
 
-        // If either any parameter is invalid, the request is considered completely invalid as well.
-        if (!isYearRangeValid)
-            return new RequestStatusResponse(requestId.incrementAndGet(), ERROR_MESSAGE);
-
-        YearRange yearRange = new YearRange(Long.valueOf(startYear), Long.valueOf(endYear));
+        YearRange yearRange = new YearRange(startYearValue, endYearValue);
 
         Person requestedAuthor = null;
 

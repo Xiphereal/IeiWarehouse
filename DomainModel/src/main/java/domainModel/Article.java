@@ -5,6 +5,9 @@ public class Article extends Publication {
     private Integer finalPage;
     private Copy copyPublishedBy;
 
+    public Article() {
+    }
+
     public Article(String title,
                    Long year,
                    String url,

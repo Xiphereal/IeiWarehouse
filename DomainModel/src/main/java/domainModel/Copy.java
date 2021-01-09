@@ -6,6 +6,9 @@ public class Copy {
     private Integer month;
     private Magazine magazinePublishBy;
 
+    public Copy() {
+    }
+
     public Copy(Integer volume, Integer number, Integer month) {
         this.volume = volume;
         this.number = number;

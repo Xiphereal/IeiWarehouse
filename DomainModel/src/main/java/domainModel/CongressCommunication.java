@@ -7,6 +7,9 @@ public class CongressCommunication extends Publication {
     private Integer initialPage;
     private Integer finalPage;
 
+    public CongressCommunication() {
+    }
+
     public CongressCommunication(String title,
                                  Long year,
                                  String url,
