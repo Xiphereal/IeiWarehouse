@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IeeeExtractor {
-    private static final String URL = "http://localhost:8083/extract";
+    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8083/extract";
 
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
-        String requestToWrapper = URL +
+        String requestToWrapper = BASE_URL_REQUEST_TO_WRAPPER +
                 "?startYear=" + yearRange.getStartYear() +
                 "&endYear=" + yearRange.getEndYear() +
                 "&maxPublications=" + maxPublications;
