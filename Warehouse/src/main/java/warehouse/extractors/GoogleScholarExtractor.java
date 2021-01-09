@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleScholarExtractor {
-    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8080/extract";
+    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8084/extract";
 
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
         try {
