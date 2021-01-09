@@ -15,6 +15,7 @@ import warehouse.extractors.utils.SimpleJsonUtils;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.restService.HttpRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,10 @@ public class DblpExtractor {
     private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8082/extract";
 
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
-        String requestToWrapper = buildRequestToWrapper(yearRange, maxPublications);
+        String requestToWrapper = BASE_URL_REQUEST_TO_WRAPPER +
+                "?startYear=" + yearRange.getStartYear() +
+                "&endYear=" + yearRange.getEndYear() +
+                "maxPublications=" + maxPublications;
 
         try {
             String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
@@ -34,38 +38,10 @@ public class DblpExtractor {
 
             articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
 
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException | ParseException e) {
             System.err.println("An error has occurred while extracting data in " + DblpExtractor.class.getName());
             e.printStackTrace();
         }
-    }
-
-    private static String buildRequestToWrapper(YearRange yearRange, int maxPublications) {
-        String request = BASE_URL_REQUEST_TO_WRAPPER;
-        boolean firstParameter = true;
-
-        if (yearRange.getStartYear() != null) {
-            request += "?startYear=" + yearRange.getStartYear();
-            firstParameter = false;
-        }
-
-        if (yearRange.getEndYear() != null) {
-            if (firstParameter) {
-                request += '?';
-                firstParameter = false;
-            } else
-                request += '&';
-
-            request += "endYear=" + yearRange.getEndYear();
-        }
-
-        if (maxPublications > 0) {
-            request += firstParameter ? '?' : '&';
-
-            request += "maxPublications=" + maxPublications;
-        }
-
-        return request;
     }
 
     private static JSONArray getArticlesFromJson(String json) throws ParseException {

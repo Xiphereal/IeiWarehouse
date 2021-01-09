@@ -1,5 +1,6 @@
 package warehouse.restService;
 
+import domainModel.requestResponses.RequestStatusResponse;
 import domainModel.utils.YearRange;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import warehouse.extractors.DblpExtractor;
 import warehouse.extractors.GoogleScholarExtractor;
 import warehouse.extractors.IeeeExtractor;
-import domainModel.requestResponses.RequestStatusResponse;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
@@ -57,11 +57,10 @@ public class LoadApi {
                         DblpExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                     if (extractFromIeee)
-                        IeeeExtractor.extractDataIntoWarehouse(yearRange);
+                        IeeeExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
 
                     if (extractFromGoogleScholar)
                         GoogleScholarExtractor.extractDataIntoWarehouse(yearRange, maxPublications);
-
                 }
         );
     }

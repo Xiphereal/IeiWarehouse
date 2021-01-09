@@ -11,38 +11,42 @@ import warehouse.extractors.utils.RomanToDecimalConverter;
 import warehouse.persistence.dataAccessObjects.ArticleDAO;
 import warehouse.persistence.dataAccessObjects.BookDAO;
 import warehouse.persistence.dataAccessObjects.CongressCommunicationDAO;
+import warehouse.restService.HttpRequest;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IeeeExtractor {
+    private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8083/extract";
 
-    // TODO: Revert the changes made for the year-filtered extractions and support the
-    //  performing of a REST API request to the wrapper for obtaining the already
-    //  filtered JSON file.
-    public static void extractDataIntoWarehouse(YearRange yearRange) {
-        try (InputStreamReader fileReader = new InputStreamReader(IeeeExtractor.class.getResourceAsStream("/ieee/ieeeXplore_2018-2020-short.json"))) {
+    public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
+        String requestToWrapper = BASE_URL_REQUEST_TO_WRAPPER +
+                "?startYear=" + yearRange.getStartYear() +
+                "&endYear=" + yearRange.getEndYear() +
+                "&maxPublications=" + maxPublications;
 
-            JSONArray articles = getArticlesFromJson(fileReader);
+        try {
+            String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
 
-            articles.forEach(article -> parseJsonObject((JSONObject) article, yearRange));
+            JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
-        } catch (Exception e) {
+            articles.forEach(article -> parseJsonObject((JSONObject) article));
+
+        } catch (IOException | InterruptedException | ParseException e) {
             System.err.println("An error has occurred while extracting data in " + IeeeExtractor.class.getName());
             e.printStackTrace();
         }
     }
 
-    private static JSONArray getArticlesFromJson(InputStreamReader fileReader) throws IOException, ParseException {
+    private static JSONArray getArticlesFromJson(String rawJson) throws ParseException {
         JSONParser jsonParser = new JSONParser();
-        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(fileReader);
+        JSONObject entireJsonFile = (JSONObject) jsonParser.parse(rawJson);
 
         return (JSONArray) entireJsonFile.get("articles");
     }
 
-    private static void parseJsonObject(JSONObject jsonObject, YearRange yearRange) {
+    private static void parseJsonObject(JSONObject jsonObject) {
         try {
             List<Person> person = extractAuthors(jsonObject);
             String type = (String) jsonObject.get("content_type");
@@ -51,10 +55,6 @@ public class IeeeExtractor {
             //  Also check if that copy already exists, if it does Add the article to the copy
             if (type.compareTo("Early Access Articles") == 0 || type.compareTo("Journals") == 0) {
                 Article article = extractArticleAttributes(jsonObject);
-
-                // If the article is from outside the requested range, there's no need in continuing parsing.
-                if (!yearRange.isGivenYearBetweenRange(article.getYear()))
-                    return;
 
                 Copy copy = extractCopyAttributes(jsonObject);
                 Magazine magazine = new Magazine((String) jsonObject.get("publication_title"));
@@ -66,21 +66,12 @@ public class IeeeExtractor {
             } else if (type.compareTo("Conferences") == 0) {
                 CongressCommunication congressCommunication = extractCongressCommunicationAttributes(jsonObject);
 
-                // If the congress communication is from outside the requested range,
-                // there's no need in continuing parsing.
-                if (!yearRange.isGivenYearBetweenRange(congressCommunication.getYear()))
-                    return;
-
                 resolveEntitiesRelationshipsCommunication(congressCommunication, person);
 
                 CongressCommunicationDAO.persist(congressCommunication);
 
             } else if (type.compareTo("Books") == 0) {
                 Book book = extractBookAttributes(jsonObject);
-
-                // If the book is from outside the requested range, there's no need in continuing parsing.
-                if (!yearRange.isGivenYearBetweenRange(book.getYear()))
-                    return;
 
                 resolveEntitiesRelationshipsBook(book, person);
 
