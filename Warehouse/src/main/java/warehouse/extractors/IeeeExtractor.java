@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IeeeExtractor {
-    private static final String URL = "http://localhost:8080/extract";
+    private static final String URL = "http://localhost:8083/extract";
 
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try {
