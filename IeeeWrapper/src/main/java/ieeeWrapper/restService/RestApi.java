@@ -1,9 +1,9 @@
 package ieeeWrapper.restService;
 
+import ieeeWrapper.utils.HttpService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import utils.HttpService;
 
 @RestController
 public class RestApi {
