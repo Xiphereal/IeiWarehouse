@@ -20,12 +20,13 @@ public class GoogleScholarExtractor {
     private static final String BASE_URL_REQUEST_TO_WRAPPER = "http://localhost:8084/extract";
 
     public static void extractDataIntoWarehouse(YearRange yearRange, int maxPublications) {
-        try {
-            String requestToWrapper = buildRequestToWrapper(yearRange, maxPublications);
+        String requestToWrapper = buildRequestToWrapper(yearRange, maxPublications);
 
-            String json = HttpRequest.GET(requestToWrapper);
+        try {
+            String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
+
             JSONParser jsonParser = new JSONParser();
-            JSONObject entireJsonFile = (JSONObject) jsonParser.parse(json);
+            JSONObject entireJsonFile = (JSONObject) jsonParser.parse(retrievedJsonFromDatasource);
 
             JSONArray articles = getArticlesFromJson(entireJsonFile);
             articles.forEach(article -> parseJsonArticle((JSONObject) article));

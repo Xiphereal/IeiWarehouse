@@ -21,9 +21,10 @@ public class IeeeExtractor {
 
     public static void extractDataIntoWarehouse(YearRange yearRange) {
         try {
-            String json = HttpRequest.GET(URL + "?startYear=" + yearRange.getStartYear() + "&endYear=" + yearRange.getEndYear());
+            String retrievedJsonFromDatasource =
+                    HttpRequest.GET(URL + "?startYear=" + yearRange.getStartYear() + "&endYear=" + yearRange.getEndYear());
 
-            JSONArray articles = getArticlesFromJson(json);
+            JSONArray articles = getArticlesFromJson(retrievedJsonFromDatasource);
 
             articles.forEach(article -> parseJsonObject((JSONObject) article));
 
