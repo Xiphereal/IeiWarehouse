@@ -17,7 +17,7 @@ public class ArticleDAO {
                         "publicacion.id, " +
                         "persona.nombre, persona.apellidos " +
                         "FROM publicacion " +
-                        "LEFT JOIN articulo ON articulo.publicacion_id=publicacion.id " +
+                        "JOIN articulo ON articulo.publicacion_id=publicacion.id " +
                         "LEFT JOIN ejemplar ON articulo.ejemplar_id=ejemplar.id " +
                         "LEFT JOIN revista ON ejemplar.revista_id=revista.id " +
                         "LEFT JOIN publicacion_has_persona ON publicacion.id=publicacion_has_persona.publicacion_id " +
