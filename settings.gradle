@@ -1,3 +1,3 @@
 rootProject.name = 'IeiWarehouseProject'
 
-include ':Warehouse', ':DomainModel', ':FrontendWebApp', ':GoogleScholarWrapper', ':DblpWrapper'
+include ':Warehouse', ':DomainModel', ':FrontendWebApp', ':GoogleScholarWrapper', ':DblpWrapper', ':IeeeWrapper'
