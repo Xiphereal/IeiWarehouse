@@ -29,7 +29,7 @@ public class DblpExtractor {
         String requestToWrapper = BASE_URL_REQUEST_TO_WRAPPER +
                 "?startYear=" + yearRange.getStartYear() +
                 "&endYear=" + yearRange.getEndYear() +
-                "maxPublications=" + maxPublications;
+                "&maxPublications=" + maxPublications;
 
         try {
             String retrievedJsonFromDatasource = HttpRequest.GET(requestToWrapper);
