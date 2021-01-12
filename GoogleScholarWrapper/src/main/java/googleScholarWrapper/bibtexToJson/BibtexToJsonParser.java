@@ -31,7 +31,7 @@ public class BibtexToJsonParser {
     }
 
     private static JSONArray incollectionParse(JSONArray incollection, String bibObject, YearRange yearRange) {
-        if (bibObject.startsWith("incollection")) {
+        if (bibObject.startsWith("@incollection")) {
             JSONObject publication = new JSONObject();
             //atributes
             String title;
@@ -46,27 +46,27 @@ public class BibtexToJsonParser {
             for (String field : fields) {
                 field = field.trim();
                 field = field.trim();
-                if (field.startsWith("title=")) {
+                if (field.startsWith("@title=")) {
                     title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
-                if (field.startsWith("author=")) {
+                if (field.startsWith("@author=")) {
                     authors = beautify(field.substring(7));
                     publication.put("author", authors);
                 }
-                if (field.startsWith("booktitle=")) {
+                if (field.startsWith("@booktitle=")) {
                     booktitle = beautify(field.substring(7));
                     publication.put("booktitle", booktitle);
                 }
-                if (field.startsWith("pages=")) {
+                if (field.startsWith("@pages=")) {
                     pages = beautify(field.substring(7));
                     publication.put("pages", pages);
                 }
-                if (field.startsWith("year=")) {
+                if (field.startsWith("@year=")) {
                     year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
-                if (field.startsWith("publisher=")) {
+                if (field.startsWith("@publisher=")) {
                     publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
@@ -78,7 +78,7 @@ public class BibtexToJsonParser {
     }
 
     private static JSONArray inproceedingsParser(JSONArray inproceedings, String bibObject, YearRange yearRange) {
-        if (bibObject.startsWith("inproceedings")) {
+        if (bibObject.startsWith("@inproceedings")) {
             JSONObject publication = new JSONObject();
             //atributes
             String title;
@@ -90,19 +90,19 @@ public class BibtexToJsonParser {
             for (String field : fields) {
                 field = field.trim();
                 field = field.trim();
-                if (field.startsWith("title=")) {
+                if (field.startsWith("@title=")) {
                     title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
-                if (field.startsWith("author=")) {
+                if (field.startsWith("@author=")) {
                     authors = beautify(field.substring(7));
                     publication.put("author", authors);
                 }
-                if (field.startsWith("booktitle=")) {
+                if (field.startsWith("@booktitle=")) {
                     booktitle = beautify(field.substring(7));
                     publication.put("booktitle", booktitle);
                 }
-                if (field.startsWith("year=")) {
+                if (field.startsWith("@year=")) {
                     year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
@@ -114,7 +114,7 @@ public class BibtexToJsonParser {
     }
 
     private static JSONArray articleParser(JSONArray articles, String bibObject, YearRange yearRange) {
-        if (bibObject.startsWith("article")) {
+        if (bibObject.startsWith("@article")) {
             JSONObject publication = new JSONObject();
             // atributes
             String title;
@@ -132,40 +132,40 @@ public class BibtexToJsonParser {
             for (String field : fields) {
                 field = field.trim();
                 field = field.trim();
-                if (field.startsWith("title=")) {
+                if (field.startsWith("@title=")) {
                     title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
-                if (field.startsWith("author=")) {
+                if (field.startsWith("@author=")) {
                     authors = beautify(field.substring(8));
                     publication.put("authors", authors);
                 }
-                if (field.startsWith("journal=")) {
+                if (field.startsWith("@journal=")) {
                     journal = beautify(field.substring(9));
                     publication.put("journal", journal);
                 }
-                if (field.startsWith("volume=")) {
+                if (field.startsWith("@volume=")) {
                     volume = beautify(field.substring(8));
                     publication.put("volume", volume);
                 }
-                if (field.startsWith("number=")) {
+                if (field.startsWith("@number=")) {
                     number = beautify(field.substring(8));
                     publication.put("number", number);
                 }
-                if (field.startsWith("pages=")) {
+                if (field.startsWith("@pages=")) {
                     pages = beautify(field.substring(7));
                     publication.put("pages", pages);
                 }
-                if (field.startsWith("year=")) {
+                if (field.startsWith("@year=")) {
                     year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
                 //TODO: delete this, useless since we dont have url in bibtex
-                if (field.startsWith("url=")) {
+                if (field.startsWith("@url=")) {
                     url = beautify(field.substring(5));
                     publication.put("url", url);
                 }
-                if (field.startsWith("publisher=")) {
+                if (field.startsWith("@publisher=")) {
                     publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
@@ -178,7 +178,7 @@ public class BibtexToJsonParser {
     }
 
     private static JSONArray bookParser(JSONArray books, String bibObject, YearRange yearRange) {
-        if (bibObject.startsWith("book")) {
+        if (bibObject.startsWith("@book")) {
             JSONObject publication = new JSONObject();
             // atributes
             String title;
@@ -191,29 +191,29 @@ public class BibtexToJsonParser {
 
             for (String field : fields) {
                 field = field.trim();
-                if (field.startsWith("title=")) {
+                if (field.startsWith("@title=")) {
                     title = beautify(field.substring(7));
                     publication.put("title", title);
                 }
-                if (field.startsWith("year=")) {
+                if (field.startsWith("@year=")) {
                     year = beautify(field.substring(6));
                     publication.put("year", year);
                 }
                 //this is useless since we dont have url in bibtex
                 //TODO: delete this
-                if (field.startsWith("url=")) {
+                if (field.startsWith("@url=")) {
                     url = beautify(field.substring(5));
                     publication.put("url", url);
                 }
-                if (field.startsWith("publisher=")) {
+                if (field.startsWith("@publisher=")) {
                     publisher = beautify(field.substring(11));
                     publication.put("publisher", publisher);
                 }
-                if (field.startsWith("author=")) {
+                if (field.startsWith("@author=")) {
                     authors = beautify(field.substring(9));
                     publication.put("authors", authors);
                 }
-                if (field.startsWith("volume=")) {
+                if (field.startsWith("@volume=")) {
                     volume = beautify(field.substring(field.length(), 8));
                     publication.put("volume", volume);
                 }
