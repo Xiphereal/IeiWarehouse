@@ -35,7 +35,7 @@ public class LoadApi {
                                              @RequestParam(value = "extractFromDBLP", defaultValue = "true") boolean extractFromDblp,
                                              @RequestParam(value = "extractFromIEEE", defaultValue = "true") boolean extractFromIeee,
                                              @RequestParam(value = "extractFromGoogleScholar", defaultValue = "true") boolean extractFromGoogleScholar,
-                                             @RequestParam(value = "maxPublications", defaultValue = "5") int maxPublications) {
+                                             @RequestParam(value = "maxPublications", defaultValue = "25") int maxPublications) {
 
         long startYearValue = YearRange.isYear(startYear) ? Long.parseLong(startYear) : 1000L;
         long endYearValue = YearRange.isYear(endYear) ? Long.parseLong(endYear) : 2999L;
