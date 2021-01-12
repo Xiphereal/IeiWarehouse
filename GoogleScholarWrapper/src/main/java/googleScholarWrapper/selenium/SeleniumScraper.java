@@ -39,12 +39,11 @@ public class SeleniumScraper {
     public List<String> retrieveCitationsAsBibtex(YearRange yearRange, Person requestedAuthor) {
         driver = openChromeInstanceWithGoogleScholar();
 
-        openDrawerMenu();
-        openAdvancedSearch();
-        enterAdvancedSearchOptions(yearRange, requestedAuthor);
-        performAdvancedSearch();
-
         try {
+            openDrawerMenu();
+            openAdvancedSearch();
+            enterAdvancedSearchOptions(yearRange, requestedAuthor);
+            performAdvancedSearch();
             scrapCitationsAsBibtex();
         } catch (Exception e) {
             System.err.println(System.lineSeparator() +
