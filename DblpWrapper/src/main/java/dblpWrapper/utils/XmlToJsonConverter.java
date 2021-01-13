@@ -40,7 +40,7 @@ public class XmlToJsonConverter {
             // .jar context.
             InputStreamReader dataSourceReader =
                     new InputStreamReader(XmlToJsonConverter.class
-                            .getResourceAsStream("/DBLP-SOLO_ARTICLE-1.XML"));
+                            .getResourceAsStream("/DBLP-ENTREGA-FINAL.xml"));
 
             BufferedReader dataSourceReaderAsBufferedReader = new BufferedReader(dataSourceReader);
 
